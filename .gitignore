@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated reports and logs
+reports/*
+logs/*
+
+# Personal/private data
+profile/*
+*.pdf
+*.docx
+
+# Environment/secrets
+.env
+*.env
+
+# Local configuration
+config/local/*
