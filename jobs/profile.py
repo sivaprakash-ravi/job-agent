@@ -50,7 +50,13 @@ LOCATIONS = [
     "Bangalore",
     "Hyderabad",
     "Remote",
-  "Coimbatore",
+    "Coimbatore",
 ]
 
 EXPERIENCE_YEARS = 1.5
+MAX_JOB_EXPERIENCE_YEARS = 2
+EMPLOYMENT_TYPE = "full_time"
+
+# Salary is recorded for future job sources that provide salary information.
+MINIMUM_CTC_LPA = 7
+TARGET_CTC_LPA = "8-9"

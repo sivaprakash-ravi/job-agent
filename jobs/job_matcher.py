@@ -2,7 +2,14 @@
 
 import re
 
-from profile import EXPERIENCE_YEARS, LOCATIONS, SKILLS, TARGET_ROLES
+from profile import (
+    EMPLOYMENT_TYPE,
+    EXPERIENCE_YEARS,
+    LOCATIONS,
+    MAX_JOB_EXPERIENCE_YEARS,
+    SKILLS,
+    TARGET_ROLES,
+)
 
 
 MINIMUM_SCORE = 45
@@ -47,9 +54,24 @@ def role_family(role):
     return " ".join(words)
 
 
+def job_value(job, field_name):
+    """Read a field from the job, including FreeHire's enrichment data."""
+    return job.get(field_name) or job.get("enrichment", {}).get(field_name)
+
+
+def matches_target_role(title, job_text, role):
+    """Allow close title variations and clear DevOps/SRE mentions."""
+    family = role_family(role)
+    if contains_phrase(title, role) or contains_phrase(title, family):
+        return True
+    return family in {"devops", "sre"} and contains_phrase(job_text, family)
+
+
 def required_experience(job):
-    """Find the first number in an experience field, such as '4+ years'."""
-    value = job.get("experience_requirement") or job.get("experience") or ""
+    """Find required years, including FreeHire's enrichment value."""
+    value = job_value(job, "experience_years_min")
+    if value is None:
+        value = job.get("experience_requirement") or job.get("experience") or ""
     match = re.search(r"\d+(?:\.\d+)?", normalise(value))
     return float(match.group()) if match else None
 
@@ -78,13 +100,12 @@ def score_job(job):
     job_text = get_job_text(job)
     location = normalise(job.get("location"))
 
-    matched_roles = [
-        role
-        for role in TARGET_ROLES
-        if contains_phrase(title, role) or contains_phrase(title, role_family(role))
-    ]
+    matched_roles = [role for role in TARGET_ROLES if matches_target_role(title, job_text, role)]
     matched_skills = [skill for skill in SKILLS if contains_phrase(job_text, skill)]
+    work_mode = normalise(job.get("work_mode"))
     matched_locations = [place for place in LOCATIONS if contains_phrase(location, place)]
+    if contains_phrase(work_mode, "remote"):
+        matched_locations.append("Remote")
 
     role_score = min(35, len(matched_roles) * 35)
     skill_score = min(40, len(matched_skills) * 4)
@@ -95,25 +116,40 @@ def score_job(job):
     experience_note = "No experience requirement found"
     if required_years is None:
         experience_score = 5
-    elif required_years <= EXPERIENCE_YEARS + 1:
+    elif required_years <= MAX_JOB_EXPERIENCE_YEARS:
         experience_score = 10
         experience_note = f"Requires about {required_years:g} years: suitable"
     else:
         experience_score = -20
         experience_note = (
             f"Requires about {required_years:g} years: above your "
-            f"{EXPERIENCE_YEARS:g} years"
+            f"{MAX_JOB_EXPERIENCE_YEARS:g}-year limit"
         )
 
     score = max(0, min(100, role_score + skill_score + location_score + experience_score))
+    employment_type = normalise(job_value(job, "employment_type"))
+    filter_reasons = []
+    if employment_type != EMPLOYMENT_TYPE:
+        filter_reasons.append("Not a full-time role")
+    if not matched_locations:
+        filter_reasons.append("Outside preferred locations")
+    if required_years is not None and required_years > MAX_JOB_EXPERIENCE_YEARS:
+        filter_reasons.append("Requires more than 2 years of experience")
+    if not matched_roles and len(matched_skills) < 6:
+        filter_reasons.append("Not enough target-role or skill overlap")
+
+    passes_filters = not filter_reasons
     ranked_job = dict(job)
     ranked_job["match_score"] = score
-    ranked_job["match_category"] = category_for(score)
+    ranked_job["match_category"] = category_for(score) if passes_filters else "Ignore"
     ranked_job["match_details"] = {
         "matched_roles": matched_roles,
         "matched_skills": matched_skills,
         "matched_locations": matched_locations,
         "experience_note": experience_note,
+        "employment_type": employment_type or "Not listed",
+        "work_mode": work_mode or "Not listed",
+        "filter_reasons": filter_reasons,
     }
     return ranked_job
 
@@ -125,5 +161,10 @@ def rank_jobs(jobs):
 
 
 def keep_relevant_jobs(ranked_jobs):
-    """Remove jobs marked Ignore from the short report."""
-    return [job for job in ranked_jobs if job["match_score"] >= MINIMUM_SCORE]
+    """Keep only jobs that meet every user requirement."""
+    return [
+        job
+        for job in ranked_jobs
+        if job["match_score"] >= MINIMUM_SCORE
+        and job["match_category"] != "Ignore"
+    ]
