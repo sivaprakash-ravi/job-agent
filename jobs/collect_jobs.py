@@ -2,12 +2,14 @@ import json
 import urllib.parse
 import urllib.request
 from pathlib import Path
-
+from profile import TARGET_ROLES, SKILLS, LOCATIONS
 
 API_URL = "https://freehire.me/api/v1/jobs/search"
 
+search_terms = TARGET_ROLES + SKILLS
+
 params = {
-    "q": "cloud support devops technical support operations sre",
+    "q": " ".join(search_terms),
     "countries": "IN",
     "category": "devops,sre,support,operations,software_engineering",
     "seniority": "junior,middle",
