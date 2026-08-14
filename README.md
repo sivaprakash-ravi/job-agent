@@ -1,43 +1,23 @@
-# Daily Job Hunter
+# 🚀 Daily Job Hunter
 
-This is a small personal job-search automation project. It helps find relevant
-jobs regularly, so the search does not have to start from scratch every day.
+A personal experiment to build my own automated job-hunting system.
 
-## How it works
+I gave the project my resume-based skills, roles and job expectations, and I'm using **ChatGPT/Codex + Python + GitHub Actions** to build and improve it.
 
-```text
-GitHub Actions (every 3 hours)
-        ↓
-Python job collector
-        ↓
-FreeHire job API
-        ↓
-Profile-based filtering
-        ↓
-jobs.json report + alert-ready output
-```
+### Day 1 — August 14, 2026 ✅
 
-## Built so far
+- Job search automation is working.
+- Runs automatically every **3 hours**, even when I'm offline.
+- Job updates are sent directly to my **Telegram**.
+- First successful job results received 🎉
 
-- A GitHub Actions workflow runs automatically every 3 hours.
-- A beginner-friendly Python collector gets recent job listings from the
-  FreeHire API.
-- `jobs/profile.py` holds general target roles, skills, locations, and job
-  preferences derived from the resume—without storing the resume itself or
-  private contact details.
-- Matching jobs are saved in `reports/jobs.json` and uploaded as a GitHub
-  Actions artifact.
-- The project also prepares alert output so new matching jobs can be shared
-  without repeatedly sending the same listing.
+### What's Next 🚀
 
-## What's next
+- Remove duplicate/repeated jobs.
+- Improve job matching based on my profile.
+- Explore **auto-apply** from my profile.
+- Keep improving the system release by release.
 
-The next main step is improving job matching and ranking, so the best-fitting
-roles appear first. Later, the project may add more job sources and AI-assisted
-matching.
+### 🎯 My Goal
 
-## Privacy
-
-This repository should contain only general job-search preferences. It should
-not contain a resume PDF, phone number, personal email, address, passwords,
-API keys, or tokens.
+I'm trying to build something similar to the AI agent/automation setups people use with paid tools like Claude, but **at very low or no cost**, while learning and building it myself.
