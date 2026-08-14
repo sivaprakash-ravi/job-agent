@@ -1,4 +1,4 @@
-# 🚀 Daily Job Hunter
+# Assist Sharing job roles every 3 hours once.
 
 A personal experiment to build my own automated job-hunting system.
 
