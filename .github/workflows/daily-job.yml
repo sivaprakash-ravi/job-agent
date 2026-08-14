@@ -12,6 +12,7 @@ jobs:
       GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       JOB_ALERT_EMAIL: ${{ secrets.JOB_ALERT_EMAIL }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -28,6 +29,10 @@ jobs:
       - name: Send email alert
         if: ${{ env.GMAIL_APP_PASSWORD != '' }}
         run: python jobs/send_email.py
+
+      - name: Send Telegram alert
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
+        run: python jobs/send_telegram.py
 
       - name: Upload job report
         uses: actions/upload-artifact@v4
