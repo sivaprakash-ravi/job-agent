@@ -3,7 +3,7 @@ name: Daily Job Agent
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 9 * * *"
+    - cron: "0 */3 * * *"
 
 jobs:
   test-automation:
@@ -18,5 +18,11 @@ jobs:
         with:
           python-version: "3.14"
 
-      - name: Run automation
-        run: python jobs/daily_test.py
+      - name: Collect jobs
+        run: python jobs/collect_jobs.py
+
+      - name: Upload job report
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-job-report
+          path: reports/jobs.json
