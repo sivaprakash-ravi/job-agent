@@ -1,18 +1,36 @@
 TARGET_ROLES = [
+    # Support / Operations
     "Application Support Engineer",
     "Production Support Engineer",
     "Technical Support Engineer",
     "Cloud Support Engineer",
     "Cloud Operations Engineer",
     "Operations Engineer",
+    "Production Operations Engineer",
+    "Application Operations Engineer",
+    "Technical Operations Engineer",
+
+    # Cloud / DevOps / SRE
     "Site Reliability Engineer",
     "SRE",
     "DevOps Engineer",
     "Junior DevOps Engineer",
     "Cloud Engineer",
-    "Production Operations Engineer",
-    "Application Operations Engineer",
-    "Technical Operations Engineer",
+
+    # QA / Testing
+    "QA Engineer",
+    "Quality Assurance Engineer",
+    "Software Test Engineer",
+    "Test Engineer",
+    "QA Analyst",
+    "Quality Analyst",
+    "Manual Tester",
+    "Manual Testing Engineer",
+    "Software Tester",
+    "Application Tester",
+    "QA Support Engineer",
+    "Production QA Engineer",
+    "Application Quality Engineer",
 ]
 
 SKILLS = [
@@ -43,6 +61,21 @@ SKILLS = [
     "Log Analysis",
     "System Monitoring",
     "Application Monitoring",
+
+    # QA / Testing skills
+    "Manual Testing",
+    "Software Testing",
+    "Quality Assurance",
+    "QA Testing",
+    "Test Cases",
+    "Test Case Design",
+    "Test Execution",
+    "Regression Testing",
+    "Functional Testing",
+    "API Testing",
+    "Defect Tracking",
+    "Bug Tracking",
+    "Jira",
 ]
 
 LOCATIONS = [
@@ -54,9 +87,9 @@ LOCATIONS = [
 ]
 
 EXPERIENCE_YEARS = 1.5
-MAX_JOB_EXPERIENCE_YEARS = 2
+MAX_JOB_EXPERIENCE_YEARS = 3
+
 EMPLOYMENT_TYPE = "full_time"
 
-# Salary is recorded for future job sources that provide salary information.
 MINIMUM_CTC_LPA = 7
 TARGET_CTC_LPA = "8-9"
