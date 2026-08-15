@@ -11,11 +11,13 @@ permissions:
 jobs:
   test-automation:
     runs-on: ubuntu-latest
+
     env:
       GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       JOB_ALERT_EMAIL: ${{ secrets.JOB_ALERT_EMAIL }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      INDEED_API_KEY: ${{ secrets.INDEED_API_KEY }}
 
     steps:
       - name: Checkout repository
@@ -42,7 +44,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports/sent_jobs.json
-          git diff --cached --quiet || git commit -m "Update sent job history"
+          git diff --cached --quiet || git commit -m "Update job duplicate history"
           git push
 
       - name: Upload job report
