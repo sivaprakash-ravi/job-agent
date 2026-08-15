@@ -10,11 +10,8 @@ LOCATION = "Bangalore"
 
 def main():
     print("=" * 60)
-    print("INDEED JOB SEARCH TEST - JOBSPY")
+    print("INDEED JOB SEARCH - JOBSPY")
     print("=" * 60)
-    print(f"Search: {SEARCH_TERM}")
-    print(f"Location: {LOCATION}")
-    print()
 
     jobs = scrape_jobs(
         site_name=["indeed"],
@@ -26,29 +23,47 @@ def main():
         verbose=1,
     )
 
+    normalized_jobs = []
+
+    for _, job in jobs.iterrows():
+        normalized_jobs.append(
+            {
+                "source": "indeed",
+                "title": job.get("title", ""),
+                "company": job.get("company", ""),
+                "location": job.get("location", ""),
+                "description": job.get("description", ""),
+                "job_url": job.get("job_url", ""),
+                "job_type": job.get("job_type", ""),
+                "date_posted": str(job.get("date_posted", "")),
+                "is_remote": job.get("is_remote", False),
+            }
+        )
+
     output_dir = Path("reports")
     output_dir.mkdir(exist_ok=True)
 
     output_file = output_dir / "indeed_jobs.json"
 
-    jobs.to_json(
-        output_file,
-        orient="records",
-        indent=2,
-        force_ascii=False,
-    )
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(
+            normalized_jobs,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
 
     print()
-    print(f"Jobs returned: {len(jobs)}")
+    print(f"Indeed jobs returned: {len(normalized_jobs)}")
     print(f"Saved to: {output_file}")
     print()
 
-    for index, (_, job) in enumerate(jobs.head(10).iterrows(), start=1):
-        print(f"{index}. {job.get('title', 'Unknown title')}")
-        print(f"   Company : {job.get('company', 'Unknown company')}")
-        print(f"   Location: {job.get('location', 'Unknown location')}")
-        print(f"   URL     : {job.get('job_url', '')}")
-        print()
+    for index, job in enumerate(normalized_jobs[:10], start=1):
+        print(
+            f"{index}. {job['title']} | "
+            f"{job['company']} | "
+            f"{job['location']}"
+        )
 
 
 if __name__ == "__main__":
