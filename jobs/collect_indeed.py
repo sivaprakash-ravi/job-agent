@@ -31,10 +31,13 @@ def main():
         },
     )
 
-    with urllib.request.urlopen(request, timeout=30) as response:
-        data = json.loads(response.read().decode("utf-8"))
+with urllib.request.urlopen(request, timeout=30) as response:
+    data = json.loads(response.read().decode("utf-8"))
 
-    jobs = data.get("jobs", [])
+print("API response:")
+print(json.dumps(data, indent=2, ensure_ascii=False))
+
+jobs = data.get("jobs", [])
 
     output_dir = Path("reports")
     output_dir.mkdir(exist_ok=True)
