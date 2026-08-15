@@ -12,24 +12,33 @@ REPORT_FILE = Path("reports/jobs.json")
 
 def telegram_request(token, method, data=None):
     url = f"https://api.telegram.org/bot{token}/{method}"
+
     request_data = None
 
     if data is not None:
         request_data = urllib.parse.urlencode(data).encode("utf-8")
 
-    request = urllib.request.Request(url, data=request_data)
+    request = urllib.request.Request(
+        url,
+        data=request_data,
+    )
 
     with urllib.request.urlopen(request, timeout=30) as response:
-        result = json.loads(response.read().decode("utf-8"))
+        result = json.loads(
+            response.read().decode("utf-8")
+        )
 
     if not result.get("ok"):
-        raise RuntimeError(f"Telegram API error: {result}")
+        raise RuntimeError(
+            f"Telegram API error: {result}"
+        )
 
     return result["result"]
 
 
 def latest_private_chat_id(updates):
     """Use the chat where the owner most recently pressed Start."""
+
     for update in reversed(updates):
         message = update.get("message", {})
         chat = message.get("chat", {})
@@ -43,18 +52,27 @@ def latest_private_chat_id(updates):
 
 
 def format_message(jobs):
-    lines = [f"🎯 Job Agent: {len(jobs)} new job(s) found"]
+    lines = [
+        f"🎯 Job Agent: {len(jobs)} new matching job(s) found",
+        "",
+        "Sources: FreeHire + JobSpy",
+    ]
 
-    for job in jobs:
+    for index, job in enumerate(jobs, start=1):
+        source = job.get("source", "FreeHire")
+
         lines.extend(
             [
                 "",
-                f"{job.get('match_score', 0)}% — "
+                f"{index}. {job.get('match_score', 0)}% — "
                 f"{job.get('match_category', 'Match')}",
                 job.get("title", "Unknown role"),
-                f"{job.get('company', job.get('company_name', 'Unknown company'))} | "
-                f"{job.get('location', 'Unknown location')}",
-                f"Apply: {job.get('url', '')}",
+                (
+                    f"{job.get('company', job.get('company_name', 'Unknown company'))}"
+                    f" | {job.get('location', 'Unknown location')}"
+                ),
+                f"Source: {source}",
+                f"Apply: {job.get('url') or job.get('job_url', '')}",
             ]
         )
 
@@ -63,19 +81,35 @@ def format_message(jobs):
 
 def no_new_jobs_message():
     return (
-        "Hi Siva 😃\n\n"
-        "No new job roles were found as of now.\n"
-        "I'll try again in the next 3 hours. 🔎⏰"
+        "Heyyy Siva 👋\n\n"
+        "No new job roles were found as of now, "
+        "I'll try again in the next 3 hours."
     )
 
 
 def main():
-    jobs = json.loads(REPORT_FILE.read_text(encoding="utf-8"))
+    if not REPORT_FILE.exists():
+        print("No job report found. Telegram alert not sent.")
+        return
 
-    token = os.environ["TELEGRAM_BOT_TOKEN"]
-    chat_id = latest_private_chat_id(
-        telegram_request(token, "getUpdates")
+    jobs = json.loads(
+        REPORT_FILE.read_text(
+            encoding="utf-8"
+        )
     )
+
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+
+    if not token:
+        print("Telegram token not configured.")
+        return
+
+    updates = telegram_request(
+        token,
+        "getUpdates",
+    )
+
+    chat_id = latest_private_chat_id(updates)
 
     if not jobs:
         message = no_new_jobs_message()
@@ -92,10 +126,7 @@ def main():
         },
     )
 
-    if jobs:
-        print(f"Telegram alert sent for {len(jobs)} new job(s).")
-    else:
-        print("No new job roles found. Telegram update sent.")
+    print("Telegram alert sent successfully.")
 
 
 if __name__ == "__main__":
