@@ -7,13 +7,8 @@ from pathlib import Path
 
 API_URL = "https://indeed-scraper.omkar.cloud/indeed/search"
 
-SEARCH_TERM = (
-    "cloud support devops technical support "
-    "application support production support "
-    "operations sre cloud engineer"
-)
-
-LOCATION = "India"
+SEARCH_TERM = "software engineer"
+LOCATION = "Bangalore"
 
 
 def main():
@@ -52,6 +47,8 @@ def main():
     print("=" * 60)
     print("INDEED JOB SEARCH TEST")
     print("=" * 60)
+    print(f"Search: {SEARCH_TERM}")
+    print(f"Location: {LOCATION}")
     print(f"Jobs returned: {len(jobs)}")
     print(f"Saved to: {output_file}")
     print()
@@ -60,7 +57,7 @@ def main():
         print(f"{index}. {job.get('title', 'Unknown title')}")
         print(f"   Company : {job.get('company', 'Unknown company')}")
         print(f"   Location: {job.get('location', 'Unknown location')}")
-        print(f"   URL     : {job.get('url', '')}")
+        print(f"   URL     : {job.get('job_url', '')}")
         print()
 
 
