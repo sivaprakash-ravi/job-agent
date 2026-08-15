@@ -31,6 +31,13 @@ jobs:
       - name: Collect jobs
         run: python jobs/collect_jobs.py
 
+      - name: Collect Indeed jobs
+        run: python jobs/collect_indeed.py
+
+      - name: Send email alert
+        if: ${{ env.GMAIL_APP_PASSWORD != '' }}
+        run: python jobs/send_email.py
+
       - name: Send email alert
         if: ${{ env.GMAIL_APP_PASSWORD != '' }}
         run: python jobs/send_email.py
