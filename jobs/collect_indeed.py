@@ -37,6 +37,13 @@ def main():
     print("API response:")
     print(json.dumps(data, indent=2, ensure_ascii=False))
 
+    if "message" in data and "jobs" not in data:
+        print()
+        print("Indeed API did not return job results.")
+        print(f"Indeed message: {data.get('message')}")
+        print("No Indeed jobs will be reported from this run.")
+        return
+
     jobs = data.get("jobs", [])
 
     output_dir = Path("reports")
@@ -45,12 +52,7 @@ def main():
     output_file = output_dir / "indeed_jobs.json"
 
     with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(
-            jobs,
-            file,
-            indent=2,
-            ensure_ascii=False,
-        )
+        json.dump(jobs, file, indent=2, ensure_ascii=False)
 
     print("=" * 60)
     print("INDEED JOB SEARCH TEST")
