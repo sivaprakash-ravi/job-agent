@@ -1,69 +1,49 @@
 import json
-import os
-import urllib.parse
-import urllib.request
 from pathlib import Path
 
+from jobspy import scrape_jobs
 
-API_URL = "https://indeed-scraper.omkar.cloud/indeed/search"
 
 SEARCH_TERM = "software engineer"
-LOCATION = ""
+LOCATION = "Bangalore"
 
 
 def main():
-    api_key = os.environ["INDEED_API_KEY"]
+    print("=" * 60)
+    print("INDEED JOB SEARCH TEST - JOBSPY")
+    print("=" * 60)
+    print(f"Search: {SEARCH_TERM}")
+    print(f"Location: {LOCATION}")
+    print()
 
-    params = {
-        "search_term": SEARCH_TERM,
-        "location": LOCATION,
-        "page": "1",
-    }
-
-    url = API_URL + "?" + urllib.parse.urlencode(params)
-
-    request = urllib.request.Request(
-        url,
-        headers={
-            "Accept": "application/json",
-            "API-Key": api_key,
-            "User-Agent": "job-agent/1.0",
-        },
+    jobs = scrape_jobs(
+        site_name=["indeed"],
+        search_term=SEARCH_TERM,
+        location=LOCATION,
+        results_wanted=10,
+        country_indeed="India",
+        hours_old=72,
+        verbose=1,
     )
-
-    with urllib.request.urlopen(request, timeout=30) as response:
-        data = json.loads(response.read().decode("utf-8"))
-
-    print("API response:")
-    print(json.dumps(data, indent=2, ensure_ascii=False))
-
-    if "message" in data and "jobs" not in data:
-        print()
-        print("Indeed API did not return job results.")
-        print(f"Indeed message: {data.get('message')}")
-        print("No Indeed jobs will be reported from this run.")
-        return
-
-    jobs = data.get("jobs", [])
 
     output_dir = Path("reports")
     output_dir.mkdir(exist_ok=True)
 
     output_file = output_dir / "indeed_jobs.json"
 
-    with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(jobs, file, indent=2, ensure_ascii=False)
+    jobs.to_json(
+        output_file,
+        orient="records",
+        indent=2,
+        force_ascii=False,
+    )
 
-    print("=" * 60)
-    print("INDEED JOB SEARCH TEST")
-    print("=" * 60)
-    print(f"Search: {SEARCH_TERM}")
-    print(f"Location: {LOCATION}")
+    print()
     print(f"Jobs returned: {len(jobs)}")
     print(f"Saved to: {output_file}")
     print()
 
-    for index, job in enumerate(jobs[:10], start=1):
+    for index, (_, job) in enumerate(jobs.head(10).iterrows(), start=1):
         print(f"{index}. {job.get('title', 'Unknown title')}")
         print(f"   Company : {job.get('company', 'Unknown company')}")
         print(f"   Location: {job.get('location', 'Unknown location')}")
