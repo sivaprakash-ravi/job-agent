@@ -52,7 +52,7 @@ def format_message(jobs):
                 f"{job.get('match_score', 0)}% — "
                 f"{job.get('match_category', 'Match')}",
                 job.get("title", "Unknown role"),
-                f"{job.get('company', 'Unknown company')} | "
+                f"{job.get('company', job.get('company_name', 'Unknown company'))} | "
                 f"{job.get('location', 'Unknown location')}",
                 f"Apply: {job.get('url', '')}",
             ]
@@ -63,9 +63,9 @@ def format_message(jobs):
 
 def no_new_jobs_message():
     return (
-        "Hi Siva 👋\n\n"
-        "No new job roles were found in this run.\n\n"
-        "I'll try again in the next 3 hours. 🔎"
+        "Hi Siva 😃\n\n"
+        "No new job roles were found as of now.\n"
+        "I'll try again in the next 3 hours. 🔎⏰"
     )
 
 
@@ -79,10 +79,8 @@ def main():
 
     if not jobs:
         message = no_new_jobs_message()
-        print("No new job roles found. Sending Telegram update.")
     else:
         message = format_message(jobs)
-        print(f"Sending {len(jobs)} new job(s) to Telegram.")
 
     telegram_request(
         token,
@@ -94,7 +92,10 @@ def main():
         },
     )
 
-    print("Telegram alert sent successfully.")
+    if jobs:
+        print(f"Telegram alert sent for {len(jobs)} new job(s).")
+    else:
+        print("No new job roles found. Telegram update sent.")
 
 
 if __name__ == "__main__":
