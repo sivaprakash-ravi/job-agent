@@ -31,13 +31,13 @@ def main():
         },
     )
 
-with urllib.request.urlopen(request, timeout=30) as response:
-    data = json.loads(response.read().decode("utf-8"))
+    with urllib.request.urlopen(request, timeout=30) as response:
+        data = json.loads(response.read().decode("utf-8"))
 
-print("API response:")
-print(json.dumps(data, indent=2, ensure_ascii=False))
+    print("API response:")
+    print(json.dumps(data, indent=2, ensure_ascii=False))
 
-jobs = data.get("jobs", [])
+    jobs = data.get("jobs", [])
 
     output_dir = Path("reports")
     output_dir.mkdir(exist_ok=True)
@@ -45,7 +45,12 @@ jobs = data.get("jobs", [])
     output_file = output_dir / "indeed_jobs.json"
 
     with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(jobs, file, indent=2, ensure_ascii=False)
+        json.dump(
+            jobs,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
 
     print("=" * 60)
     print("INDEED JOB SEARCH TEST")
