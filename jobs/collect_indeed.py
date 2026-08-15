@@ -8,7 +8,7 @@ from pathlib import Path
 API_URL = "https://indeed-scraper.omkar.cloud/indeed/search"
 
 SEARCH_TERM = "software engineer"
-LOCATION = "Bangalore"
+LOCATION = ""
 
 
 def main():
