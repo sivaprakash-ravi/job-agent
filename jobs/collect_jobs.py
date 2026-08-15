@@ -37,11 +37,34 @@ with urllib.request.urlopen(request, timeout=30) as response:
 
 jobs = data.get("data", [])
 meta = data.get("meta", {})
+
 ranked_jobs = rank_jobs(jobs)
 jobs_to_report = keep_relevant_jobs(ranked_jobs)
 
 output_dir = Path("reports")
 output_dir.mkdir(exist_ok=True)
+
+sent_file = output_dir / "sent_jobs.json"
+
+if sent_file.exists():
+    with open(sent_file, "r", encoding="utf-8") as file:
+        sent_jobs = set(json.load(file))
+else:
+    sent_jobs = set()
+
+new_jobs = []
+
+for job in jobs_to_report:
+    job_url = job.get("url", "")
+
+    if job_url and job_url not in sent_jobs:
+        new_jobs.append(job)
+        sent_jobs.add(job_url)
+
+jobs_to_report = new_jobs
+
+with open(sent_file, "w", encoding="utf-8") as file:
+    json.dump(sorted(sent_jobs), file, indent=2, ensure_ascii=False)
 
 output_file = output_dir / "jobs.json"
 full_output_file = output_dir / "all_ranked_jobs.json"
@@ -57,7 +80,7 @@ print("DAILY JOB AGENT")
 print("=" * 60)
 print(f"Jobs returned: {len(jobs)}")
 print(f"Total matching jobs: {meta.get('total', 'unknown')}")
-print(f"Jobs kept after ranking: {len(jobs_to_report)}")
+print(f"New jobs to report: {len(jobs_to_report)}")
 print(f"Jobs ignored: {len(ranked_jobs) - len(jobs_to_report)}")
 print()
 
@@ -67,7 +90,10 @@ for index, job in enumerate(jobs_to_report[:20], start=1):
     location = job.get("location", "Unknown location")
     job_url = job.get("url", "")
 
-    print(f"{index}. {title} — {job['match_score']}% ({job['match_category']})")
+    print(
+        f"{index}. {title} — "
+        f"{job['match_score']}% ({job['match_category']})"
+    )
     print(f"   Company : {company}")
     print(f"   Location: {location}")
     print(f"   URL     : {job_url}")
@@ -75,3 +101,4 @@ for index, job in enumerate(jobs_to_report[:20], start=1):
 
 print(f"Saved job data to: {output_file}")
 print(f"Saved full ranked data to: {full_output_file}")
+print(f"Saved sent-job history to: {sent_file}")
