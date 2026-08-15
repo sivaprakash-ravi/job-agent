@@ -9,6 +9,7 @@ env/
 
 # Generated reports and logs
 reports/*
+!reports/sent_jobs.json
 logs/*
 
 # Personal/private data
