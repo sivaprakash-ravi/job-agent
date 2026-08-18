@@ -62,7 +62,7 @@ SKILLS = [
     "System Monitoring",
     "Application Monitoring",
 
-    # QA / Testing skills
+    # QA / Testing
     "Manual Testing",
     "Software Testing",
     "Quality Assurance",
@@ -72,7 +72,6 @@ SKILLS = [
     "Test Execution",
     "Regression Testing",
     "Functional Testing",
-    "API Testing",
     "Defect Tracking",
     "Bug Tracking",
     "Jira",
@@ -87,7 +86,9 @@ LOCATIONS = [
 ]
 
 EXPERIENCE_YEARS = 1.5
-MAX_JOB_EXPERIENCE_YEARS = 3
+
+# Only jobs requiring up to 2 years should be considered.
+MAX_JOB_EXPERIENCE_YEARS = 2
 
 EMPLOYMENT_TYPE = "full_time"
 
