@@ -15,46 +15,37 @@ MINIMUM_SCORE = 45
 
 
 LOCATION_ALIASES = {
-    "Chennai": [
-        "chennai",
-        "tamil nadu",
-        "tamilnadu",
-        "tn",
-    ],
-    "Bangalore": [
-        "bangalore",
-        "bengaluru",
-        "karnataka",
-        "ka",
-    ],
-    "Hyderabad": [
-        "hyderabad",
-        "telangana",
-        "ts",
-    ],
-    "Coimbatore": [
-        "coimbatore",
-        "tamil nadu",
-        "tamilnadu",
-        "tn",
-    ],
-    "Remote": [
-        "remote",
-        "work from home",
-        "wfh",
-        "anywhere",
-    ],
+    "Chennai": ["chennai", "tamil nadu", "tamilnadu", "tn"],
+    "Bangalore": ["bangalore", "bengaluru", "karnataka", "ka"],
+    "Hyderabad": ["hyderabad", "telangana", "ts"],
+    "Coimbatore": ["coimbatore", "tamil nadu", "tamilnadu", "tn"],
+    "Remote": ["remote", "work from home", "wfh", "anywhere"],
 }
+
+
+ADVANCED_DEVOPS_TERMS = [
+    "senior devops",
+    "lead devops",
+    "principal devops",
+    "devops architect",
+    "devops architecture",
+    "devops lead",
+    "l2 devops",
+    "l3 devops",
+    "l2/l3 devops",
+    "senior sre",
+    "lead sre",
+    "principal sre",
+    "sre architect",
+    "sre lead",
+]
 
 
 def normalise(value):
     """Turn a value into lowercase searchable text."""
 
     if isinstance(value, list):
-        return " ".join(
-            normalise(item)
-            for item in value
-        )
+        return " ".join(normalise(item) for item in value)
 
     if isinstance(value, dict):
         return " ".join(
@@ -66,7 +57,7 @@ def normalise(value):
 
 
 def contains_phrase(text, phrase):
-    """Match whole words."""
+    """Match a complete phrase."""
 
     text = normalise(text)
     phrase = normalise(phrase).strip()
@@ -99,13 +90,7 @@ def get_job_text(job):
 
 
 def role_family(role):
-    """
-    Keep the meaningful part of a role title.
-
-    This allows close title variations such as:
-    Application Support Analyst
-    Application Support Engineer
-    """
+    """Keep the meaningful part of a role title."""
 
     ignored_words = {
         "engineer",
@@ -151,15 +136,26 @@ def matches_target_role(title, job_text, role):
     if family and contains_phrase(title, family):
         return True
 
-    # DevOps/SRE can legitimately appear in the description
-    # when the title uses a close variation.
     if family in {"devops", "sre"}:
-        return contains_phrase(
-            job_text,
-            family,
-        )
+        return contains_phrase(job_text, family)
 
     return False
+
+
+def is_advanced_devops_role(title):
+    """
+    Reject explicitly advanced DevOps/SRE roles.
+
+    We only apply this to DevOps/SRE wording so that useful
+    L2 Application Support roles are not accidentally rejected.
+    """
+
+    title_text = normalise(title)
+
+    return any(
+        contains_phrase(title_text, term)
+        for term in ADVANCED_DEVOPS_TERMS
+    )
 
 
 def required_experience(job):
@@ -190,12 +186,7 @@ def required_experience(job):
 
 
 def alias_matches_location(location_text, alias):
-    """
-    Match a location alias.
-
-    Short state abbreviations such as TN/KA/TS are only
-    considered when they appear as standalone tokens.
-    """
+    """Safely match location aliases."""
 
     alias = alias.lower().strip()
 
@@ -216,10 +207,7 @@ def alias_matches_location(location_text, alias):
 
 
 def matches_location(location, work_mode):
-    """
-    Match preferred locations using aliases rather than
-    requiring exact job-board formatting.
-    """
+    """Match preferred locations using common aliases."""
 
     location_text = normalise(location)
     work_mode_text = normalise(work_mode)
@@ -260,9 +248,7 @@ def matches_location(location, work_mode):
         ):
             matched.append("Remote")
 
-    return list(
-        dict.fromkeys(matched)
-    )
+    return list(dict.fromkeys(matched))
 
 
 def category_for(score):
@@ -279,21 +265,9 @@ def category_for(score):
 
 
 def score_job(job):
-    """
-    Score one job.
+    """Score one job against the personal job profile."""
 
-    Score guide:
-    - target role: up to 35 points
-    - relevant skills: up to 40 points
-    - preferred location: 15 points
-    - suitable/unknown experience: up to 10 points
-    - excessive experience: minus 20 points
-    """
-
-    title = normalise(
-        job.get("title")
-    )
-
+    title = normalise(job.get("title"))
     job_text = get_job_text(job)
 
     location = normalise(
@@ -358,8 +332,6 @@ def score_job(job):
     )
 
     if required_years is None:
-        # Unknown experience should not automatically
-        # reject an otherwise relevant job.
         experience_score = 5
 
     elif required_years <= MAX_JOB_EXPERIENCE_YEARS:
@@ -397,8 +369,11 @@ def score_job(job):
 
     filter_reasons = []
 
-    # Only reject an explicitly incompatible employment type.
-    # Missing employment type is allowed.
+    if is_advanced_devops_role(title):
+        filter_reasons.append(
+            "Advanced DevOps/SRE role"
+        )
+
     if employment_type:
         if (
             EMPLOYMENT_TYPE == "full_time"
@@ -431,8 +406,6 @@ def score_job(job):
             "years of experience"
         )
 
-    # Require either a target-role match or meaningful
-    # skill overlap.
     if (
         not matched_roles
         and len(matched_skills) < 4
@@ -473,7 +446,7 @@ def score_job(job):
 
 
 def rank_jobs(jobs):
-    """Score every job and return the best matches first."""
+    """Score every job and return best matches first."""
 
     ranked_jobs = [
         score_job(job)
@@ -487,16 +460,53 @@ def rank_jobs(jobs):
     )
 
 
-def keep_relevant_jobs(ranked_jobs):
-    """Keep jobs that meet the matching requirements."""
+def job_role_key(job):
+    """
+    Create a duplicate key using company + designation.
 
-    return [
+    The same designation at different companies is allowed.
+    """
+
+    company = normalise(
+        job.get("company")
+        or job.get("company_name")
+    )
+
+    title = normalise(
+        job.get("title")
+    )
+
+    return (
+        re.sub(r"\s+", " ", company).strip(),
+        re.sub(r"\s+", " ", title).strip(),
+    )
+
+
+def keep_relevant_jobs(ranked_jobs):
+    """
+    Keep relevant jobs and remove duplicate company/designation
+    combinations.
+    """
+
+    relevant_jobs = [
         job
         for job in ranked_jobs
         if (
-            job["match_score"]
-            >= MINIMUM_SCORE
-            and job["match_category"]
-            != "Ignore"
+            job["match_score"] >= MINIMUM_SCORE
+            and job["match_category"] != "Ignore"
         )
     ]
+
+    unique_jobs = []
+    seen_roles = set()
+
+    for job in relevant_jobs:
+        key = job_role_key(job)
+
+        if key in seen_roles:
+            continue
+
+        seen_roles.add(key)
+        unique_jobs.append(job)
+
+    return unique_jobs
