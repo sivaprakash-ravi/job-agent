@@ -36,21 +36,6 @@ def telegram_request(token, method, data=None):
     return result["result"]
 
 
-def latest_private_chat_id(updates):
-    """Use the chat where the owner most recently pressed Start."""
-
-    for update in reversed(updates):
-        message = update.get("message", {})
-        chat = message.get("chat", {})
-
-        if chat.get("type") == "private":
-            return chat["id"]
-
-    raise RuntimeError(
-        "Open the bot in Telegram and press Start, then run again."
-    )
-
-
 def format_message(jobs):
     lines = [
         f"🎯 Job Agent: {len(jobs)} new matching job(s) found",
@@ -99,17 +84,17 @@ def main():
     )
 
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
 
     if not token:
-        print("Telegram token not configured.")
-        return
+        raise RuntimeError(
+            "TELEGRAM_BOT_TOKEN is not configured."
+        )
 
-    updates = telegram_request(
-        token,
-        "getUpdates",
-    )
-
-    chat_id = latest_private_chat_id(updates)
+    if not chat_id:
+        raise RuntimeError(
+            "TELEGRAM_CHAT_ID is not configured."
+        )
 
     if not jobs:
         message = no_new_jobs_message()
