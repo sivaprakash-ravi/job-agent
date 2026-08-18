@@ -17,6 +17,7 @@ jobs:
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       JOB_ALERT_EMAIL: ${{ secrets.JOB_ALERT_EMAIL }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       INDEED_API_KEY: ${{ secrets.INDEED_API_KEY }}
 
     steps:
@@ -42,7 +43,7 @@ jobs:
         run: python jobs/send_email.py
 
       - name: Send Telegram alert
-        if: ${{ env.TELEGRAM_BOT_TOKEN != '' }}
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHAT_ID != '' }}
         run: python jobs/send_telegram.py
 
       - name: Save duplicate history
