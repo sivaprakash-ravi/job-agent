@@ -10,6 +10,7 @@ env/
 # Generated reports and logs
 reports/*
 !reports/sent_jobs.json
+!reports/daily_job_history.json
 logs/*
 
 # Personal/private data
