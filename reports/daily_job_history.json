@@ -29,6 +29,39 @@
         "work_mode": "Not listed",
         "filter_reasons": []
       }
+    },
+    {
+      "source": "linkedin",
+      "title": "Lead Site Reliability Engineer (SRE)",
+      "company": "FIS",
+      "company_name": "FIS",
+      "location": "Chennai, Tamil Nadu, India",
+      "description": "",
+      "url": "https://www.linkedin.com/jobs/view/4455326721",
+      "job_url": "https://www.linkedin.com/jobs/view/4455326721",
+      "job_type": "",
+      "date_posted": "",
+      "is_remote": false,
+      "source_job_id": "li-4455326721",
+      "match_score": 59,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "Site Reliability Engineer",
+          "SRE"
+        ],
+        "matched_skills": [
+          "SRE"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
     }
   ]
 }
