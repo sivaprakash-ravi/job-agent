@@ -1,0 +1,30 @@
+name: Daily Job Summary
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 9:00 PM IST = 3:30 PM UTC
+    - cron: "30 15 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  daily-summary:
+    runs-on: ubuntu-latest
+
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Send daily job summary
+        run: python jobs/send_daily_summary.py
