@@ -62,6 +62,74 @@
         "work_mode": "Not listed",
         "filter_reasons": []
       }
+    },
+    {
+      "source": "linkedin",
+      "title": "Site Reliability Engineers - Google Cloud Platform (GCP) | RedHat OpenShift administration",
+      "company": "UPS",
+      "company_name": "UPS",
+      "location": "Chennai, Tamil Nadu, India",
+      "description": "",
+      "url": "https://www.linkedin.com/jobs/view/4248973347",
+      "job_url": "https://www.linkedin.com/jobs/view/4248973347",
+      "job_type": "",
+      "date_posted": "2026-08-17",
+      "is_remote": false,
+      "source_job_id": "li-4248973347",
+      "match_score": 63,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "Site Reliability Engineer",
+          "Cloud Engineer"
+        ],
+        "matched_skills": [
+          "GCP",
+          "Google Cloud"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
+    },
+    {
+      "source": "linkedin",
+      "title": "Site Reliability Engineers (SREs) - Robust background in Google Cloud Platform (GCP) | RedHat OpenShift administration",
+      "company": "UPS",
+      "company_name": "UPS",
+      "location": "Chennai, Tamil Nadu, India",
+      "description": "",
+      "url": "https://www.linkedin.com/jobs/view/4248974145",
+      "job_url": "https://www.linkedin.com/jobs/view/4248974145",
+      "job_type": "",
+      "date_posted": "",
+      "is_remote": false,
+      "source_job_id": "li-4248974145",
+      "match_score": 63,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "Site Reliability Engineer",
+          "Cloud Engineer"
+        ],
+        "matched_skills": [
+          "GCP",
+          "Google Cloud"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
     }
   ]
 }
