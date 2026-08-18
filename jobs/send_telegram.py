@@ -38,37 +38,69 @@ def telegram_request(token, method, data=None):
 
 def format_message(jobs):
     lines = [
-        f"🎯 Job Agent: {len(jobs)} new matching job(s) found",
+        "Hi Siva 👋",
         "",
-        "Sources: FreeHire + JobSpy",
+        "I’ve picked out some jobs that could be a good "
+        "fit for you from the recent searches:",
+        "",
+        "━━━━━━━━━━━━━━━━━━━━",
     ]
 
     for index, job in enumerate(jobs, start=1):
-        source = job.get("source", "FreeHire")
+        source = job.get("source", "Unknown")
+        title = job.get("title", "Unknown role")
+        company = job.get(
+            "company",
+            job.get("company_name", "Unknown company"),
+        )
+        location = job.get(
+            "location",
+            "Unknown location",
+        )
+        score = job.get("match_score", 0)
+        category = job.get(
+            "match_category",
+            "Match",
+        )
+        url = job.get("url") or job.get(
+            "job_url",
+            "",
+        )
 
         lines.extend(
             [
                 "",
-                f"{index}. {job.get('match_score', 0)}% — "
-                f"{job.get('match_category', 'Match')}",
-                job.get("title", "Unknown role"),
-                (
-                    f"{job.get('company', job.get('company_name', 'Unknown company'))}"
-                    f" | {job.get('location', 'Unknown location')}"
-                ),
-                f"Source: {source}",
-                f"Apply: {job.get('url') or job.get('job_url', '')}",
+                f"{index}. {title}",
+                f"🏢 {company}",
+                f"📍 {location}",
+                f"🎯 {score}% — {category}",
+                f"🔎 Source: {source}",
+                f"🔗 Apply: {url}",
             ]
         )
+
+    lines.extend(
+        [
+            "",
+            "━━━━━━━━━━━━━━━━━━━━",
+            "",
+            "Regards,",
+            "Nova 🤖",
+            "Siva’s Job Assistant",
+        ]
+    )
 
     return "\n".join(lines)
 
 
 def no_new_jobs_message():
     return (
-        "Heyyy Siva 👋\n\n"
-        "No new job roles were found as of now, "
-        "I'll try again in the next 3 hours."
+        "Hi Siva 👋\n\n"
+        "I couldn’t find any new matching roles in the recent search. "
+        "I’ll check again in the next few hours.\n\n"
+        "Regards,\n"
+        "Nova 🤖\n"
+        "Siva’s Job Assistant"
     )
 
 
@@ -83,8 +115,13 @@ def main():
         )
     )
 
-    token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+    token = os.environ.get(
+        "TELEGRAM_BOT_TOKEN"
+    )
+
+    chat_id = os.environ.get(
+        "TELEGRAM_CHAT_ID"
+    )
 
     if not token:
         raise RuntimeError(
