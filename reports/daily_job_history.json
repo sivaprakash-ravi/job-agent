@@ -312,6 +312,40 @@
         "work_mode": "Not listed",
         "filter_reasons": []
       }
+    },
+    {
+      "source": "indeed",
+      "title": "Senior Engineer- IT Technical Support(L2)",
+      "company": "ZF",
+      "company_name": "ZF",
+      "location": "TN, IN",
+      "description": "**.buttontext3ff74ec8b95485fc a{ border:** 1px solid transparent; } .buttontext3ff74ec8b95485fc a: focus{ border: 1px dashed \\#0b67cb !important; outline: none !important; }\n  \nBecome our next FutureStarter\n  \n  \n\nAre you ready to make an impact? ZF is looking for talented individuals to join our team. As a FutureStarter, you’ll have the opportunity to shape the future of mobility. Join us and be part of something extraordinary!\n  \n  \n\nSenior Engineer\\- IT Technical Support(L2\\)\n  \n**Country/Region:** IN\n  \n  \n\n**Location:**  \n\nChennai, TN, IN, 600116\n  \n  \n\n**\\#job\\-location.job\\-location\\-inline { display:** inline; }\n  \n  \n\nReq ID 90106 \\| GBS Chennai, India, ZF Commercial Vehicle Control Systems India Limited\n  \n  \n\nJob Description\n  \n  \n\nWhat you can look forward as Senior Engineer\\- IT Technical Support(L2\\):\n  \n  \n\nData Onboarding Excellence\n  \nSuccessful onboarding of customer fleets (vehicles, devices, configurations) into platform within SLA\n  \nStandardized and validated data integration pipelines (SQL, CSV/JSON/XML ingestion). Reduced onboarding errors through data validation and mapping improvements\n  \nTechnical Support \\& Issue Resolution\n  \nResolution of complex L2 data ingestion and SQL issues within defined SLA\n  \nConsistent troubleshooting standards and reusable SQL scripts. Reduced recurrence of ingestion and configuration issues\n  \nProcess Improvement \\& Scalability\n  \nIdentification and elimination of recurring onboarding/data issues (root cause driven)\n  \nImplementation of improvements to onboarding workflows and data validation processes. Contribution to scalable onboarding standards across Bus Connect\n  \nDocumentation \\& Knowledge Management\n  \nUp‑to‑date onboarding documentation, troubleshooting guides, and SQL templates\n  \nStructured knowledge base enabling faster resolution and onboarding\n  \nCross‑Functional Collaboration\n  \nClear escalation and resolution of product defects with Development/Product teams\n  \nFeedback loops translating customer/data issues into product improvements\n  \n  \n\n**Your profile as Senior Engineer\\- IT Technical Support(L2\\):**  \n\nBachelor degree in Engineering Domian(BE/BTECH) with Min 5\\+ Yrs in IT Technical Support using SQL SERVER\n  \nWilling to work in European shifts\n  \n  \n\n**Knowledge and expertise in:**  \n\nMaster data management systems such as SQL server, Profisee, and Informatica MDM.\n  \n**Software like:** Jira, Confluence, MS office, MS teams, (SAP and Salesforce are an advantage)\n  \nData transformation and ingestion workflows (CSV/JSON/XML formats, data cleaning, validation)\n  \nModern Linux distributions and Bash are an advantage\n  \nProven ability to identify inefficiencies and drive process improvements. Solution‑oriented with capability to challenge existing processes and propose optimizations\n  \n  \n\nWhy you should choose ZF in India\n  \n  \n\n**Innovative Environment:** ZF is at the forefront of technological advancements, offering a dynamic and innovative work environment that encourages creativity and growth.\n  \n**Diverse and Inclusive Culture:** ZF fosters a diverse and inclusive workplace where all employees are valued and respected, promoting a culture of collaboration and mutual support.\n  \n**Career Development:** ZF is committed to the professional growth of its employees, offering extensive training programs, career development opportunities, and a clear path for advancement.\n  \n**Global Presence:** As a part of a global leader in driveline and chassis technology, ZF provides opportunities to work on international projects and collaborate with teams worldwide.\n  \n**Sustainability Focus:** ZF is dedicated to sustainability and environmental responsibility, actively working towards creating eco\\-friendly solutions and reducing its carbon footprint.\n  \n  \n\nBe part of our ZF team as Senior Engineer\\- IT Technical Support(L2\\) and apply now!\n  \n  \n\nContact\n  \n  \n\nVeerabrahmam Darukumalli\n  \n  \n\n**.buttontext640dc1bb698895e1 a{ border:** 1px solid transparent; } .buttontext640dc1bb698895e1 a: focus{ border: 1px dashed \\#0b67cb !important; outline: none !important; }\n  \nWhat does DEI (Diversity, Equity, Inclusion) mean for ZF as a company?\n  \n  \n\nAt ZF, we continuously strive to build and maintain a culture where inclusiveness is lived and diversity is valued. We actively seek ways to remove barriers so that all our employees can rise to their full potential. We aim to embed this vision in our legacy through how we operate and build our products as we shape the future of mobility.\n  \n  \n\n**.buttontextcac1d103aa3c2295 a{ border:** 1px solid transparent; } .buttontextcac1d103aa3c2295 a: focus{ border: 1px dashed \\#00abe7 !important; outline: none !important; }\n  \n  \n\n**Find out how we work at ZF:**  \n\n**.videocomponenta22d0460aad00dfa a{ border:** 1px solid transparent; } .videocomponenta22d0460aad00dfa a: focus{ border: 1px dashed \\#00abe7 !important; outline: none !important; }\n  \n  \n\n**Job Segment:** Technical Support, Technical Support Engineer, Database, SQL, Developer, Technology, Engineering",
+      "url": "https://in.indeed.com/viewjob?jk=063f06c0e7405cba",
+      "job_url": "https://in.indeed.com/viewjob?jk=063f06c0e7405cba",
+      "job_type": "",
+      "date_posted": "2026-08-19",
+      "is_remote": false,
+      "source_job_id": "in-063f06c0e7405cba",
+      "match_score": 67,
+      "match_category": "Good match",
+      "match_details": {
+        "matched_roles": [
+          "Technical Support Engineer"
+        ],
+        "matched_skills": [
+          "Linux",
+          "SQL",
+          "Jira"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
     }
   ]
 }
