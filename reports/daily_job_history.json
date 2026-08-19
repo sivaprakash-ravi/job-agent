@@ -206,6 +206,78 @@
         "work_mode": "Not listed",
         "filter_reasons": []
       }
+    },
+    {
+      "source": "linkedin",
+      "title": "AWS Cloud DevOps",
+      "company": "SWITS DIGITAL Private Limited",
+      "company_name": "SWITS DIGITAL Private Limited",
+      "location": "Chennai, Tamil Nadu, India",
+      "description": "",
+      "url": "https://www.linkedin.com/jobs/view/4456194191",
+      "job_url": "https://www.linkedin.com/jobs/view/4456194191",
+      "job_type": "",
+      "date_posted": "",
+      "is_remote": false,
+      "source_job_id": "li-4456194191",
+      "match_score": 63,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "DevOps Engineer",
+          "Junior DevOps Engineer",
+          "Cloud Engineer"
+        ],
+        "matched_skills": [
+          "AWS",
+          "DevOps"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
+    },
+    {
+      "source": "indeed",
+      "title": "Senior Support Engineer",
+      "company": "HCLTech",
+      "company_name": "HCLTech",
+      "location": "TN, IN",
+      "description": "Chennai, Tamil Nadu\n  \nJob Summary\n  \n  \n\n**Senior Application Support Engineer – Qliksense LOCATION:** Offshore/Onshore CLIENT INDUSTRY: Life Sciences and Healthcare OVERVIEW OF THE ROLE As a Senior Application Support Engineer specializing in the QlikSense Platform, you will lead the support, administration, and optimization of enterprise\\-wide Qliksense applications. You will be responsible for ensuring platform stability, resolving complex production issues, managing releases, supporting integrations, and driving continuous improvement initiatives. The role requires close collaboration with business stakeholders, development teams, infrastructure teams, and external vendors to deliver reliable and high\\-performing business process automation solutions. DETAILED RESPONSIBILITIES Provide end\\-to\\-end application support for Qlik Sense solutions hosted on AWS cloud platforms, ensuring high availability, reliability, and performance. Support and maintain business\\-critical Qlik Sense applications, dashboards, reports, and analytics solutions across multiple environments. Monitor application health, data reloads, batch processes, integrations, and platform performance to proactively identify and resolve issues. Troubleshoot and resolve complex application, data, infrastructure, and user access issues within agreed service levels. Manage incident, service request, problem, and change management activities in accordance with ITIL best practices. Coordinate with business users, development teams, infrastructure teams, and cloud support teams to ensure timely issue resolution and service continuity. Support application deployments, releases, upgrades, patches, and environment migrations across AWS\\-hosted Qlik Sense platforms. Administer user access, security roles, authentication mechanisms, and compliance controls within Qlik Sense and AWS environments. Perform root cause analysis (RCA) for recurring incidents and implement corrective and preventive actions to improve platform stability. Support and maintain integrations between Qlik Sense, databases, cloud services, APIs, data warehouses, and enterprise applications. Monitor AWS services including EC2, S3, IAM, CloudWatch, Load Balancers, and networking components supporting Qlik Sense applications. Optimize application performance through data model improvements, reload task tuning, infrastructure scaling, and configuration enhancements. Ensure compliance with organizational policies, security standards, audit requirements, and regulatory guidelines. Create and maintain operational documentation, support procedures, knowledge articles, runbooks, and troubleshooting guides. Participate in on\\-call support, major incident management, disaster recovery testing, and business continuity activities. Collaborate with global teams and stakeholders to support new business requirements, enhancement requests, and continuous improvement initiatives. Assist in capacity planning, platform modernization, cloud optimization, and automation of operational support activities. Mentor junior support engineers and share technical knowledge to strengthen team capabilities. SKILL REQUIREMENTS \\-6\\-8\\+ years of experience in Application Support, Production Support, or Appian Platform Support. \\-Strong hands\\-on experience supporting Qliksense applications in production environments. \\- Ability to create and interpret data visualizations and dashboards with Qliksense. \\- Strong analytical thinking and problem\\-solving abilities. \\- Excellent written and verbal communication skills. \\- Ability to work independently and proactively in a remote/offshore setting. \\- Willingness to learn new technologies and adapt to changing business needs. \\- Exposure to scripting languages (e.g., SQL, Python) or other BI tools. \\- Relevant certifications in Qlik Sense or data analytics\n  \n  \n\nKey Responsibilities\n  \n1\\. To troubleshoot and resolve tickets raised by the clients.\n  \n2\\. To undertake training programs for new joinees\n  \n3\\. To perform knowledge transition during project enhancements\n  \n4\\. To document all the defined processes and the methods of resolving the ticket\\| troubleshooting\\| etc.\n  \n5\\. To update self on latest technologies and related areas\n  \n  \n\n**\\#body.unify div.unify\\-button\\-container .unify\\-apply\\-now:** focus, \\#body.unify div.unify\\-button\\-container .unify\\-apply\\-\\#body.unify div.unify\\-button\\-container .unify\\-apply\\-now: focus, \\#body.unify div.unify\\-button\\-container .unify\\-apply\\-",
+      "url": "https://in.indeed.com/viewjob?jk=c3cf1a054268fdf8",
+      "job_url": "https://in.indeed.com/viewjob?jk=c3cf1a054268fdf8",
+      "job_type": "",
+      "date_posted": "2026-08-19",
+      "is_remote": true,
+      "source_job_id": "in-c3cf1a054268fdf8",
+      "match_score": 48,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [],
+        "matched_skills": [
+          "AWS",
+          "Python",
+          "SQL",
+          "Production Support",
+          "Application Support",
+          "Incident Management",
+          "Root Cause Analysis"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore",
+          "Remote"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "remote",
+        "filter_reasons": []
+      }
     }
   ]
 }
