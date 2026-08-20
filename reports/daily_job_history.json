@@ -449,6 +449,39 @@
         "work_mode": "Not listed",
         "filter_reasons": []
       }
+    },
+    {
+      "source": "linkedin",
+      "title": "SRE / Core Java Engineer",
+      "company": "WillWare Technologies",
+      "company_name": "WillWare Technologies",
+      "location": "Chennai, Tamil Nadu, India",
+      "description": "",
+      "url": "https://www.linkedin.com/jobs/view/4456473230",
+      "job_url": "https://www.linkedin.com/jobs/view/4456473230",
+      "job_type": "",
+      "date_posted": "",
+      "is_remote": false,
+      "source_job_id": "li-4456473230",
+      "match_score": 63,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "SRE"
+        ],
+        "matched_skills": [
+          "Java",
+          "SRE"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "Not listed",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
     }
   ]
 }
