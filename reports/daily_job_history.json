@@ -702,6 +702,48 @@
         "work_mode": "Not listed",
         "filter_reasons": []
       }
+    },
+    {
+      "source": "indeed",
+      "title": "Cloud DevOps Engineer",
+      "company": "UPS",
+      "company_name": "UPS",
+      "location": "TN, IN",
+      "description": "**Before you apply to a job, select your language preference from the options available at the top right of this page.**\n\n\nExplore your next opportunity at a Fortune Global 500 organization. Envision innovative possibilities, experience our rewarding culture, and work with talented teams that help you become better every day. We know what it takes to lead UPS into tomorrow—people with a unique combination of skill \\+ passion. If you have the qualities and drive to lead yourself or teams, there are roles ready to cultivate your skills and take you to the next level.\n\n**Job Description:**\n\n\nDevOps Platform \\& Cloud Operations Engineer Job Summary The DevOps Platform \\& Cloud Operations Engineer will partner with Enterprise Architecture, Enterprise Security, and Platform Operations teams to deliver secure, reliable, and standardized cloud platforms, CI/CD pipelines, release processes, and operational support. The role focuses on automation, governance, cloud operations, platform stability, and DevSecOps best practices. Key Responsibilities Build and maintain CI/CD pipelines using Azure DevOps, Jenkins, and automation frameworks. Automate build, deployment, testing, validation, and rollback processes. Implement and support Infrastructure as Code (IaC), environment standardization, and policy\\-as\\-code controls. Support Azure and GCP cloud environments, networking, identity management, and hybrid integrations. Manage release readiness, deployment coordination, post\\-release validation, and dependency management. Align platforms, pipelines, and deployment processes with Enterprise Architecture and Security standards. Implement CI/CD governance including branch protection, approvals, segregation of duties, secrets management, and compliance gates. Support vulnerability remediation, patching, certificate management, and access governance. Monitor platform health, investigate incidents, perform root cause analysis, and drive operational improvements. Develop automation scripts, reusable operational tools, and standard operating procedures to improve efficiency and scalability. Provide production support, environment troubleshooting, and operational continuity during critical incidents. Required Skills Azure DevOps, Jenkins, CI/CD Pipeline Engineering Infrastructure as Code (Terraform preferred) Azure \\& GCP Cloud Platforms Cloud Networking, Identity \\& Access Management Release Management \\& Deployment Automation DevSecOps, Security Controls \\& Compliance Monitoring, Logging \\& Incident Management PowerShell, Bash, Python, or Automation Scripting Git, Version Control, and Agile Delivery Practices Preferred Qualifications 5\\+ years in DevOps, Cloud Engineering, Platform Operations, or Site Reliability Engineering. Azure and/or GCP certifications preferred. Experience working with Enterprise Architecture, Security, and Governance teams. Strong troubleshooting, operational support, and automation mindset.\n\n **Employee Type:**\n\n  \n\nPermanent  \n\nUPS is committed to providing a workplace free of discrimination, harassment, and retaliation.",
+      "url": "https://in.indeed.com/viewjob?jk=b005271c9a440eea",
+      "job_url": "https://in.indeed.com/viewjob?jk=b005271c9a440eea",
+      "job_type": "fulltime",
+      "date_posted": "2026-08-21",
+      "is_remote": false,
+      "source_job_id": "in-b005271c9a440eea",
+      "match_score": 91,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "DevOps Engineer",
+          "Junior DevOps Engineer",
+          "Cloud Engineer"
+        ],
+        "matched_skills": [
+          "GCP",
+          "Azure",
+          "Python",
+          "Git",
+          "CI/CD",
+          "DevOps",
+          "Production Support",
+          "Incident Management",
+          "Root Cause Analysis"
+        ],
+        "matched_locations": [
+          "Chennai",
+          "Coimbatore"
+        ],
+        "experience_note": "No experience requirement found",
+        "employment_type": "fulltime",
+        "work_mode": "Not listed",
+        "filter_reasons": []
+      }
     }
   ]
 }
