@@ -1,7 +1,6 @@
 """Deep rule-based job matching for the daily job agent."""
 
 import re
-from datetime import datetime, timezone, timedelta
 
 from profile import (
     EMPLOYMENT_TYPE,
@@ -13,7 +12,6 @@ from profile import (
 
 
 MINIMUM_SCORE = 45
-MAX_JOB_AGE_DAYS = 7
 
 
 LOCATION_ALIASES = {
@@ -43,7 +41,10 @@ LOCATION_ALIASES = {
 }
 
 
-# Hard reject title levels.
+# ============================================================
+# HARD REJECT — ADVANCED / SENIOR DESIGNATIONS
+# ============================================================
+
 ADVANCED_TITLE_PATTERNS = [
     r"\bsenior\b",
     r"\bsr\.?\b",
@@ -55,23 +56,30 @@ ADVANCED_TITLE_PATTERNS = [
     r"\bdirector\b",
     r"\bhead\b",
     r"\bavp\b",
-    r"\bvice president\b",
     r"\bvp\b",
+    r"\badvanced\b",
 ]
 
 
+# Engineer II / III / IV etc.
 LEVEL_NUMBER_PATTERNS = [
-    r"\bengineer\s*(?:ii|iii|iv|2|3|4)\b",
-    r"\bqa\s*(?:ii|iii|iv|2|3|4)\b",
-    r"\btester\s*(?:ii|iii|iv|2|3|4)\b",
-    r"\banalyst\s*(?:ii|iii|iv|2|3|4)\b",
-    r"\bspecialist\s*(?:ii|iii|iv|2|3|4)\b",
+    r"\bengineer\s*(?:ii|iii|iv|v|2|3|4|5)\b",
+    r"\bqa\s*(?:ii|iii|iv|v|2|3|4|5)\b",
+    r"\btester\s*(?:ii|iii|iv|v|2|3|4|5)\b",
+    r"\banalyst\s*(?:ii|iii|iv|v|2|3|4|5)\b",
+    r"\bspecialist\s*(?:ii|iii|iv|v|2|3|4|5)\b",
+    r"\bdeveloper\s*(?:ii|iii|iv|v|2|3|4|5)\b",
 ]
 
+
+# ============================================================
+# HARD REJECT — L2/L3 / ADVANCED DEVOPS/SRE
+# ============================================================
 
 ADVANCED_DOMAIN_TERMS = [
     "l2",
     "l3",
+    "l2/l3",
     "level 2",
     "level 3",
     "senior devops",
@@ -87,7 +95,64 @@ ADVANCED_DOMAIN_TERMS = [
 ]
 
 
+# ============================================================
+# EXPERIENCE PATTERNS
+# ============================================================
+
+EXPERIENCE_RANGE_PATTERN = re.compile(
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:-|to)"
+    r"\s*(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)",
+    re.IGNORECASE,
+)
+
+
+EXPERIENCE_PLUS_PATTERN = re.compile(
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:\+|plus|or more|and above|and over)"
+    r"\s*(?:years?|yrs?)",
+    re.IGNORECASE,
+)
+
+
+EXPERIENCE_PATTERN = re.compile(
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)"
+    r"\s*(?:of\s+)?"
+    r"(?:relevant\s+|professional\s+|hands-on\s+)?"
+    r"experience",
+    re.IGNORECASE,
+)
+
+
+REVERSE_EXPERIENCE_PATTERN = re.compile(
+    r"experience"
+    r"\s*(?:of|:)?\s*"
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)",
+    re.IGNORECASE,
+)
+
+
+# Example:
+# "RPA Production Support + Development : 3 Yrs"
+# "Technical Support Engineer - 4 Years"
+TITLE_EXPERIENCE_PATTERN = re.compile(
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:\+|plus)?"
+    r"\s*(?:years?|yrs?)",
+    re.IGNORECASE,
+)
+
+
+# ============================================================
+# GENERAL HELPERS
+# ============================================================
+
 def normalise(value):
+    """Convert any value into lowercase searchable text."""
+
     if isinstance(value, list):
         return " ".join(
             normalise(item)
@@ -106,6 +171,8 @@ def normalise(value):
 
 
 def clean_text(value):
+    """Normalize spaces and dash characters."""
+
     text = normalise(
         value
     )
@@ -130,6 +197,8 @@ def contains_phrase(
     text,
     phrase,
 ):
+    """Safely match a complete phrase."""
+
     text = clean_text(
         text
     )
@@ -151,18 +220,32 @@ def contains_phrase(
     )
 
 
+# ============================================================
+# COMPLETE JOB DATA
+# ============================================================
+
 def get_complete_job_text(job):
     """
     IMPORTANT:
-    Search EVERY field returned by the portal,
-    not only description/title.
+
+    Search every field returned by the job source.
+
+    This means experience can be detected from:
+    title
+    description
+    qualifications
+    requirements
+    experience
+    skills
+    seniority
+    metadata
+    and any other collected field.
     """
 
     pieces = []
 
     for key, value in job.items():
 
-        # Ignore internal matcher fields.
         if key in {
             "match_score",
             "match_category",
@@ -179,22 +262,15 @@ def get_complete_job_text(job):
     )
 
 
-def get_role_text(job):
-    return " ".join(
-        [
-            normalise(
-                job.get("title")
-            ),
-            normalise(
-                job.get("description")
-            ),
-        ]
-    )
-
+# ============================================================
+# TITLE FILTERS
+# ============================================================
 
 def has_advanced_title(
     title
 ):
+    """Reject senior/advanced designations."""
+
     text = clean_text(
         title
     )
@@ -219,10 +295,12 @@ def has_advanced_title(
 
 
 def has_advanced_domain(
-    complete_text
+    title
 ):
+    """Reject explicit L2/L3 and advanced DevOps/SRE."""
+
     text = clean_text(
-        complete_text
+        title
     )
 
     return any(
@@ -234,17 +312,65 @@ def has_advanced_domain(
     )
 
 
+def title_experience_above_limit(
+    title
+):
+    """
+    Check experience stated directly in the title.
+
+    Examples:
+
+    3 Yrs -> reject
+    3+ Years -> reject
+    4 Years -> reject
+    2 Years -> accept
+    """
+
+    title = clean_text(
+        title
+    )
+
+    for match in TITLE_EXPERIENCE_PATTERN.finditer(
+        title
+    ):
+
+        years = float(
+            match.group(1)
+        )
+
+        # 2+ is also rejected because the upper
+        # bound is unknown and the requirement is
+        # strictly <= 2.
+        suffix = title[
+            match.end():
+            match.end() + 8
+        ]
+
+        if (
+            "+"
+            in match.group(0)
+            or "plus"
+            in match.group(0)
+        ):
+            if years >= MAX_JOB_EXPERIENCE_YEARS:
+                return True
+
+        if years > MAX_JOB_EXPERIENCE_YEARS:
+            return True
+
+    return False
+
+
+# ============================================================
+# DEEP EXPERIENCE ANALYSIS
+# ============================================================
+
 def extract_experience_requirements(
     text
 ):
     """
-    Find ALL explicit experience requirements
-    throughout the complete listing.
-
-    Returns a list of:
-        (minimum, maximum, matched_text)
-
-    The maximum requirement is used for hard filtering.
+    Extract every explicit experience requirement
+    from the complete job listing.
     """
 
     text = clean_text(
@@ -253,22 +379,11 @@ def extract_experience_requirements(
 
     results = []
 
-    # ---------------------------------------------------------
-    # Range:
-    # 1-3 years
-    # 1 to 3 years
-    # 1–3 years
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 1. Ranges
+    # --------------------------------------------------------
 
-    range_pattern = re.compile(
-        r"(\d+(?:\.\d+)?)"
-        r"\s*(?:-|to)"
-        r"\s*(\d+(?:\.\d+)?)"
-        r"\s*(?:years?|yrs?)",
-        re.IGNORECASE,
-    )
-
-    for match in range_pattern.finditer(
+    for match in EXPERIENCE_RANGE_PATTERN.finditer(
         text
     ):
 
@@ -288,21 +403,11 @@ def extract_experience_requirements(
             )
         )
 
-    # ---------------------------------------------------------
-    # Plus:
-    # 3+ years
-    # 2 or more years
-    # 5 years or more
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 2. Plus requirements
+    # --------------------------------------------------------
 
-    plus_pattern = re.compile(
-        r"(\d+(?:\.\d+)?)"
-        r"\s*(?:\+|or more|and above|and over)"
-        r"\s*(?:years?|yrs?)",
-        re.IGNORECASE,
-    )
-
-    for match in plus_pattern.finditer(
+    for match in EXPERIENCE_PLUS_PATTERN.finditer(
         text
     ):
 
@@ -318,24 +423,11 @@ def extract_experience_requirements(
             )
         )
 
-    # ---------------------------------------------------------
-    # Explicit experience wording.
-    #
-    # "3 years of experience"
-    # "minimum 3 years experience"
-    # "3 years experience required"
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 3. "3 years experience"
+    # --------------------------------------------------------
 
-    explicit_pattern = re.compile(
-        r"(\d+(?:\.\d+)?)"
-        r"\s*(?:years?|yrs?)"
-        r"\s*(?:of\s+)?"
-        r"(?:relevant\s+|professional\s+|hands-on\s+)?"
-        r"experience",
-        re.IGNORECASE,
-    )
-
-    for match in explicit_pattern.finditer(
+    for match in EXPERIENCE_PATTERN.finditer(
         text
     ):
 
@@ -351,19 +443,11 @@ def extract_experience_requirements(
             )
         )
 
-    # ---------------------------------------------------------
-    # "experience of 3 years"
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 4. "experience of 3 years"
+    # --------------------------------------------------------
 
-    reverse_pattern = re.compile(
-        r"experience"
-        r"\s*(?:of|:)?\s*"
-        r"(\d+(?:\.\d+)?)"
-        r"\s*(?:years?|yrs?)",
-        re.IGNORECASE,
-    )
-
-    for match in reverse_pattern.finditer(
+    for match in REVERSE_EXPERIENCE_PATTERN.finditer(
         text
     ):
 
@@ -379,7 +463,10 @@ def extract_experience_requirements(
             )
         )
 
-    # Remove duplicate matches.
+    # --------------------------------------------------------
+    # Remove duplicates.
+    # --------------------------------------------------------
+
     unique = []
 
     seen = set()
@@ -392,10 +479,16 @@ def extract_experience_requirements(
             item[2],
         )
 
-        if key not in seen:
+        if key in seen:
+            continue
 
-            seen.add(key)
-            unique.append(item)
+        seen.add(
+            key
+        )
+
+        unique.append(
+            item
+        )
 
     return unique
 
@@ -404,11 +497,9 @@ def analyse_experience(
     job
 ):
     """
-    Deep experience analysis.
+    Deeply inspect the entire collected job.
 
-    The COMPLETE job listing is inspected.
-
-    Any explicit requirement above 2 years
+    ANY explicit requirement above 2 years
     causes rejection.
     """
 
@@ -418,11 +509,41 @@ def analyse_experience(
         )
     )
 
+    title = clean_text(
+        job.get("title")
+    )
+
     requirements = (
         extract_experience_requirements(
             complete_text
         )
     )
+
+    # Also inspect title independently.
+    title_has_excess = (
+        title_experience_above_limit(
+            title
+        )
+    )
+
+    if title_has_excess:
+
+        return {
+            "found": True,
+            "valid": False,
+            "maximum_required": float(
+                "inf"
+            ),
+            "requirements": [
+                {
+                    "text": title,
+                    "reason": (
+                        "Experience requirement "
+                        "appears in title"
+                    ),
+                }
+            ],
+        }
 
     if not requirements:
 
@@ -435,14 +556,22 @@ def analyse_experience(
 
     maximum_required = 0
 
-    for minimum, maximum, matched in requirements:
+    for (
+        minimum,
+        maximum,
+        matched,
+    ) in requirements:
 
-        if maximum == float("inf"):
+        if maximum == float(
+            "inf"
+        ):
+
             maximum_required = float(
                 "inf"
             )
 
         else:
+
             maximum_required = max(
                 maximum_required,
                 maximum,
@@ -469,15 +598,35 @@ def analyse_experience(
                 ),
                 "text": matched,
             }
-            for minimum, maximum, matched
-            in requirements
+            for (
+                minimum,
+                maximum,
+                matched,
+            ) in requirements
         ],
     }
 
 
+# ============================================================
+# LOCATION
+# ============================================================
+
 def matches_location(
     job
 ):
+    """
+    Match only actual preferred Indian locations.
+
+    IMPORTANT:
+    We intentionally do NOT treat:
+        TN = Tamil Nadu
+        KA = Karnataka
+        TS = Telangana
+
+    because those abbreviations can also represent
+    US states and create false matches.
+    """
+
     location = clean_text(
         job.get("location")
     )
@@ -514,6 +663,7 @@ def matches_location(
         ):
             return True
 
+    # Preferred Indian cities.
     for preferred in LOCATIONS:
 
         if preferred == "Remote":
@@ -536,9 +686,15 @@ def matches_location(
     return False
 
 
+# ============================================================
+# ROLE MATCHING
+# ============================================================
+
 def role_matches(
     job
 ):
+    """Find target roles that genuinely match."""
+
     title = clean_text(
         job.get("title")
     )
@@ -565,57 +721,48 @@ def role_matches(
             matched_roles.append(
                 role
             )
-            continue
 
-        # Only allow broader matching for
-        # genuinely relevant families.
-        family = (
-            role_clean
-            .replace(
-                " engineer",
-                "",
-            )
-            .strip()
-        )
-
-        if (
-            family
-            and len(family) >= 4
-            and contains_phrase(
-                title,
-                family,
-            )
-        ):
-
-            matched_roles.append(
-                role
-            )
-
-    # DevOps/SRE/Cloud can match complete text,
-    # but not generic unrelated roles.
-    for family in (
-        "devops",
-        "sre",
-        "site reliability",
+    # Controlled family matching.
+    allowed_families = [
+        "application support",
+        "production support",
+        "technical support",
         "cloud support",
         "cloud operations",
-    ):
+        "operations engineer",
+        "production operations",
+        "application operations",
+        "technical operations",
+        "qa engineer",
+        "quality assurance",
+        "software test",
+        "test engineer",
+        "qa analyst",
+        "quality analyst",
+        "manual tester",
+        "software tester",
+        "application tester",
+        "devops engineer",
+        "junior devops",
+        "cloud engineer",
+        "site reliability",
+        "sre",
+    ]
+
+    for family in allowed_families:
 
         if contains_phrase(
-            complete_text,
+            title,
             family,
         ):
 
-            for role in TARGET_ROLES:
+            if family not in matched_roles:
+                matched_roles.append(
+                    family
+                )
 
-                if family in clean_text(
-                    role
-                ):
-
-                    if role not in matched_roles:
-                        matched_roles.append(
-                            role
-                        )
+    # Do NOT turn any skill mention in the
+    # description into a role match.
 
     return list(
         dict.fromkeys(
@@ -624,9 +771,15 @@ def role_matches(
     )
 
 
+# ============================================================
+# SCORING + FILTERING
+# ============================================================
+
 def score_job(
     job
 ):
+    """Score and deeply filter one job."""
+
     title = clean_text(
         job.get("title")
     )
@@ -658,21 +811,21 @@ def score_job(
 
     filter_reasons = []
 
-    # ---------------------------------------------------------
-    # Seniority.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # Advanced title.
+    # --------------------------------------------------------
 
     if has_advanced_title(
         title
     ):
 
         filter_reasons.append(
-            "Advanced title level"
+            "Advanced/senior-level designation"
         )
 
-    # ---------------------------------------------------------
-    # Advanced DevOps/SRE.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # L2/L3 / advanced DevOps/SRE.
+    # --------------------------------------------------------
 
     if has_advanced_domain(
         title
@@ -682,9 +835,9 @@ def score_job(
             "L2/L3 or advanced DevOps/SRE role"
         )
 
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
     # Experience.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
 
     if not experience[
         "valid"
@@ -700,7 +853,9 @@ def score_job(
             "inf"
         ):
 
-            display = "2+ years or more"
+            display = (
+                "2+ years or higher"
+            )
 
         else:
 
@@ -714,9 +869,9 @@ def score_job(
             f"({display})"
         )
 
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
     # Location.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
 
     if not matches_location(
         job
@@ -726,9 +881,9 @@ def score_job(
             "Outside preferred locations"
         )
 
-    # ---------------------------------------------------------
-    # Employment.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # Employment type.
+    # --------------------------------------------------------
 
     employment = clean_text(
         job.get(
@@ -757,9 +912,9 @@ def score_job(
             "Not full-time"
         )
 
-    # ---------------------------------------------------------
-    # Relevance.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # Actual role relevance.
+    # --------------------------------------------------------
 
     if (
         not matched_roles
@@ -770,9 +925,9 @@ def score_job(
             "Insufficient role/skill relevance"
         )
 
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
     # Score.
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
 
     role_score = min(
         35,
@@ -823,21 +978,29 @@ def score_job(
         "match_score"
     ] = score
 
-    result[
-        "match_category"
-    ] = (
-        "Excellent match"
-        if passes and score >= 80
-        else (
-            "Good match"
-            if passes and score >= 65
-            else (
-                "Possible match"
-                if passes
-                else "Ignore"
-            )
-        )
-    )
+    if not passes:
+
+        result[
+            "match_category"
+        ] = "Ignore"
+
+    elif score >= 80:
+
+        result[
+            "match_category"
+        ] = "Excellent match"
+
+    elif score >= 65:
+
+        result[
+            "match_category"
+        ] = "Good match"
+
+    else:
+
+        result[
+            "match_category"
+        ] = "Possible match"
 
     result[
         "match_details"
@@ -851,9 +1014,15 @@ def score_job(
     return result
 
 
+# ============================================================
+# RANKING
+# ============================================================
+
 def rank_jobs(
     jobs
 ):
+    """Rank all collected jobs."""
+
     ranked = [
         score_job(job)
         for job in jobs
@@ -869,95 +1038,6 @@ def rank_jobs(
     )
 
 
-def normalize_company(
-    value
-):
-    text = clean_text(
-        value
-    )
-
-    text = re.sub(
-        r"\b(private limited|pvt ltd|pvt\. ltd\.|limited|ltd)\b",
-        "",
-        text,
-    )
-
-    return re.sub(
-        r"\s+",
-        " ",
-        text,
-    ).strip()
-
-
-def normalize_title(
-    value
-):
-    text = clean_text(
-        value
-    )
-
-    text = re.sub(
-        r"[^a-z0-9]+",
-        " ",
-        text,
-    )
-
-    return re.sub(
-        r"\s+",
-        " ",
-        text,
-    ).strip()
-
-
-def duplicate_key(
-    job
-):
-    return (
-        normalize_company(
-            job.get(
-                "company"
-            )
-            or job.get(
-                "company_name"
-            )
-        ),
-        normalize_title(
-            job.get(
-                "title"
-            )
-        ),
-        clean_text(
-            job.get(
-                "location"
-            )
-        ),
-    )
-
-
-def keep_relevant_jobs(
-    ranked_jobs
-):
-    relevant = [
-        job
-        for job in ranked_jobs
-        if job.get(
-            "match_category"
-        ) != "Ignore"
-    ]
-
-    unique = []
-    seen = set()
-
-    for job in relevant:
-
-        key = duplicate_key(
-            job
-        )
-
-        if key in seen:
-            continue
-
-        seen.add(key)
-        unique.append(job)
-
-    return unique
+# ============================================================
+# DUPLICATE HANDLING
+# =======================================
