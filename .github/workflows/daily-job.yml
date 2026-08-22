@@ -3,7 +3,7 @@ name: Daily Job Agent
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "0 */2 * * *"
 
 permissions:
   contents: write
@@ -21,6 +21,7 @@ jobs:
       INDEED_API_KEY: ${{ secrets.INDEED_API_KEY }}
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -35,11 +36,8 @@ jobs:
       - name: Collect Indeed jobs
         run: python jobs/collect_indeed.py
 
-      - name: Collect jobs
+      - name: Collect and filter jobs
         run: python jobs/collect_jobs.py
-
-      - name: Update daily job history
-        run: python jobs/update_daily_history.py
 
       - name: Send email alert
         if: ${{ env.GMAIL_APP_PASSWORD != '' }}
@@ -49,12 +47,125 @@ jobs:
         if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHAT_ID != '' }}
         run: python jobs/send_telegram.py
 
-      - name: Save job history
+      - name: Mark successfully sent jobs
+        if: ${{ success() && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHAT_ID != '' }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report_file = Path("reports/jobs.json")
+          sent_file = Path("reports/sent_jobs.json")
+
+          if not report_file.exists():
+              print("No jobs report found.")
+              raise SystemExit(0)
+
+          try:
+              jobs = json.loads(
+                  report_file.read_text(
+                      encoding="utf-8"
+                  )
+              )
+          except Exception as error:
+              print(f"Could not read jobs report: {error}")
+              raise SystemExit(1)
+
+          if not isinstance(jobs, list):
+              print("jobs.json is not a list.")
+              raise SystemExit(1)
+
+          sent_jobs = set()
+
+          if sent_file.exists():
+              try:
+                  existing = json.loads(
+                      sent_file.read_text(
+                          encoding="utf-8"
+                      )
+                  )
+
+                  if isinstance(existing, list):
+                      sent_jobs.update(existing)
+
+              except Exception:
+                  print(
+                      "Warning: Could not read existing "
+                      "sent_jobs.json. Starting fresh."
+                  )
+
+          added = 0
+
+          for job in jobs:
+
+              url = (
+                  job.get("url")
+                  or job.get("job_url")
+                  or ""
+              ).strip()
+
+              if url:
+                  if url not in sent_jobs:
+                      sent_jobs.add(url)
+                      added += 1
+                  continue
+
+              company = (
+                  job.get("company")
+                  or job.get("company_name")
+                  or ""
+              ).strip().lower()
+
+              title = (
+                  job.get("title")
+                  or ""
+              ).strip().lower()
+
+              location = (
+                  job.get("location")
+                  or ""
+              ).strip().lower()
+
+              identity = (
+                  f"{company}|"
+                  f"{title}|"
+                  f"{location}"
+              )
+
+              if identity not in sent_jobs:
+                  sent_jobs.add(identity)
+                  added += 1
+
+          sent_file.parent.mkdir(
+              exist_ok=True
+          )
+
+          sent_file.write_text(
+              json.dumps(
+                  sorted(sent_jobs),
+                  indent=2,
+                  ensure_ascii=False,
+              ),
+              encoding="utf-8",
+          )
+
+          print(
+              f"Marked {added} job(s) as successfully sent."
+          )
+          print(
+              f"Total sent history: {len(sent_jobs)}"
+          )
+          PY
+
+      - name: Save duplicate history
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports/sent_jobs.json reports/daily_job_history.json
-          git diff --cached --quiet || git commit -m "Update job history"
+
+          git add reports/sent_jobs.json
+
+          git diff --cached --quiet || git commit -m "Update job duplicate history"
+
           git push
 
       - name: Upload job report
