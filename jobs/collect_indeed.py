@@ -9,8 +9,6 @@ from profile import TARGET_ROLES, SKILLS, LOCATIONS
 OUTPUT_DIR = Path("reports")
 OUTPUT_FILE = OUTPUT_DIR / "indeed_jobs.json"
 
-
-# JobSpy-supported sources currently being used.
 JOBSPY_SITES = [
     "indeed",
     "linkedin",
@@ -21,135 +19,35 @@ JOBSPY_SITES = [
     "naukri",
 ]
 
-
-# Number of results requested per search.
-RESULTS_PER_SOURCE = 100
-
-# Search jobs posted within the last 72 hours.
-HOURS_OLD = 72
+RESULTS_PER_SOURCE = 30
+HOURS_OLD = 48
 
 
-def build_search_terms():
-    """
-    Build multiple focused searches so every role family
-    gets a chance to appear.
+def build_search_term():
+    roles = TARGET_ROLES
+    skills = SKILLS
 
-    We intentionally do not use only the first few roles.
-    """
+    role_terms = " OR ".join(
+        f'"{role}"'
+        for role in roles
+    )
 
-    support_roles = [
-        role
-        for role in TARGET_ROLES
-        if any(
-            keyword in role.lower()
-            for keyword in (
-                "support",
-                "operations",
-            )
-        )
-    ]
-
-    cloud_devops_roles = [
-        role
-        for role in TARGET_ROLES
-        if any(
-            keyword in role.lower()
-            for keyword in (
-                "cloud",
-                "devops",
-                "site reliability",
-                "sre",
-            )
-        )
-    ]
-
-    qa_roles = [
-        role
-        for role in TARGET_ROLES
-        if any(
-            keyword in role.lower()
-            for keyword in (
-                "qa",
-                "quality",
-                "test",
-                "tester",
-            )
-        )
-    ]
-
-    searches = []
-
-    if support_roles:
-        searches.append(
-            " OR ".join(
-                f'"{role}"'
-                for role in support_roles
-            )
-        )
-
-    if cloud_devops_roles:
-        searches.append(
-            " OR ".join(
-                f'"{role}"'
-                for role in cloud_devops_roles
-            )
-        )
-
-    if qa_roles:
-        searches.append(
-            " OR ".join(
-                f'"{role}"'
-                for role in qa_roles
-            )
-        )
-
-    # Fallback if role categorisation ever produces nothing.
-    if not searches:
-        searches.append(
-            " OR ".join(
-                f'"{role}"'
-                for role in TARGET_ROLES
-            )
-        )
-
-    return searches
-
-
-def build_location_searches():
-    """
-    Search each preferred location separately.
-
-    This prevents LOCATIONS[0] from limiting the entire
-    search to Chennai.
-    """
-
-    if LOCATIONS:
-        return LOCATIONS
-
-    return ["Bangalore"]
-
-
-def build_google_search_term(
-    roles,
-    location,
-):
-    """
-    Build a Google Jobs query for the current role family
-    and location.
-    """
-
-    role_text = " ".join(
-        roles[:10]
+    skill_terms = " OR ".join(
+        f'"{skill}"'
+        for skill in skills
     )
 
     return (
-        f"{role_text} jobs "
-        f"{location} India "
-        "since yesterday"
+        f"({role_terms}) "
+        f"({skill_terms})"
     )
 
 
-def normalize_value(value):
+def build_location():
+    return "Chennai"
+
+
+def json_safe(value):
     if value is None:
         return ""
 
@@ -159,74 +57,180 @@ def normalize_value(value):
     except Exception:
         pass
 
+    if hasattr(value, "isoformat"):
+        try:
+            return value.isoformat()
+        except Exception:
+            pass
+
+    if isinstance(value, (list, tuple)):
+        return [
+            json_safe(item)
+            for item in value
+        ]
+
+    if isinstance(value, dict):
+        return {
+            str(key): json_safe(val)
+            for key, val in value.items()
+        }
+
     return str(value)
 
 
 def normalize_job(job):
-    return {
-        "source": (
-            normalize_value(
-                job.get("site")
-            )
-            or "jobspy"
-        ),
-        "title": normalize_value(
-            job.get("title")
-        ),
-        "company": normalize_value(
-            job.get("company")
-        ),
-        "company_name": normalize_value(
-            job.get("company")
-        ),
-        "location": normalize_value(
-            job.get("location")
-        ),
-        "description": normalize_value(
-            job.get("description")
-        ),
-        "url": normalize_value(
-            job.get("job_url")
-        ),
-        "job_url": normalize_value(
-            job.get("job_url")
-        ),
-        "job_type": normalize_value(
-            job.get("job_type")
-        ),
-        "date_posted": normalize_value(
-            job.get("date_posted")
-        ),
-        "is_remote": bool(
-            job.get(
-                "is_remote",
-                False,
-            )
-        ),
-        "source_job_id": normalize_value(
-            job.get("id")
-        ),
-    }
-
-
-def run_jobspy_search(
-    search_term,
-    google_search_term,
-    location,
-):
     """
-    Run one JobSpy search.
+    Preserve the complete JobSpy row.
 
-    Errors from one search should not stop all other
-    locations/role families.
+    This is important because experience can appear
+    anywhere in the original listing data.
     """
 
-    print("-" * 70)
-    print(f"Location : {location}")
-    print(f"Search   : {search_term}")
+    result = {}
+
+    for column in job.index:
+        key = str(column)
+
+        try:
+            value = job[column]
+        except Exception:
+            value = ""
+
+        result[key] = json_safe(value)
+
+    # Standard fields used by our matcher.
+    result["source"] = (
+        result.get("site")
+        or result.get("source")
+        or "jobspy"
+    )
+
+    result["title"] = (
+        result.get("title")
+        or ""
+    )
+
+    result["company"] = (
+        result.get("company")
+        or result.get("company_name")
+        or ""
+    )
+
+    result["company_name"] = (
+        result.get("company")
+        or ""
+    )
+
+    result["location"] = (
+        result.get("location")
+        or ""
+    )
+
+    result["description"] = (
+        result.get("description")
+        or ""
+    )
+
+    result["url"] = (
+        result.get("job_url")
+        or result.get("url")
+        or ""
+    )
+
+    result["job_url"] = (
+        result.get("job_url")
+        or result.get("url")
+        or ""
+    )
+
+    result["date_posted"] = (
+        result.get("date_posted")
+        or result.get("posted_at")
+        or ""
+    )
+
+    result["job_type"] = (
+        result.get("job_type")
+        or ""
+    )
+
+    result["employment_type"] = (
+        result.get("employment_type")
+        or result.get("job_type")
+        or ""
+    )
+
+    result["is_remote"] = bool(
+        result.get(
+            "is_remote",
+            False,
+        )
+    )
+
+    result["source_job_id"] = (
+        result.get("id")
+        or ""
+    )
+
+    return result
+
+
+def remove_duplicate_urls(jobs):
+    unique = []
+    seen = set()
+
+    for job in jobs:
+
+        url = (
+            job.get("url")
+            or job.get("job_url")
+            or ""
+        ).strip()
+
+        if not url:
+            continue
+
+        if url in seen:
+            continue
+
+        seen.add(url)
+        unique.append(job)
+
+    return unique
+
+
+def main():
+
+    OUTPUT_DIR.mkdir(
+        exist_ok=True
+    )
+
+    search_term = build_search_term()
+    location = build_location()
+
+    print("=" * 70)
+    print("JOBSPY DEEP JOB COLLECTION")
+    print("=" * 70)
+    print(
+        f"Location : {location}"
+    )
+    print(
+        f"Sources  : {', '.join(JOBSPY_SITES)}"
+    )
+    print(
+        f"Freshness window : {HOURS_OLD} hours"
+    )
     print()
 
+    google_search_term = (
+        " OR ".join(
+            TARGET_ROLES[:15]
+        )
+        + f" jobs {location} India"
+    )
+
     try:
+
         jobs = scrape_jobs(
             site_name=JOBSPY_SITES,
             search_term=search_term,
@@ -238,162 +242,45 @@ def run_jobspy_search(
             verbose=1,
         )
 
-        if jobs is None:
-            return []
+    except Exception as error:
 
-        normalized_jobs = []
+        print(
+            "JobSpy search failed:"
+            f" {error}"
+        )
+
+        jobs = None
+
+    normalized_jobs = []
+
+    if jobs is not None:
 
         for _, job in jobs.iterrows():
-            normalized_jobs.append(
-                normalize_job(job)
+
+            normalized = normalize_job(
+                job
             )
 
-        return normalized_jobs
+            if normalized.get(
+                "url"
+            ):
 
-    except Exception as error:
-        print(
-            f"JobSpy search failed for "
-            f"{location}: {error}"
-        )
-        return []
-
-
-def deduplicate_jobs(jobs):
-    """
-    Remove duplicate listings.
-
-    URL is the strongest identifier.
-
-    If a source returns different URLs for the same
-    company + title, we also remove that duplicate.
-    """
-
-    unique_jobs = []
-
-    seen_urls = set()
-    seen_company_roles = set()
-
-    for job in jobs:
-        url = job.get("url", "").strip()
-
-        company = (
-            job.get("company")
-            or job.get("company_name")
-            or ""
-        ).strip().lower()
-
-        title = (
-            job.get("title")
-            or ""
-        ).strip().lower()
-
-        company_role_key = (
-            company,
-            title,
-        )
-
-        # Prefer URL when available.
-        if url:
-            if url in seen_urls:
-                continue
-
-            seen_urls.add(url)
-
-        # Strict company + designation deduplication.
-        if company_role_key in seen_company_roles:
-            continue
-
-        seen_company_roles.add(
-            company_role_key
-        )
-
-        unique_jobs.append(job)
-
-    return unique_jobs
-
-
-def main():
-    OUTPUT_DIR.mkdir(
-        exist_ok=True
-    )
-
-    searches = build_search_terms()
-    locations = build_location_searches()
-
-    print("=" * 70)
-    print("JOBSPY MULTI-SOURCE JOB SEARCH")
-    print("=" * 70)
-    print(
-        f"Locations       : "
-        f"{', '.join(locations)}"
-    )
-    print(
-        f"Sources         : "
-        f"{', '.join(JOBSPY_SITES)}"
-    )
-    print(
-        f"Role searches   : "
-        f"{len(searches)}"
-    )
-    print(
-        f"Hours old       : "
-        f"{HOURS_OLD}"
-    )
-    print()
-
-    all_jobs = []
-
-    # ---------------------------------------------------------
-    # Search every role family across every preferred location.
-    # ---------------------------------------------------------
-
-    for search_term in searches:
-        for location in locations:
-
-            google_search_term = (
-                build_google_search_term(
-                    TARGET_ROLES,
-                    location,
+                normalized_jobs.append(
+                    normalized
                 )
-            )
 
-            jobs = run_jobspy_search(
-                search_term=search_term,
-                google_search_term=(
-                    google_search_term
-                ),
-                location=location,
-            )
-
-            all_jobs.extend(jobs)
-
-    # ---------------------------------------------------------
-    # Keep jobs with usable URLs.
-    # ---------------------------------------------------------
-
-    all_jobs = [
-        job
-        for job in all_jobs
-        if job.get("url")
-    ]
-
-    # ---------------------------------------------------------
-    # Strict source/result deduplication.
-    # ---------------------------------------------------------
-
-    unique_jobs = deduplicate_jobs(
-        all_jobs
+    unique_jobs = (
+        remove_duplicate_urls(
+            normalized_jobs
+        )
     )
-
-    # ---------------------------------------------------------
-    # Save normalized JobSpy results.
-    # ---------------------------------------------------------
 
     with open(
         OUTPUT_FILE,
         "w",
         encoding="utf-8",
     ) as file:
+
         json.dump(
             unique_jobs,
             file,
@@ -401,30 +288,18 @@ def main():
             ensure_ascii=False,
         )
 
-    # ---------------------------------------------------------
-    # Print summary.
-    # ---------------------------------------------------------
-
     print()
     print("=" * 70)
-    print("JOBSPY RESULTS")
+    print("JOBSPY COLLECTION RESULT")
     print("=" * 70)
-
     print(
-        f"Raw collected jobs : "
-        f"{len(all_jobs)}"
+        f"Unique jobs: {len(unique_jobs)}"
     )
-
-    print(
-        f"Total unique jobs  : "
-        f"{len(unique_jobs)}"
-    )
-
-    print()
 
     source_counts = {}
 
     for job in unique_jobs:
+
         source = (
             job.get("source")
             or "unknown"
@@ -441,28 +316,15 @@ def main():
     for source, count in sorted(
         source_counts.items()
     ):
+
         print(
             f"{source:15} : {count}"
         )
 
     print()
     print(
-        f"Saved to: "
-        f"{OUTPUT_FILE}"
+        f"Saved to: {OUTPUT_FILE}"
     )
-    print()
-
-    for index, job in enumerate(
-        unique_jobs[:30],
-        start=1,
-    ):
-        print(
-            f"{index}. "
-            f"{job.get('title', 'Unknown title')} | "
-            f"{job.get('company', 'Unknown company')} | "
-            f"{job.get('source', 'unknown')} | "
-            f"{job.get('location', 'Unknown location')}"
-        )
 
 
 if __name__ == "__main__":
