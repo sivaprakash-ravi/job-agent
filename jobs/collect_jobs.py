@@ -1,9 +1,14 @@
+"""Collect, enrich, filter and prepare jobs for Telegram."""
+
 import json
 import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from profile import TARGET_ROLES, SKILLS, LOCATIONS
+from profile import TARGET_ROLES, SKILLS
+
+from job_enricher import enrich_jobs
+
 from job_matcher import (
     keep_relevant_jobs,
     rank_jobs,
@@ -19,20 +24,34 @@ INDEED_FILE = OUTPUT_DIR / "indeed_jobs.json"
 
 OUTPUT_FILE = OUTPUT_DIR / "jobs.json"
 
-FULL_OUTPUT_FILE = OUTPUT_DIR / "all_ranked_jobs.json"
+FULL_OUTPUT_FILE = (
+    OUTPUT_DIR / "all_ranked_jobs.json"
+)
 
 REJECTED_OUTPUT_FILE = (
     OUTPUT_DIR / "rejected_jobs.json"
 )
 
-SENT_FILE = OUTPUT_DIR / "sent_jobs.json"
+UNVERIFIED_OUTPUT_FILE = (
+    OUTPUT_DIR / "unverified_jobs.json"
+)
 
+SENT_FILE = (
+    OUTPUT_DIR / "sent_jobs.json"
+)
+
+
+# ============================================================
+# FREEHIRE
+# ============================================================
 
 def collect_freehire_jobs():
-    search_terms = TARGET_ROLES + SKILLS
+    """Collect jobs from FreeHire."""
 
     params = {
-        "q": " ".join(search_terms),
+        "q": " ".join(
+            TARGET_ROLES + SKILLS
+        ),
         "countries": "IN",
         "category": (
             "devops,sre,support,"
@@ -58,7 +77,7 @@ def collect_freehire_jobs():
         url,
         headers={
             "Accept": "application/json",
-            "User-Agent": "job-agent/1.0",
+            "User-Agent": "job-agent/2.0",
         },
     )
 
@@ -79,7 +98,13 @@ def collect_freehire_jobs():
     )
 
 
-def load_indeed_jobs():
+# ============================================================
+# JOBSPY
+# ============================================================
+
+def load_jobspy_jobs():
+    """Load jobs previously collected by JobSpy."""
+
     if not INDEED_FILE.exists():
         return []
 
@@ -91,15 +116,15 @@ def load_indeed_jobs():
             encoding="utf-8",
         ) as file:
 
-            jobs = json.load(file)
+            data = json.load(file)
 
         if not isinstance(
-            jobs,
+            data,
             list,
         ):
             return []
 
-        return jobs
+        return data
 
     except (
         json.JSONDecodeError,
@@ -107,42 +132,53 @@ def load_indeed_jobs():
     ):
 
         print(
-            "Warning: Could not read "
-            "Indeed/JobSpy job report."
+            "Warning: unable to read "
+            "JobSpy report."
         )
 
         return []
 
 
+# ============================================================
+# HISTORY
+# ============================================================
+
 def load_sent_jobs():
-    if SENT_FILE.exists():
+    """Load previously sent job identities."""
 
-        try:
+    if not SENT_FILE.exists():
+        return set()
 
-            with open(
-                SENT_FILE,
-                "r",
-                encoding="utf-8",
-            ) as file:
+    try:
 
-                data = json.load(file)
+        with open(
+            SENT_FILE,
+            "r",
+            encoding="utf-8",
+        ) as file:
 
-            if isinstance(
-                data,
-                list,
-            ):
-                return set(data)
+            data = json.load(file)
 
-        except (
-            json.JSONDecodeError,
-            OSError,
+        if isinstance(
+            data,
+            list,
         ):
-            pass
+            return set(data)
 
-    return set()
+        return set()
+
+    except (
+        json.JSONDecodeError,
+        OSError,
+    ):
+
+        return set()
 
 
-def save_sent_jobs(sent_jobs):
+def save_sent_jobs(
+    sent_jobs,
+):
+    """Save previously sent job identities."""
 
     with open(
         SENT_FILE,
@@ -158,13 +194,18 @@ def save_sent_jobs(sent_jobs):
         )
 
 
+# ============================================================
+# JSON
+# ============================================================
+
 def save_json(
-    filename,
+    path,
     data,
 ):
+    """Save JSON report."""
 
     with open(
-        filename,
+        path,
         "w",
         encoding="utf-8",
     ) as file:
@@ -177,7 +218,17 @@ def save_json(
         )
 
 
+# ============================================================
+# IDENTITY / DEDUPLICATION
+# ============================================================
+
 def job_identity(job):
+    """
+    Build a stable job identity.
+
+    URL is preferred.
+    Company + title is used as fallback.
+    """
 
     url = (
         job.get("url")
@@ -186,7 +237,7 @@ def job_identity(job):
     )
 
     if url:
-        return url
+        return url.strip().lower()
 
     company = (
         job.get("company")
@@ -201,94 +252,19 @@ def job_identity(job):
 
     return (
         f"{company}|{title}"
-    ).lower().strip()
-
-
-def main():
-
-    OUTPUT_DIR.mkdir(
-        exist_ok=True
+        .strip()
+        .lower()
     )
 
-    # ---------------------------------------------------------
-    # 1. Collect FreeHire jobs
-    # ---------------------------------------------------------
 
-    print("=" * 70)
-    print("DAILY JOB AGENT")
-    print("=" * 70)
-    print()
-    print("Collecting FreeHire jobs...")
+def deduplicate_jobs(jobs):
+    """Remove duplicate jobs across sources."""
 
-    try:
+    unique_jobs = []
 
-        (
-            freehire_jobs,
-            meta,
-        ) = collect_freehire_jobs()
+    seen = set()
 
-    except Exception as error:
-
-        print(
-            "FreeHire collection failed:"
-        )
-
-        print(error)
-
-        freehire_jobs = []
-        meta = {}
-
-    # ---------------------------------------------------------
-    # 2. Load JobSpy jobs
-    # ---------------------------------------------------------
-
-    print(
-        "Loading JobSpy jobs..."
-    )
-
-    indeed_jobs = load_indeed_jobs()
-
-    # ---------------------------------------------------------
-    # 3. Combine sources
-    # ---------------------------------------------------------
-
-    all_jobs = (
-        freehire_jobs
-        + indeed_jobs
-    )
-
-    print()
-    print(
-        f"FreeHire jobs returned : "
-        f"{len(freehire_jobs)}"
-    )
-
-    print(
-        f"JobSpy jobs returned   : "
-        f"{len(indeed_jobs)}"
-    )
-
-    print(
-        f"Combined raw jobs      : "
-        f"{len(all_jobs)}"
-    )
-
-    print(
-        f"FreeHire total matches : "
-        f"{meta.get('total', 'unknown')}"
-    )
-
-    print()
-
-    # ---------------------------------------------------------
-    # 4. Remove duplicate URLs / identities
-    # ---------------------------------------------------------
-
-    unique_raw_jobs = []
-
-    seen_jobs = set()
-
-    for job in all_jobs:
+    for job in jobs:
 
         identity = job_identity(
             job
@@ -297,71 +273,285 @@ def main():
         if not identity:
             continue
 
-        if identity in seen_jobs:
+        if identity in seen:
             continue
 
-        seen_jobs.add(
+        seen.add(
             identity
         )
 
-        unique_raw_jobs.append(
+        unique_jobs.append(
             job
         )
 
-    print(
-        f"Unique raw jobs       : "
-        f"{len(unique_raw_jobs)}"
+    return unique_jobs
+
+
+# ============================================================
+# VERIFICATION HELPERS
+# ============================================================
+
+def is_detail_verified(job):
+    """
+    Determine whether the actual job page was
+    successfully fetched.
+    """
+
+    verification = job.get(
+        "detail_verification",
+        {},
     )
 
-    # ---------------------------------------------------------
-    # 5. Rank every job
-    # ---------------------------------------------------------
+    if not isinstance(
+        verification,
+        dict,
+    ):
+        return False
+
+    return bool(
+        verification.get(
+            "success",
+            False,
+        )
+    )
+
+
+def get_match_details(job):
+    """Safely return matcher details."""
+
+    details = job.get(
+        "match_details",
+        {},
+    )
+
+    if not isinstance(
+        details,
+        dict,
+    ):
+        return {}
+
+    return details
+
+
+# ============================================================
+# MAIN
+# ============================================================
+
+def main():
+
+    OUTPUT_DIR.mkdir(
+        exist_ok=True
+    )
+
+    print()
+    print("=" * 70)
+    print("SIVA JOB AGENT — V1")
+    print("=" * 70)
+
+    # --------------------------------------------------------
+    # 1. DISCOVERY
+    # --------------------------------------------------------
+
+    print()
+    print(
+        "[1/7] Collecting FreeHire jobs..."
+    )
+
+    try:
+
+        (
+            freehire_jobs,
+            freehire_meta,
+        ) = collect_freehire_jobs()
+
+    except Exception as error:
+
+        print(
+            f"FreeHire collection failed: "
+            f"{error}"
+        )
+
+        freehire_jobs = []
+        freehire_meta = {}
 
     print(
-        "Running strict job matcher..."
+        f"       FreeHire jobs: "
+        f"{len(freehire_jobs)}"
+    )
+
+    print()
+    print(
+        "[2/7] Loading JobSpy jobs..."
+    )
+
+    jobspy_jobs = (
+        load_jobspy_jobs()
+    )
+
+    print(
+        f"       JobSpy jobs: "
+        f"{len(jobspy_jobs)}"
+    )
+
+    # --------------------------------------------------------
+    # 2. COMBINE
+    # --------------------------------------------------------
+
+    print()
+    print(
+        "[3/7] Combining and deduplicating..."
+    )
+
+    raw_jobs = (
+        freehire_jobs
+        + jobspy_jobs
+    )
+
+    raw_jobs = deduplicate_jobs(
+        raw_jobs
+    )
+
+    print(
+        f"       Unique jobs: "
+        f"{len(raw_jobs)}"
+    )
+
+    # --------------------------------------------------------
+    # 3. ENRICH
+    # --------------------------------------------------------
+
+    print()
+    print(
+        "[4/7] Fetching full available "
+        "job details..."
+    )
+
+    enriched_jobs = enrich_jobs(
+        raw_jobs
+    )
+
+    verified_count = sum(
+        1
+        for job in enriched_jobs
+        if is_detail_verified(
+            job
+        )
+    )
+
+    unverified_count = (
+        len(enriched_jobs)
+        - verified_count
+    )
+
+    print(
+        f"       Successfully fetched: "
+        f"{verified_count}"
+    )
+
+    print(
+        f"       Could not fetch: "
+        f"{unverified_count}"
+    )
+
+    # --------------------------------------------------------
+    # 4. MATCH
+    # --------------------------------------------------------
+
+    print()
+    print(
+        "[5/7] Running deep job matching..."
     )
 
     ranked_jobs = rank_jobs(
-        unique_raw_jobs
+        enriched_jobs
     )
 
-    # ---------------------------------------------------------
-    # 6. Separate rejected jobs
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 5. FINAL FILTER
+    # --------------------------------------------------------
 
-    rejected_jobs = get_rejected_jobs(
-        ranked_jobs
+    relevant_jobs = (
+        keep_relevant_jobs(
+            ranked_jobs
+        )
     )
 
-    # ---------------------------------------------------------
-    # 7. Keep only eligible jobs
-    # ---------------------------------------------------------
-
-    relevant_jobs = keep_relevant_jobs(
-        ranked_jobs
+    rejected_jobs = (
+        get_rejected_jobs(
+            ranked_jobs
+        )
     )
 
-    # ---------------------------------------------------------
-    # 8. Save ALL ranked jobs
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 6. UNVERIFIED
+    # --------------------------------------------------------
+
+    unverified_jobs = []
+
+    for job in ranked_jobs:
+
+        details = get_match_details(
+            job
+        )
+
+        verification_status = (
+            details.get(
+                "verification_status"
+            )
+        )
+
+        if (
+            verification_status
+            == "UNVERIFIED"
+        ):
+            unverified_jobs.append(
+                job
+            )
+
+            continue
+
+        if not is_detail_verified(
+            job
+        ):
+            unverified_jobs.append(
+                job
+            )
+
+    # --------------------------------------------------------
+    # SAVE COMPLETE RANKED REPORT
+    # --------------------------------------------------------
 
     save_json(
         FULL_OUTPUT_FILE,
         ranked_jobs,
     )
 
-    # ---------------------------------------------------------
-    # 9. Save REJECTED jobs
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # SAVE REJECTED REPORT
+    # --------------------------------------------------------
 
     save_json(
         REJECTED_OUTPUT_FILE,
         rejected_jobs,
     )
 
-    # ---------------------------------------------------------
-    # 10. Remove previously sent jobs
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # SAVE UNVERIFIED REPORT
+    # --------------------------------------------------------
+
+    save_json(
+        UNVERIFIED_OUTPUT_FILE,
+        unverified_jobs,
+    )
+
+    # --------------------------------------------------------
+    # 7. REMOVE PREVIOUSLY SENT
+    # --------------------------------------------------------
+
+    print()
+    print(
+        "[6/7] Checking previously sent jobs..."
+    )
 
     sent_jobs = load_sent_jobs()
 
@@ -369,16 +559,12 @@ def main():
 
     for job in relevant_jobs:
 
-        job_url = (
-            job.get("url")
-            or job.get("job_url")
-            or ""
+        identity = job_identity(
+            job
         )
 
-        identity = (
-            job_url
-            or job_identity(job)
-        )
+        if not identity:
+            continue
 
         if identity in sent_jobs:
             continue
@@ -395,196 +581,103 @@ def main():
         sent_jobs
     )
 
-    # ---------------------------------------------------------
-    # 11. Save final Telegram jobs
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # FINAL TELEGRAM DATA
+    # --------------------------------------------------------
 
     save_json(
         OUTPUT_FILE,
         new_jobs,
     )
 
-    # ---------------------------------------------------------
-    # 12. Print statistics
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # REPORT
+    # --------------------------------------------------------
+
+    print()
+    print(
+        "[7/7] V1 filtering completed."
+    )
 
     print()
     print("=" * 70)
-    print("MATCHING RESULTS")
+    print("V1 RESULTS")
     print("=" * 70)
 
     print(
-        f"Raw unique jobs      : "
-        f"{len(unique_raw_jobs)}"
+        f"Discovered jobs       : "
+        f"{len(raw_jobs)}"
     )
 
     print(
-        f"Rejected jobs        : "
-        f"{len(rejected_jobs)}"
+        f"Enriched jobs         : "
+        f"{len(enriched_jobs)}"
     )
 
     print(
-        f"Eligible jobs        : "
+        f"Detail verified       : "
+        f"{verified_count}"
+    )
+
+    print(
+        f"Detail unavailable    : "
+        f"{unverified_count}"
+    )
+
+    print(
+        f"Eligible jobs         : "
         f"{len(relevant_jobs)}"
     )
 
     print(
-        f"New jobs to report   : "
+        f"Rejected jobs         : "
+        f"{len(rejected_jobs)}"
+    )
+
+    print(
+        f"Unverified jobs       : "
+        f"{len(unverified_jobs)}"
+    )
+
+    print(
+        f"New Telegram jobs     : "
         f"{len(new_jobs)}"
     )
 
+    print()
+
     print(
-        f"Previously seen      : "
-        f"{len(relevant_jobs) - len(new_jobs)}"
+        "Reports created:"
+    )
+
+    print(
+        f"  ✓ {OUTPUT_FILE}"
+    )
+
+    print(
+        f"  ✓ {FULL_OUTPUT_FILE}"
+    )
+
+    print(
+        f"  ✓ {REJECTED_OUTPUT_FILE}"
+    )
+
+    print(
+        f"  ✓ {UNVERIFIED_OUTPUT_FILE}"
+    )
+
+    print(
+        f"  ✓ {SENT_FILE}"
     )
 
     print()
 
-    # ---------------------------------------------------------
-    # 13. Rejection statistics
-    # ---------------------------------------------------------
-
-    rejection_counts = {}
-
-    for job in rejected_jobs:
-
-        details = job.get(
-            "match_details",
-            {},
-        )
-
-        reasons = details.get(
-            "filter_reasons",
-            [],
-        )
-
-        for reason in reasons:
-
-            rejection_counts[
-                reason
-            ] = (
-                rejection_counts.get(
-                    reason,
-                    0,
-                )
-                + 1
-            )
-
     print(
-        "REJECTION REASONS"
-    )
-
-    if rejection_counts:
-
-        for reason, count in sorted(
-            rejection_counts.items(),
-            key=lambda item: item[1],
-            reverse=True,
-        ):
-
-            print(
-                f"{count:5} : {reason}"
-            )
-
-    else:
-
-        print(
-            "No rejection reasons recorded."
-        )
-
-    print()
-
-    # ---------------------------------------------------------
-    # 14. Print final jobs
-    # ---------------------------------------------------------
-
-    print(
-        "NEW ELIGIBLE JOBS"
-    )
-
-    for index, job in enumerate(
-        new_jobs[:20],
-        start=1,
-    ):
-
-        title = job.get(
-            "title",
-            "Unknown title",
-        )
-
-        company = (
-            job.get("company")
-            or job.get(
-                "company_name",
-                "Unknown company",
-            )
-        )
-
-        location = job.get(
-            "location",
-            "Unknown location",
-        )
-
-        job_url = (
-            job.get("url")
-            or job.get(
-                "job_url",
-                "",
-            )
-        )
-
-        source = job.get(
-            "source",
-            "Unknown",
-        )
-
-        print(
-            f"{index}. "
-            f"{title} — "
-            f"{job.get('match_score', 0)}% "
-            f"({job.get('match_category', 'Match')})"
-        )
-
-        print(
-            f"   Source   : {source}"
-        )
-
-        print(
-            f"   Company  : {company}"
-        )
-
-        print(
-            f"   Location : {location}"
-        )
-
-        print(
-            f"   URL      : {job_url}"
-        )
-
-        print()
-
-    # ---------------------------------------------------------
-    # 15. Output files
-    # ---------------------------------------------------------
-
-    print(
-        f"Saved final jobs to : "
-        f"{OUTPUT_FILE}"
-    )
-
-    print(
-        f"Saved ranked jobs to: "
-        f"{FULL_OUTPUT_FILE}"
-    )
-
-    print(
-        f"Saved rejected jobs : "
-        f"{REJECTED_OUTPUT_FILE}"
-    )
-
-    print(
-        f"Saved history to    : "
-        f"{SENT_FILE}"
+        "FreeHire total matches:",
+        freehire_meta.get(
+            "total",
+            "unknown",
+        ),
     )
 
 
