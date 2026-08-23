@@ -15,41 +15,17 @@ MINIMUM_SCORE = 45
 
 
 LOCATION_ALIASES = {
-    "Chennai": [
-        "chennai",
-        "tamil nadu",
-        "tamilnadu",
-        "tn",
-    ],
-    "Bangalore": [
-        "bangalore",
-        "bengaluru",
-        "karnataka",
-        "ka",
-    ],
-    "Hyderabad": [
-        "hyderabad",
-        "telangana",
-        "ts",
-    ],
-    "Coimbatore": [
-        "coimbatore",
-        "tamil nadu",
-        "tamilnadu",
-        "tn",
-    ],
-    "Remote": [
-        "remote",
-        "work from home",
-        "wfh",
-        "anywhere",
-    ],
+    "Chennai": ["chennai", "tamil nadu", "tamilnadu", "tn"],
+    "Bangalore": ["bangalore", "bengaluru", "karnataka", "ka"],
+    "Hyderabad": ["hyderabad", "telangana", "ts"],
+    "Coimbatore": ["coimbatore", "tamil nadu", "tamilnadu", "tn"],
+    "Remote": ["remote", "work from home", "wfh", "anywhere"],
 }
 
 
-# Explicitly advanced titles.
-# These are hard rejected because they clearly
-# indicate a role above the current target level.
+# Clearly advanced titles.
+# We do NOT reject "Engineer III" or similar automatically.
+# Actual experience requirements are checked separately.
 ADVANCED_ROLE_TERMS = [
     "senior devops",
     "sr devops",
@@ -91,14 +67,12 @@ def normalise(value):
     """Convert any value into lowercase searchable text."""
 
     if isinstance(value, list):
-
         return " ".join(
             normalise(item)
             for item in value
         )
 
     if isinstance(value, dict):
-
         return " ".join(
             normalise(item)
             for item in value.values()
@@ -111,9 +85,7 @@ def contains_phrase(text, phrase):
     """Match a complete phrase."""
 
     text = normalise(text)
-    phrase = normalise(
-        phrase
-    ).strip()
+    phrase = normalise(phrase).strip()
 
     if not text or not phrase:
         return False
@@ -125,18 +97,19 @@ def contains_phrase(text, phrase):
     )
 
     return bool(
-        re.search(
-            pattern,
-            text,
-        )
+        re.search(pattern, text)
     )
 
 
-def flatten_job_values(
-    value,
-    prefix="",
-):
-    """Recursively collect every text value."""
+def flatten_job_values(value, prefix=""):
+    """
+    Recursively collect every textual value from
+    the complete job object.
+
+    This is important because experience may exist
+    in metadata, enrichment, JSON-LD, description,
+    seniority, requirements, or nested fields.
+    """
 
     values = []
 
@@ -159,9 +132,7 @@ def flatten_job_values(
 
     elif isinstance(value, list):
 
-        for index, item in enumerate(
-            value
-        ):
+        for index, item in enumerate(value):
 
             child_prefix = (
                 f"{prefix}[{index}]"
@@ -176,12 +147,9 @@ def flatten_job_values(
 
     else:
 
-        text = normalise(
-            value
-        )
+        text = normalise(value)
 
         if text:
-
             values.append(
                 (
                     prefix.lower(),
@@ -193,15 +161,13 @@ def flatten_job_values(
 
 
 def get_all_job_text(job):
-    """Search the complete job record."""
+    """Return the complete job record as searchable text."""
 
-    return normalise(
-        job
-    )
+    return normalise(job)
 
 
 def get_job_text(job):
-    """Combine important job fields."""
+    """Combine the most useful job fields."""
 
     fields = [
         job.get("title"),
@@ -212,13 +178,18 @@ def get_job_text(job):
         job.get("job_type"),
         job.get("employment_type"),
         job.get("location"),
+        job.get("work_mode"),
+        job.get("remote_work_model"),
+        job.get("experience"),
+        job.get("experience_requirement"),
+        job.get("experience_years"),
+        job.get("experience_years_min"),
+        job.get("experience_years_max"),
         job.get("full_job_page_text"),
         job.get("job_page_json_ld_text"),
     ]
 
-    return normalise(
-        fields
-    )
+    return normalise(fields)
 
 
 def role_family(role):
@@ -241,15 +212,10 @@ def role_family(role):
         if word not in ignored_words
     ]
 
-    return " ".join(
-        words
-    )
+    return " ".join(words)
 
 
-def job_value(
-    job,
-    field_name,
-):
+def job_value(job, field_name):
     """Read direct or enrichment fields."""
 
     enrichment = job.get(
@@ -265,33 +231,19 @@ def job_value(
 
     return (
         job.get(field_name)
-        or enrichment.get(
-            field_name
-        )
+        or enrichment.get(field_name)
     )
 
 
-def matches_target_role(
-    title,
-    job_text,
-    role,
-):
+def matches_target_role(title, job_text, role):
     """Match target role variations."""
 
-    family = role_family(
-        role
-    )
+    family = role_family(role)
 
-    if contains_phrase(
-        title,
-        role,
-    ):
+    if contains_phrase(title, role):
         return True
 
-    if family and contains_phrase(
-        title,
-        family,
-    ):
+    if family and contains_phrase(title, family):
         return True
 
     if family in {
@@ -299,7 +251,6 @@ def matches_target_role(
         "sre",
         "site reliability",
     }:
-
         return contains_phrase(
             job_text,
             family,
@@ -309,11 +260,9 @@ def matches_target_role(
 
 
 def is_advanced_role(title):
-    """Detect explicitly advanced titles."""
+    """Detect clearly advanced titles."""
 
-    title_text = normalise(
-        title
-    )
+    title_text = normalise(title)
 
     return any(
         contains_phrase(
@@ -324,13 +273,12 @@ def is_advanced_role(title):
     )
 
 
-def extract_experience_numbers(
-    text
-):
+def extract_experience_numbers(text):
     """
     Extract explicit experience requirements.
 
-    Handles:
+    Examples:
+
         0-2 years
         1-3 years
         2+ years
@@ -339,11 +287,10 @@ def extract_experience_numbers(
         minimum 3 years
         at least 3 years
         3 years of experience
+        experience: 3 years
     """
 
-    text = normalise(
-        text
-    )
+    text = normalise(text)
 
     results = []
 
@@ -364,18 +311,14 @@ def extract_experience_numbers(
 
         results.append(
             (
-                float(
-                    match.group(1)
-                ),
-                float(
-                    match.group(2)
-                ),
+                float(match.group(1)),
+                float(match.group(2)),
                 match.group(0),
             )
         )
 
     # ---------------------------------------------------------
-    # 3+ / 3 OR MORE
+    # 3+ / 3 OR MORE / 3 AND ABOVE
     # ---------------------------------------------------------
 
     for match in re.finditer(
@@ -387,9 +330,7 @@ def extract_experience_numbers(
 
         results.append(
             (
-                float(
-                    match.group(1)
-                ),
+                float(match.group(1)),
                 None,
                 match.group(0),
             )
@@ -409,16 +350,14 @@ def extract_experience_numbers(
 
         results.append(
             (
-                float(
-                    match.group(1)
-                ),
+                float(match.group(1)),
                 None,
                 match.group(0),
             )
         )
 
     # ---------------------------------------------------------
-    # YEARS OF EXPERIENCE
+    # 3 YEARS OF EXPERIENCE
     # ---------------------------------------------------------
 
     for match in re.finditer(
@@ -467,28 +406,19 @@ def extract_experience_numbers(
     return results
 
 
-def extract_all_experience_requirements(
-    job
-):
-    """Scan the entire job record."""
+def extract_all_experience_requirements(job):
+    """
+    Scan every textual field in the complete job record.
+    """
 
     findings = []
-
     seen = set()
 
-    for field_name, text in flatten_job_values(
-        job
-    ):
+    for field_name, text in flatten_job_values(job):
 
-        detected = extract_experience_numbers(
-            text
-        )
+        detected = extract_experience_numbers(text)
 
-        for (
-            minimum,
-            maximum,
-            matched_text,
-        ) in detected:
+        for minimum, maximum, matched_text in detected:
 
             key = (
                 field_name,
@@ -500,9 +430,7 @@ def extract_all_experience_requirements(
             if key in seen:
                 continue
 
-            seen.add(
-                key
-            )
+            seen.add(key)
 
             findings.append(
                 {
@@ -516,51 +444,39 @@ def extract_all_experience_requirements(
     return findings
 
 
-def get_required_experience(
-    job
-):
+def get_required_experience(job):
     """
-    Determine the highest explicit requirement.
+    Determine the highest explicit experience requirement.
 
-    ANY explicit requirement above the configured
-    maximum causes rejection.
+    Example:
+
+        1-2 years + 3 years mentioned elsewhere
+        -> highest requirement = 3
+
+    This prevents a hidden 6-year requirement from
+    being ignored just because another field says 1-2.
     """
 
-    findings = (
-        extract_all_experience_requirements(
-            job
-        )
-    )
+    findings = extract_all_experience_requirements(job)
 
     if not findings:
-
-        return (
-            None,
-            None,
-            [],
-        )
+        return None, None, []
 
     highest = None
 
     for finding in findings:
 
-        maximum = (
-            finding["maximum"]
-        )
+        maximum = finding["maximum"]
 
         if maximum is None:
-
-            maximum = (
-                finding["minimum"]
-            )
+            maximum = finding["minimum"]
 
         if maximum is None:
             continue
 
         if (
             highest is None
-            or maximum
-            > highest["value"]
+            or maximum > highest["value"]
         ):
 
             highest = {
@@ -569,12 +485,7 @@ def get_required_experience(
             }
 
     if highest is None:
-
-        return (
-            None,
-            None,
-            findings,
-        )
+        return None, None, findings
 
     return (
         highest["value"],
@@ -583,29 +494,18 @@ def get_required_experience(
     )
 
 
-def required_experience(
-    job
-):
+def required_experience(job):
     """Backward-compatible helper."""
 
-    required, _, _ = (
-        get_required_experience(
-            job
-        )
-    )
+    required, _, _ = get_required_experience(job)
 
     return required
 
 
-def alias_matches_location(
-    location_text,
-    alias,
-):
+def alias_matches_location(location_text, alias):
     """Safely match location aliases."""
 
-    alias = (
-        alias.lower().strip()
-    )
+    alias = alias.lower().strip()
 
     if alias in {
         "tn",
@@ -628,19 +528,11 @@ def alias_matches_location(
     )
 
 
-def matches_location(
-    location,
-    work_mode,
-):
+def matches_location(location, work_mode):
     """Match preferred locations."""
 
-    location_text = normalise(
-        location
-    )
-
-    work_mode_text = normalise(
-        work_mode
-    )
+    location_text = normalise(location)
+    work_mode_text = normalise(work_mode)
 
     matched = []
 
@@ -670,39 +562,27 @@ def matches_location(
                 work_mode_text,
                 alias,
             )
-            for alias in LOCATION_ALIASES[
-                "Remote"
-            ]
+            for alias in LOCATION_ALIASES["Remote"]
         ):
 
-            matched.append(
-                "Remote"
-            )
+            matched.append("Remote")
 
         if any(
             alias_matches_location(
                 location_text,
                 alias,
             )
-            for alias in LOCATION_ALIASES[
-                "Remote"
-            ]
+            for alias in LOCATION_ALIASES["Remote"]
         ):
 
-            matched.append(
-                "Remote"
-            )
+            matched.append("Remote")
 
     return list(
-        dict.fromkeys(
-            matched
-        )
+        dict.fromkeys(matched)
     )
 
 
-def category_for(
-    score
-):
+def category_for(score):
 
     if score >= 80:
         return "Excellent match"
@@ -716,10 +596,8 @@ def category_for(
     return "Ignore"
 
 
-def get_verification_status(
-    job
-):
-    """Determine whether job details are verified."""
+def get_verification_status(job):
+    """Determine whether job details were successfully fetched."""
 
     verification = job.get(
         "detail_verification",
@@ -731,9 +609,7 @@ def get_verification_status(
         dict,
     ):
 
-        if verification.get(
-            "success"
-        ):
+        if verification.get("success"):
             return "VERIFIED"
 
     explicit = normalise(
@@ -769,26 +645,20 @@ def score_job(job):
 
     work_mode = normalise(
         job.get("work_mode")
-        or job.get(
-            "remote_work_model"
-        )
+        or job.get("remote_work_model")
         or (
             "remote"
-            if job.get(
-                "is_remote"
-            )
+            if job.get("is_remote")
             else ""
         )
     )
 
-    verification_status = (
-        get_verification_status(
-            job
-        )
+    verification_status = get_verification_status(
+        job
     )
 
     # ---------------------------------------------------------
-    # ROLE
+    # TARGET ROLE
     # ---------------------------------------------------------
 
     matched_roles = [
@@ -818,11 +688,9 @@ def score_job(job):
     # LOCATION
     # ---------------------------------------------------------
 
-    matched_locations = (
-        matches_location(
-            location,
-            work_mode,
-        )
+    matched_locations = matches_location(
+        location,
+        work_mode,
     )
 
     # ---------------------------------------------------------
@@ -845,9 +713,7 @@ def score_job(job):
             "No explicit experience requirement found"
         )
 
-    elif required_years <= (
-        MAX_JOB_EXPERIENCE_YEARS
-    ):
+    elif required_years <= MAX_JOB_EXPERIENCE_YEARS:
 
         experience_score = 10
 
@@ -861,17 +727,13 @@ def score_job(job):
         experience_score = -30
 
         field_name = (
-            highest_finding[
-                "field"
-            ]
+            highest_finding["field"]
             if highest_finding
             else "job details"
         )
 
         matched_text = (
-            highest_finding[
-                "text"
-            ]
+            highest_finding["text"]
             if highest_finding
             else ""
         )
@@ -935,28 +797,49 @@ def score_job(job):
     filter_reasons = []
 
     # ---------------------------------------------------------
-    # VERIFICATION
+    # EXPERIENCE HARD LIMIT
     #
-    # UNKNOWN EXPERIENCE MUST NEVER GO TO TELEGRAM.
+    # This is ALWAYS enforced when an explicit
+    # requirement above 2 years is found.
     # ---------------------------------------------------------
 
     if (
-        verification_status
-        == "UNVERIFIED"
+        required_years is not None
+        and required_years
+        > MAX_JOB_EXPERIENCE_YEARS
+    ):
+
+        filter_reasons.append(
+            "Experience requirement exceeds "
+            f"{MAX_JOB_EXPERIENCE_YEARS:g} years"
+        )
+
+    # ---------------------------------------------------------
+    # UNVERIFIED EXPERIENCE
+    #
+    # If the page could not be fetched AND there is
+    # no experience information anywhere in the source
+    # data, don't send it to Telegram.
+    #
+    # If source metadata already contains <=2 years,
+    # it can continue even if the page is unavailable.
+    # ---------------------------------------------------------
+
+    elif (
+        verification_status == "UNVERIFIED"
         and required_years is None
     ):
 
         filter_reasons.append(
-            "Job details could not be fully verified"
+            "Experience could not be verified "
+            "from available job data"
         )
 
     # ---------------------------------------------------------
-    # EXPLICIT ADVANCED TITLE
+    # ADVANCED TITLE
     # ---------------------------------------------------------
 
-    if is_advanced_role(
-        title
-    ):
+    if is_advanced_role(title):
 
         filter_reasons.append(
             "Advanced/senior role"
@@ -969,8 +852,7 @@ def score_job(job):
     if employment_type:
 
         if (
-            EMPLOYMENT_TYPE
-            == "full_time"
+            EMPLOYMENT_TYPE == "full_time"
             and not any(
                 term in employment_type
                 for term in (
@@ -996,22 +878,7 @@ def score_job(job):
         )
 
     # ---------------------------------------------------------
-    # EXPERIENCE
-    # ---------------------------------------------------------
-
-    if (
-        required_years is not None
-        and required_years
-        > MAX_JOB_EXPERIENCE_YEARS
-    ):
-
-        filter_reasons.append(
-            "Experience requirement exceeds "
-            f"{MAX_JOB_EXPERIENCE_YEARS:g} years"
-        )
-
-    # ---------------------------------------------------------
-    # RELEVANCE
+    # ROLE / SKILL RELEVANCE
     # ---------------------------------------------------------
 
     if (
@@ -1028,63 +895,33 @@ def score_job(job):
     # FINAL
     # ---------------------------------------------------------
 
-    passes_filters = (
-        not filter_reasons
+    passes_filters = not filter_reasons
+
+    ranked_job = dict(job)
+
+    ranked_job["match_score"] = score
+
+    ranked_job["match_category"] = (
+        category_for(score)
+        if passes_filters
+        else "Ignore"
     )
 
-    ranked_job = dict(
-        job
-    )
+    ranked_job["match_details"] = {
 
-    ranked_job[
-        "match_score"
-    ] = score
+        "matched_roles": matched_roles,
 
-    if passes_filters:
+        "matched_skills": matched_skills,
 
-        ranked_job[
-            "match_category"
-        ] = category_for(
-            score
-        )
+        "matched_locations": matched_locations,
 
-    else:
+        "verification_status": verification_status,
 
-        ranked_job[
-            "match_category"
-        ] = "Ignore"
+        "experience_years_detected": required_years,
 
-    ranked_job[
-        "match_details"
-    ] = {
+        "experience_note": experience_note,
 
-        "matched_roles": (
-            matched_roles
-        ),
-
-        "matched_skills": (
-            matched_skills
-        ),
-
-        "matched_locations": (
-            matched_locations
-        ),
-
-        "verification_status": (
-            verification_status
-        ),
-
-        "experience_years_detected": (
-            required_years
-        ),
-
-        "experience_note": (
-            experience_note
-        ),
-
-        "experience_findings": (
-            experience_findings
-        ),
+        "experience_findings": experience_findings,
 
         "employment_type": (
             employment_type
@@ -1096,20 +933,20 @@ def score_job(job):
             or "Not listed"
         ),
 
-        "filter_reasons": (
-            filter_reasons
-        ),
+        "filter_reasons": filter_reasons,
 
         "full_record_scanned": True,
+
+        "full_record_text_available": bool(
+            all_job_text
+        ),
     }
 
     return ranked_job
 
 
-def rank_jobs(
-    jobs
-):
-    """Score every job."""
+def rank_jobs(jobs):
+    """Score every job and return best matches first."""
 
     ranked_jobs = [
         score_job(job)
@@ -1126,16 +963,12 @@ def rank_jobs(
     )
 
 
-def job_role_key(
-    job
-):
-    """Duplicate key = company + title."""
+def job_role_key(job):
+    """Duplicate key = company + designation."""
 
     company = normalise(
         job.get("company")
-        or job.get(
-            "company_name"
-        )
+        or job.get("company_name")
     )
 
     title = normalise(
@@ -1160,10 +993,8 @@ def job_role_key(
     )
 
 
-def keep_relevant_jobs(
-    ranked_jobs
-):
-    """Keep only fully eligible jobs."""
+def keep_relevant_jobs(ranked_jobs):
+    """Keep only jobs that pass all hard filters."""
 
     relevant_jobs = [
         job
@@ -1187,28 +1018,20 @@ def keep_relevant_jobs(
 
     for job in relevant_jobs:
 
-        key = job_role_key(
-            job
-        )
+        key = job_role_key(job)
 
         if key in seen_roles:
             continue
 
-        seen_roles.add(
-            key
-        )
+        seen_roles.add(key)
 
-        unique_jobs.append(
-            job
-        )
+        unique_jobs.append(job)
 
     return unique_jobs
 
 
-def get_rejected_jobs(
-    ranked_jobs
-):
-    """Return all rejected jobs for auditing."""
+def get_rejected_jobs(ranked_jobs):
+    """Return rejected jobs for audit reports."""
 
     return [
         job
