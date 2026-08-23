@@ -11,7 +11,6 @@ from html import unescape
 MAX_WORKERS = 8
 REQUEST_TIMEOUT = 12
 
-
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -31,7 +30,6 @@ def clean_html(html):
 
     html = unescape(html)
 
-    # Remove scripts/styles.
     html = re.sub(
         r"<script\b[^>]*>.*?</script>",
         " ",
@@ -46,7 +44,6 @@ def clean_html(html):
         flags=re.IGNORECASE | re.DOTALL,
     )
 
-    # Preserve useful separators.
     html = re.sub(
         r"<br\s*/?>",
         "\n",
@@ -61,17 +58,14 @@ def clean_html(html):
         flags=re.IGNORECASE,
     )
 
-    # Remove remaining tags.
     html = re.sub(
         r"<[^>]+>",
         " ",
         html,
     )
 
-    # Decode common entities again.
     html = unescape(html)
 
-    # Normalize whitespace.
     lines = []
 
     for line in html.splitlines():
@@ -115,6 +109,7 @@ def extract_json_ld(html):
             results.append(data)
 
         elif isinstance(data, list):
+
             results.extend(
                 item
                 for item in data
@@ -125,7 +120,7 @@ def extract_json_ld(html):
 
 
 def json_ld_text(objects):
-    """Convert JSON-LD job information into searchable text."""
+    """Convert JSON-LD information into searchable text."""
 
     parts = []
 
@@ -134,11 +129,13 @@ def json_ld_text(objects):
         for key, value in obj.items():
 
             if isinstance(value, (dict, list)):
+
                 try:
                     value = json.dumps(
                         value,
                         ensure_ascii=False,
                     )
+
                 except Exception:
                     value = str(value)
 
@@ -151,10 +148,10 @@ def json_ld_text(objects):
 
 def fetch_job_page(job):
     """
-    Fetch the public job URL and extract all available text.
+    Fetch the public job page.
 
-    Failure does NOT mean the job is rejected.
-    It means verification may be incomplete.
+    A failed fetch means the job cannot be fully
+    verified from the external page.
     """
 
     url = (
@@ -169,11 +166,14 @@ def fetch_job_page(job):
         "url": url,
         "page_text": "",
         "json_ld": [],
+        "json_ld_text": "",
         "error": "",
     }
 
     if not url:
+
         result["error"] = "No job URL"
+
         return result
 
     request = urllib.request.Request(
@@ -197,11 +197,11 @@ def fetch_job_page(job):
 
             raw = response.read()
 
-            # Only decode HTML/text responses.
             if (
                 "html" not in content_type.lower()
                 and "text" not in content_type.lower()
             ):
+
                 result["error"] = (
                     "Job URL did not return HTML/text"
                 )
@@ -226,7 +226,9 @@ def fetch_job_page(job):
             result["page_text"] = page_text
             result["json_ld"] = json_ld
             result["json_ld_text"] = (
-                json_ld_text(json_ld)
+                json_ld_text(
+                    json_ld
+                )
             )
 
             return result
@@ -251,7 +253,7 @@ def fetch_job_page(job):
 
 
 def enrich_job(job):
-    """Merge fetched job-page information into the original job."""
+    """Merge full job-page information into the job."""
 
     enriched = dict(job)
 
@@ -259,7 +261,9 @@ def enrich_job(job):
         job
     )
 
-    enriched["detail_verification"] = {
+    enriched[
+        "detail_verification"
+    ] = {
         "status": page.get(
             "status",
             "UNVERIFIED",
@@ -272,35 +276,50 @@ def enrich_job(job):
             "error",
             "",
         ),
+        "url": page.get(
+            "url",
+            "",
+        ),
     }
 
     if page.get("page_text"):
 
         enriched[
             "full_job_page_text"
-        ] = page["page_text"]
+        ] = page[
+            "page_text"
+        ]
 
     if page.get("json_ld"):
 
         enriched[
             "job_page_json_ld"
-        ] = page["json_ld"]
+        ] = page[
+            "json_ld"
+        ]
 
     if page.get("json_ld_text"):
 
         enriched[
             "job_page_json_ld_text"
-        ] = page["json_ld_text"]
+        ] = page[
+            "json_ld_text"
+        ]
+
+    # Explicit source of information used by matcher.
+    enriched[
+        "verification_status"
+    ] = (
+        "VERIFIED"
+        if page.get("success")
+        else "UNVERIFIED"
+    )
 
     return enriched
 
 
 def enrich_jobs(jobs):
-    """
-    Enrich jobs concurrently.
-
-    The original API/JobSpy metadata is always preserved.
-    """
+    """Enrich jobs concurrently."""
 
     if not jobs:
         return []
@@ -316,7 +335,9 @@ def enrich_jobs(jobs):
                 enrich_job,
                 job,
             ): index
-            for index, job in enumerate(jobs)
+            for index, job in enumerate(
+                jobs
+            )
         }
 
         for future in as_completed(
@@ -346,6 +367,10 @@ def enrich_jobs(jobs):
                     "success": False,
                     "error": str(error),
                 }
+
+                fallback[
+                    "verification_status"
+                ] = "UNVERIFIED"
 
                 results[index] = fallback
 
