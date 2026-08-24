@@ -89,70 +89,44 @@ ADVANCED_DOMAIN_TERMS = [
 
 
 # ============================================================
-# EXPERIENCE PATTERNS
+# SENIORITY METADATA
 # ============================================================
 
-EXPERIENCE_RANGE_PATTERN = re.compile(
-    r"(\d+(?:\.\d+)?)"
-    r"\s*(?:-|to)"
-    r"\s*(\d+(?:\.\d+)?)"
-    r"\s*(?:years?|yrs?)",
-    re.IGNORECASE,
-)
+SENIORITY_FIELDS = {
+    "seniority",
+    "seniority_level",
+    "senioritylevel",
+    "experience_level",
+    "experiencelevel",
+    "career_level",
+    "careerlevel",
+    "level",
+    "job_level",
+    "joblevel",
+}
 
 
-EXPERIENCE_PLUS_PATTERN = re.compile(
-    r"(\d+(?:\.\d+)?)"
-    r"\s*(?:\+|plus|or more|and above|and over)"
-    r"\s*(?:years?|yrs?)",
-    re.IGNORECASE,
-)
-
-
-EXPERIENCE_PATTERN = re.compile(
-    r"(\d+(?:\.\d+)?)"
-    r"\s*(?:years?|yrs?)"
-    r"\s*(?:of\s+)?"
-    r"(?:relevant\s+|professional\s+|hands-on\s+)?"
-    r"experience",
-    re.IGNORECASE,
-)
-
-
-REVERSE_EXPERIENCE_PATTERN = re.compile(
-    r"experience"
-    r"\s*(?:of|:)?\s*"
-    r"(\d+(?:\.\d+)?)"
-    r"\s*(?:years?|yrs?)",
-    re.IGNORECASE,
-)
-
-
-TITLE_EXPERIENCE_PATTERN = re.compile(
-    r"(\d+(?:\.\d+)?)"
-    r"\s*(?:\+|plus)?"
-    r"\s*(?:years?|yrs?)",
-    re.IGNORECASE,
-)
+ADVANCED_SENIORITY_PATTERNS = [
+    r"\bmid[\s-]*senior\b",
+    r"\bsenior\b",
+    r"\bsr\.?\b",
+    r"\blead\b",
+    r"\bprincipal\b",
+    r"\bstaff\b",
+    r"\bmanager\b",
+    r"\bdirector\b",
+    r"\bhead\b",
+    r"\bexecutive\b",
+    r"\bavp\b",
+    r"\bvp\b",
+]
 
 
 # ============================================================
-# EXPERIENCE-SAFE CONTENT FIELDS
+# EXPERIENCE CONTENT FIELDS
 #
-# IMPORTANT:
-# Do NOT scan arbitrary metadata such as:
-# date_posted
-# posted_at
-# company size
-# employee count
-# IDs
-# URLs
-# salary
-# ratings
-# source metadata
-#
-# Full job page text is allowed because it contains the
-# actual public job description/details.
+# ONLY these fields are allowed to participate in experience
+# analysis. Arbitrary metadata is deliberately ignored.
 # ============================================================
 
 EXPERIENCE_CONTENT_FIELDS = {
@@ -184,8 +158,178 @@ EXPERIENCE_CONTENT_FIELDS = {
 }
 
 
+# Nested containers which may legitimately contain job content.
+EXPERIENCE_CONTAINER_FIELDS = {
+    "job",
+    "details",
+    "content",
+    "description",
+    "requirements",
+    "qualifications",
+    "enrichment",
+    "data",
+}
+
+
 # ============================================================
-# GENERAL TEXT HELPERS
+# EXPERIENCE REGEX PATTERNS
+# ============================================================
+
+# 3-5 years
+# 3 - 5 years
+# 3 to 5 years
+# 3–5 years
+EXPERIENCE_RANGE_PATTERN = re.compile(
+    r"\b(\d+(?:\.\d+)?)"
+    r"\s*(?:-|to|–|—)"
+    r"\s*(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+# 3+
+# 3+ years
+# 3 plus years
+# 3 or more years
+# 3 years or more
+# 3 years and above
+# 3 years and over
+EXPERIENCE_PLUS_PATTERN = re.compile(
+    r"\b(\d+(?:\.\d+)?)"
+    r"\s*(?:\+|plus)"
+    r"\s*(?:years?|yrs?)?\b"
+    r"|"
+    r"\b(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)"
+    r"\s*(?:or\s+more|and\s+above|and\s+over)\b",
+    re.IGNORECASE,
+)
+
+
+# minimum 4 years
+# minimum of 4 years
+# minimum 4 yrs
+# minimum of 4 yrs
+# required 4 years
+# requires 4 years
+# required minimum of 4 years
+MINIMUM_EXPERIENCE_PATTERN = re.compile(
+    r"\b(?:"
+    r"minimum"
+    r"|minimum\s+of"
+    r"|required"
+    r"|requires"
+    r"|required\s+minimum"
+    r"|required\s+minimum\s+of"
+    r")"
+    r"\s*"
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+# at least 4 years
+# at least 4 yrs
+AT_LEAST_EXPERIENCE_PATTERN = re.compile(
+    r"\bat\s+least\s+"
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+# must have 4 years
+# must possess 4 years
+# should have 4 years
+# candidates should have 4 years
+# applicants must have 4 years
+# candidates must possess 4 years
+MUST_HAVE_EXPERIENCE_PATTERN = re.compile(
+    r"\b(?:"
+    r"must\s+have"
+    r"|must\s+possess"
+    r"|should\s+have"
+    r"|should\s+possess"
+    r"|candidates?\s+must\s+have"
+    r"|candidates?\s+must\s+possess"
+    r"|candidates?\s+should\s+have"
+    r"|candidates?\s+should\s+possess"
+    r"|applicants?\s+must\s+have"
+    r"|applicants?\s+must\s+possess"
+    r")"
+    r"\s+"
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+# 4 years of experience
+# 4 years of related experience
+# 4 years of relevant experience
+# 4 years professional experience
+# 4 years hands-on experience
+# 4 years technical experience
+# 4 years industry experience
+# 4 years software testing experience
+#
+# Broad intentionally, because actual JDs use many variations.
+DIRECT_EXPERIENCE_PATTERN = re.compile(
+    r"\b(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)"
+    r"\s*(?:"
+    r"of\s+"
+    r")?"
+    r"(?:"
+    r"[a-z][a-z0-9/&,\-]*"
+    r"\s+"
+    r"){0,8}"
+    r"experience\b",
+    re.IGNORECASE,
+)
+
+
+# experience of 4 years
+# experience: 4 years
+REVERSE_EXPERIENCE_PATTERN = re.compile(
+    r"\bexperience"
+    r"\s*(?:of|:)?\s*"
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+# 4 years required
+# 4 years are required
+# 4 years is required
+YEARS_REQUIRED_PATTERN = re.compile(
+    r"\b(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)"
+    r"\s*(?:"
+    r"are\s+required"
+    r"|is\s+required"
+    r"|required"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
+# Title-only experience:
+# QA Engineer 3 Years
+# Support Engineer 3+
+TITLE_EXPERIENCE_PATTERN = re.compile(
+    r"\b(\d+(?:\.\d+)?)"
+    r"\s*(?:\+|plus)?"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+# ============================================================
+# GENERAL HELPERS
 # ============================================================
 
 def normalise(value):
@@ -218,6 +362,7 @@ def clean_text(value):
         .replace("\u2013", "-")
         .replace("\u2014", "-")
         .replace("\u2212", "-")
+        .replace("\u2012", "-")
     )
 
     text = re.sub(
@@ -254,43 +399,28 @@ def contains_phrase(text, phrase):
 
 def get_job_content_text(job):
     """
-    Return meaningful job-content fields for role/skill matching.
+    Return meaningful job-content fields.
 
-    Metadata such as dates, IDs, URLs and company statistics
-    are intentionally excluded.
+    Metadata such as:
+    - dates
+    - IDs
+    - URLs
+    - salary
+    - company statistics
+    - source metadata
+
+    is intentionally excluded.
     """
 
     pieces = []
 
-    allowed_fields = {
-        "title",
-        "description",
-        "full_job_page_text",
-        "job_description",
-        "experience",
-        "experience_range",
-        "experience_requirement",
-        "experience_required",
-        "experience_years",
-        "experience_years_min",
-        "experience_years_max",
-        "required_experience",
-        "minimum_experience",
-        "maximum_experience",
-        "years_of_experience",
-        "required_years",
-        "minimum_years",
-        "maximum_years",
-        "requirements",
-        "requirements_text",
-        "job_requirements",
-        "qualifications",
-        "qualification",
-        "basic_qualifications",
-        "preferred_qualifications",
-        "skills",
-        "category",
-    }
+    allowed_fields = (
+        EXPERIENCE_CONTENT_FIELDS
+        | {
+            "skills",
+            "category",
+        }
+    )
 
     for key, value in job.items():
 
@@ -308,28 +438,153 @@ def get_job_content_text(job):
             normalise(value)
         )
 
-    return " ".join(pieces)
+    return " ".join(
+        pieces
+    )
 
 
 def get_complete_job_text(job):
-    """
-    Backward-compatible helper.
+    """Backward-compatible helper."""
 
-    Returns meaningful searchable job content rather than
-    blindly scanning every metadata field.
-    """
-
-    return get_job_content_text(job)
+    return get_job_content_text(
+        job
+    )
 
 
 # ============================================================
-# ADVANCED ROLE CHECKS
+# RECURSIVE EXPERIENCE CONTENT EXTRACTION
 # ============================================================
+
+def extract_experience_content(
+    value,
+    field_name="",
+):
+    """
+    Recursively collect text ONLY from legitimate job-content
+    structures.
+
+    This prevents metadata numbers from becoming fake
+    experience requirements.
+    """
+
+    texts = []
+
+    if isinstance(value, dict):
+
+        for key, item in value.items():
+
+            key_name = str(
+                key
+            ).lower().strip()
+
+            if key_name in EXPERIENCE_CONTENT_FIELDS:
+
+                texts.extend(
+                    extract_experience_content(
+                        item,
+                        key_name,
+                    )
+                )
+
+            elif key_name in EXPERIENCE_CONTAINER_FIELDS:
+
+                texts.extend(
+                    extract_experience_content(
+                        item,
+                        key_name,
+                    )
+                )
+
+        return texts
+
+    if isinstance(value, list):
+
+        for item in value:
+
+            texts.extend(
+                extract_experience_content(
+                    item,
+                    field_name,
+                )
+            )
+
+        return texts
+
+    text = clean_text(
+        value
+    )
+
+    if text:
+
+        texts.append(
+            (
+                field_name,
+                text,
+            )
+        )
+
+    return texts
+
+
+# ============================================================
+# SENIORITY
+# ============================================================
+
+def has_advanced_seniority(job):
+    """
+    Check explicit seniority metadata.
+
+    Reject:
+        Mid-Senior
+        Senior
+        Sr.
+        Lead
+        Principal
+        Staff
+        Manager
+        Director
+        Head
+        VP
+
+    Do not reject merely because a job is:
+        Associate
+        Junior
+        Entry Level
+    """
+
+    for key, value in job.items():
+
+        key_name = str(
+            key
+        ).lower().strip()
+
+        if key_name not in SENIORITY_FIELDS:
+            continue
+
+        text = clean_text(
+            value
+        )
+
+        if not text:
+            continue
+
+        for pattern in ADVANCED_SENIORITY_PATTERNS:
+
+            if re.search(
+                pattern,
+                text,
+            ):
+                return True
+
+    return False
+
 
 def has_advanced_title(title):
-    """Reject explicitly senior/advanced designations."""
+    """Reject explicitly senior/advanced titles."""
 
-    text = clean_text(title)
+    text = clean_text(
+        title
+    )
 
     for pattern in ADVANCED_TITLE_PATTERNS:
 
@@ -351,9 +606,11 @@ def has_advanced_title(title):
 
 
 def has_advanced_domain(title):
-    """Reject explicitly advanced DevOps/SRE designations."""
+    """Reject explicitly advanced DevOps/SRE titles."""
 
-    text = clean_text(title)
+    text = clean_text(
+        title
+    )
 
     return any(
         contains_phrase(
@@ -369,26 +626,11 @@ def has_advanced_domain(title):
 # ============================================================
 
 def title_experience_above_limit(title):
-    """
-    Detect explicit experience in the title.
+    """Reject explicit >2-year requirements in job titles."""
 
-    Examples:
-
-        Support Engineer 3 Yrs
-            -> reject
-
-        Support Engineer 3+ Years
-            -> reject
-
-        Support Engineer 2 Years
-            -> accept
-
-        Support Engineer 2+ Years
-            -> reject
-            because 2+ includes experience above 2.
-    """
-
-    title = clean_text(title)
+    title = clean_text(
+        title
+    )
 
     for match in TITLE_EXPERIENCE_PATTERN.finditer(
         title
@@ -398,15 +640,15 @@ def title_experience_above_limit(title):
             match.group(1)
         )
 
-        matched_text = clean_text(
+        matched = clean_text(
             match.group(0)
         )
 
         if (
             "+"
-            in matched_text
+            in matched
             or "plus"
-            in matched_text
+            in matched
         ):
 
             if (
@@ -415,10 +657,11 @@ def title_experience_above_limit(title):
             ):
                 return True
 
-        if (
+        elif (
             years
             > MAX_JOB_EXPERIENCE_YEARS
         ):
+
             return True
 
     return False
@@ -429,15 +672,46 @@ def title_experience_above_limit(title):
 # ============================================================
 
 def extract_experience_requirements(text):
-    """Extract explicit experience requirements from job content."""
+    """
+    Detect many real-world experience expressions.
 
-    text = clean_text(text)
+    Returns tuples:
+
+        minimum,
+        maximum,
+        matched_text,
+        requirement_type
+
+    requirement_type is:
+        mandatory
+        preferred
+        general
+    """
+
+    text = clean_text(
+        text
+    )
 
     results = []
 
+    def add(
+        minimum,
+        maximum,
+        matched,
+        requirement_type="mandatory",
+    ):
+
+        results.append(
+            (
+                minimum,
+                maximum,
+                clean_text(matched),
+                requirement_type,
+            )
+        )
+
     # --------------------------------------------------------
-    # 1-3 years
-    # 1 to 3 years
+    # RANGE
     # --------------------------------------------------------
 
     for match in EXPERIENCE_RANGE_PATTERN.finditer(
@@ -452,40 +726,40 @@ def extract_experience_requirements(text):
             match.group(2)
         )
 
-        results.append(
-            (
-                minimum,
-                maximum,
-                match.group(0),
-            )
+        add(
+            minimum,
+            maximum,
+            match.group(0),
         )
 
     # --------------------------------------------------------
-    # 3+ years
-    # 3 or more years
+    # PLUS
     # --------------------------------------------------------
 
     for match in EXPERIENCE_PLUS_PATTERN.finditer(
         text
     ):
 
-        minimum = float(
-            match.group(1)
+        first = match.group(1)
+        second = match.group(2)
+
+        years = float(
+            first
+            if first is not None
+            else second
         )
 
-        results.append(
-            (
-                minimum,
-                float("inf"),
-                match.group(0),
-            )
+        add(
+            years,
+            float("inf"),
+            match.group(0),
         )
 
     # --------------------------------------------------------
-    # 3 years experience
+    # MINIMUM / REQUIRED
     # --------------------------------------------------------
 
-    for match in EXPERIENCE_PATTERN.finditer(
+    for match in MINIMUM_EXPERIENCE_PATTERN.finditer(
         text
     ):
 
@@ -493,16 +767,86 @@ def extract_experience_requirements(text):
             match.group(1)
         )
 
-        results.append(
-            (
-                years,
-                years,
-                match.group(0),
-            )
+        add(
+            years,
+            years,
+            match.group(0),
         )
 
     # --------------------------------------------------------
-    # experience of 3 years
+    # AT LEAST
+    # --------------------------------------------------------
+
+    for match in AT_LEAST_EXPERIENCE_PATTERN.finditer(
+        text
+    ):
+
+        years = float(
+            match.group(1)
+        )
+
+        add(
+            years,
+            years,
+            match.group(0),
+        )
+
+    # --------------------------------------------------------
+    # MUST / SHOULD HAVE
+    # --------------------------------------------------------
+
+    for match in MUST_HAVE_EXPERIENCE_PATTERN.finditer(
+        text
+    ):
+
+        years = float(
+            match.group(1)
+        )
+
+        add(
+            years,
+            years,
+            match.group(0),
+        )
+
+    # --------------------------------------------------------
+    # YEARS REQUIRED
+    # --------------------------------------------------------
+
+    for match in YEARS_REQUIRED_PATTERN.finditer(
+        text
+    ):
+
+        years = float(
+            match.group(1)
+        )
+
+        add(
+            years,
+            years,
+            match.group(0),
+        )
+
+    # --------------------------------------------------------
+    # DIRECT EXPERIENCE
+    # --------------------------------------------------------
+
+    for match in DIRECT_EXPERIENCE_PATTERN.finditer(
+        text
+    ):
+
+        years = float(
+            match.group(1)
+        )
+
+        add(
+            years,
+            years,
+            match.group(0),
+        )
+
+    # --------------------------------------------------------
+    # REVERSE
     # --------------------------------------------------------
 
     for match in REVERSE_EXPERIENCE_PATTERN.finditer(
@@ -513,27 +857,93 @@ def extract_experience_requirements(text):
             match.group(1)
         )
 
-        results.append(
+        add(
+            years,
+            years,
+            match.group(0),
+        )
+
+    # --------------------------------------------------------
+    # PREFERRED CLASSIFICATION
+    #
+    # We keep preferred experience visible, but it is not
+    # automatically treated as a hard requirement.
+    # --------------------------------------------------------
+
+    preferred_markers = [
+        "preferred",
+        "preferably",
+        "nice to have",
+        "nice-to-have",
+        "desired",
+        "bonus",
+        "plus",
+        "good to have",
+    ]
+
+    classified = []
+
+    for (
+        minimum,
+        maximum,
+        matched,
+        requirement_type,
+    ) in results:
+
+        # Find a local sentence around the match.
+        index = text.find(
+            matched
+        )
+
+        context = ""
+
+        if index >= 0:
+
+            start = max(
+                0,
+                index - 100,
+            )
+
+            end = min(
+                len(text),
+                index + len(matched) + 100,
+            )
+
+            context = text[
+                start:end
+            ]
+
+        if any(
+            marker in context
+            for marker in preferred_markers
+        ):
+
+            requirement_type = "preferred"
+
+        classified.append(
             (
-                years,
-                years,
-                match.group(0),
+                minimum,
+                maximum,
+                matched,
+                requirement_type,
             )
         )
 
     # --------------------------------------------------------
-    # Deduplicate
+    # DEDUPLICATE
     # --------------------------------------------------------
 
     unique = []
+
     seen = set()
 
-    for item in results:
+    for item in classified:
 
         key = (
             item[0],
             item[1],
             item[2],
+            item[3],
         )
 
         if key in seen:
@@ -556,24 +966,15 @@ def extract_experience_requirements(text):
 
 def analyse_experience(job):
     """
-    Inspect genuine job-content fields for experience.
+    Perform deep experience analysis across the complete
+    available job content.
 
-    IMPORTANT:
-    Metadata such as date_posted, company size, IDs,
-    URLs and source fields are NOT scanned.
+    HARD RULE:
 
-    ANY explicit experience requirement above the user's
-    maximum is rejected.
+        If ANY mandatory experience requirement is above
+        MAX_JOB_EXPERIENCE_YEARS, the entire job is rejected.
 
-    Examples:
-
-        0-2 years  -> ACCEPT
-        1-2 years  -> ACCEPT
-        2 years    -> ACCEPT
-        1-3 years  -> REJECT
-        2-4 years  -> REJECT
-        3+ years   -> REJECT
-        6+ years   -> REJECT
+    Preferred requirements are recorded separately.
     """
 
     title = clean_text(
@@ -581,7 +982,7 @@ def analyse_experience(job):
     )
 
     # --------------------------------------------------------
-    # TITLE CHECK
+    # TITLE
     # --------------------------------------------------------
 
     if title_experience_above_limit(
@@ -591,71 +992,42 @@ def analyse_experience(job):
         return {
             "found": True,
             "valid": False,
+            "hard_rejection": True,
             "maximum_required": float("inf"),
-            "requirements": [
+            "mandatory_requirements": [
                 {
+                    "field": "title",
+                    "minimum": None,
+                    "maximum": None,
                     "text": title,
                     "reason": (
-                        "Experience requirement "
-                        "appears in title"
+                        "Title contains "
+                        "experience above limit"
                     ),
                 }
             ],
+            "preferred_requirements": [],
         }
 
     # --------------------------------------------------------
-    # COLLECT ONLY REAL JOB-CONTENT FIELDS
+    # COLLECT FULL CONTENT
     # --------------------------------------------------------
 
-    texts = []
-
-    seen_text = set()
-
-    for key, value in job.items():
-
-        key_name = str(
-            key
-        ).lower().strip()
-
-        if (
-            key_name
-            not in EXPERIENCE_CONTENT_FIELDS
-        ):
-            continue
-
-        if value is None:
-            continue
-
-        text = clean_text(
-            value
+    content_items = (
+        extract_experience_content(
+            job
         )
-
-        if not text:
-            continue
-
-        if text in seen_text:
-            continue
-
-        seen_text.add(
-            text
-        )
-
-        texts.append(
-            (
-                key_name,
-                text,
-            )
-        )
-
-    # --------------------------------------------------------
-    # EXTRACT REQUIREMENTS
-    # --------------------------------------------------------
+    )
 
     requirements = []
 
-    seen_requirements = set()
+    seen = set()
 
-    for field_name, text in texts:
+    # --------------------------------------------------------
+    # ANALYSE EVERY CONTENT FIELD
+    # --------------------------------------------------------
+
+    for field_name, text in content_items:
 
         detected = (
             extract_experience_requirements(
@@ -667,6 +1039,7 @@ def analyse_experience(job):
             minimum,
             maximum,
             matched,
+            requirement_type,
         ) in detected:
 
             key = (
@@ -674,12 +1047,13 @@ def analyse_experience(job):
                 minimum,
                 maximum,
                 matched,
+                requirement_type,
             )
 
-            if key in seen_requirements:
+            if key in seen:
                 continue
 
-            seen_requirements.add(
+            seen.add(
                 key
             )
 
@@ -693,29 +1067,29 @@ def analyse_experience(job):
                         else maximum
                     ),
                     "text": matched,
+                    "type": requirement_type,
                 }
             )
 
+    mandatory = [
+        item
+        for item in requirements
+        if item["type"] != "preferred"
+    ]
+
+    preferred = [
+        item
+        for item in requirements
+        if item["type"] == "preferred"
+    ]
+
     # --------------------------------------------------------
-    # NO EXPLICIT EXPERIENCE FOUND
+    # FIND MAX MANDATORY REQUIREMENT
     # --------------------------------------------------------
 
-    if not requirements:
+    maximum_required = None
 
-        return {
-            "found": False,
-            "valid": True,
-            "maximum_required": None,
-            "requirements": [],
-        }
-
-    # --------------------------------------------------------
-    # FIND HIGHEST REQUIREMENT
-    # --------------------------------------------------------
-
-    maximum_required = 0
-
-    for requirement in requirements:
+    for requirement in mandatory:
 
         maximum = requirement[
             "maximum"
@@ -723,33 +1097,47 @@ def analyse_experience(job):
 
         if maximum is None:
 
-            maximum_required = float(
+            value = float(
                 "inf"
             )
 
-            continue
+        else:
 
-        maximum_required = max(
-            maximum_required,
-            maximum,
-        )
+            value = float(
+                maximum
+            )
+
+        if (
+            maximum_required is None
+            or value > maximum_required
+        ):
+
+            maximum_required = value
 
     # --------------------------------------------------------
-    # HARD EXPERIENCE LIMIT
+    # HARD REJECTION
     # --------------------------------------------------------
 
-    valid = (
-        maximum_required
-        <= MAX_JOB_EXPERIENCE_YEARS
-    )
+    hard_rejection = False
+
+    if (
+        maximum_required is not None
+        and maximum_required
+        > MAX_JOB_EXPERIENCE_YEARS
+    ):
+
+        hard_rejection = True
 
     return {
-        "found": True,
-        "valid": valid,
-        "maximum_required": (
-            maximum_required
+        "found": bool(
+            requirements
         ),
-        "requirements": requirements,
+        "valid": not hard_rejection,
+        "hard_rejection": hard_rejection,
+        "maximum_required": maximum_required,
+        "mandatory_requirements": mandatory,
+        "preferred_requirements": preferred,
+        "all_requirements": requirements,
     }
 
 
@@ -761,7 +1149,7 @@ def matches_location(job):
     """
     Match preferred locations.
 
-    Do NOT use TN / KA / TS abbreviations because they can
+    Do not use TN / KA / TS abbreviations because they can
     represent US states and create false matches.
     """
 
@@ -775,10 +1163,6 @@ def matches_location(job):
             "remote_work_model"
         )
     )
-
-    # --------------------------------------------------------
-    # Remote
-    # --------------------------------------------------------
 
     if "Remote" in LOCATIONS:
 
@@ -803,10 +1187,6 @@ def matches_location(job):
             ]
         ):
             return True
-
-    # --------------------------------------------------------
-    # Indian preferred locations
-    # --------------------------------------------------------
 
     for preferred in LOCATIONS:
 
@@ -843,10 +1223,6 @@ def role_matches(job):
 
     matched_roles = []
 
-    # --------------------------------------------------------
-    # Exact target-role title matches
-    # --------------------------------------------------------
-
     for role in TARGET_ROLES:
 
         role_clean = clean_text(
@@ -857,13 +1233,10 @@ def role_matches(job):
             title,
             role_clean,
         ):
+
             matched_roles.append(
                 role
             )
-
-    # --------------------------------------------------------
-    # Controlled role families
-    # --------------------------------------------------------
 
     allowed_families = [
         "application support",
@@ -923,7 +1296,9 @@ def score_job(job):
     )
 
     job_content = (
-        get_job_content_text(job)
+        get_job_content_text(
+            job
+        )
     )
 
     matched_roles = role_matches(
@@ -946,7 +1321,7 @@ def score_job(job):
     filter_reasons = []
 
     # --------------------------------------------------------
-    # SENIOR / ADVANCED TITLE
+    # TITLE SENIORITY
     # --------------------------------------------------------
 
     if has_advanced_title(
@@ -958,7 +1333,19 @@ def score_job(job):
         )
 
     # --------------------------------------------------------
-    # ADVANCED DEVOPS / SRE
+    # SENIORITY METADATA
+    # --------------------------------------------------------
+
+    if has_advanced_seniority(
+        job
+    ):
+
+        filter_reasons.append(
+            "Advanced/senior-level metadata"
+        )
+
+    # --------------------------------------------------------
+    # ADVANCED DOMAIN
     # --------------------------------------------------------
 
     if has_advanced_domain(
@@ -970,19 +1357,27 @@ def score_job(job):
         )
 
     # --------------------------------------------------------
-    # EXPERIENCE
+    # EXPERIENCE HARD GATE
     # --------------------------------------------------------
 
-    if not experience["valid"]:
+    if experience[
+        "hard_rejection"
+    ]:
 
         maximum = experience[
             "maximum_required"
         ]
 
-        if maximum == float("inf"):
+        if maximum is None:
 
             display = (
-                "2+ years or higher"
+                "unknown"
+            )
+
+        elif maximum == float("inf"):
+
+            display = (
+                "open-ended / plus-years"
             )
 
         else:
@@ -992,9 +1387,9 @@ def score_job(job):
             )
 
         filter_reasons.append(
-            "Experience requirement exceeds "
+            "Mandatory experience exceeds "
             f"{MAX_JOB_EXPERIENCE_YEARS:g} years "
-            f"({display})"
+            f"(detected: {display})"
         )
 
     # --------------------------------------------------------
@@ -1010,7 +1405,7 @@ def score_job(job):
         )
 
     # --------------------------------------------------------
-    # EMPLOYMENT TYPE
+    # EMPLOYMENT
     # --------------------------------------------------------
 
     employment = clean_text(
@@ -1053,7 +1448,7 @@ def score_job(job):
         )
 
     # --------------------------------------------------------
-    # SCORING
+    # SCORE
     # --------------------------------------------------------
 
     role_score = min(
@@ -1091,7 +1486,9 @@ def score_job(job):
 
     passes = not filter_reasons
 
-    result = dict(job)
+    result = dict(
+        job
+    )
 
     result[
         "match_score"
@@ -1120,6 +1517,10 @@ def score_job(job):
         result[
             "match_category"
         ] = "Possible match"
+
+    # --------------------------------------------------------
+    # AUDIT DETAILS
+    # --------------------------------------------------------
 
     result[
         "match_details"
@@ -1160,7 +1561,7 @@ def rank_jobs(jobs):
 # ============================================================
 
 def normalize_company(value):
-    """Normalize company names for duplicate detection."""
+    """Normalize company names."""
 
     text = clean_text(
         value
@@ -1180,7 +1581,7 @@ def normalize_company(value):
 
 
 def normalize_title(value):
-    """Normalize titles for duplicate detection."""
+    """Normalize titles."""
 
     text = clean_text(
         value
@@ -1200,9 +1601,7 @@ def normalize_title(value):
 
 
 def duplicate_key(job):
-    """
-    Same company + same designation = duplicate.
-    """
+    """Same company + same designation = duplicate."""
 
     company = normalize_company(
         job.get("company")
@@ -1225,11 +1624,13 @@ def duplicate_key(job):
 # FINAL ELIGIBLE JOBS
 # ============================================================
 
-def keep_relevant_jobs(ranked_jobs):
+def keep_relevant_jobs(
+    ranked_jobs
+):
     """
     Keep only jobs that pass all hard filters.
 
-    Also remove duplicate company/designation combinations.
+    Remove duplicate company/title combinations.
     """
 
     relevant = [
@@ -1268,13 +1669,10 @@ def keep_relevant_jobs(ranked_jobs):
 # REJECTED JOBS
 # ============================================================
 
-def get_rejected_jobs(ranked_jobs):
-    """
-    Return all jobs rejected by the hard filters.
-
-    These jobs are retained for the rejected_jobs.json
-    audit report so we can inspect exactly why they failed.
-    """
+def get_rejected_jobs(
+    ranked_jobs
+):
+    """Return all rejected jobs for audit reporting."""
 
     return [
         job
