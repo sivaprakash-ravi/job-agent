@@ -6,11 +6,13 @@ counting. Stages follow the pipeline:
     discovered -> normalized (unique) -> enrichable/duplicate
                -> enrichment_skipped | enriched
                -> verified | unverified
-               -> eligible | rejected (one terminal rejection_stage)
+               -> qualified | possible_match | rejected
+                  (one terminal rejection_stage per rejected job)
 
 A job is counted exactly once at each boundary:
     unique    = enrichment_skipped + enriched
-    enriched  = verified + unverified = eligible + rejected
+    enriched  = verified + unverified
+              = qualified + possible_matches + rejected
 
 Also produces provider quality, query quality and cross-source
 overlap metrics used to steer the next run.
@@ -20,22 +22,37 @@ import re
 from collections import Counter, defaultdict
 
 from canonical import job_identity
+from job_matcher import (
+    POSSIBLE_MATCH,
+    QUALIFIED,
+    job_qualification,
+)
 
 
 # ============================================================
 # REJECTION STAGE CLASSIFICATION
 # ============================================================
 
+REJECTION_STAGES = frozenset(
+    [
+        "experience_rejected",
+        "location_rejected",
+        "role_rejected",
+        "hard_filter_rejected",
+    ]
+)
+
 def rejection_stage(job):
     """Return the single terminal stage for a ranked job.
 
-    Eligible jobs return "eligible". Every rejected job maps to one
-    stage by priority: experience > location > role > other.
+    Non-rejected jobs return their explicit qualification state
+    ("qualified" or "possible_match"). Every rejected job maps to one
+    rejection stage by priority: experience > location > role > other.
     """
     category = job.get("match_category")
 
     if category != "Ignore":
-        return "eligible"
+        return job_qualification(job)
 
     details = job.get("match_details") or {}
     reasons = details.get("filter_reasons") or []
@@ -92,10 +109,16 @@ def provider_quality(provider_results, ranked):
         for job in ranked
     )
 
-    eligible = Counter(
+    qualified = Counter(
         str(job.get("source") or "unknown")
         for job in ranked
-        if job.get("match_category") != "Ignore"
+        if job_qualification(job) == QUALIFIED
+    )
+
+    possible = Counter(
+        str(job.get("source") or "unknown")
+        for job in ranked
+        if job_qualification(job) == POSSIBLE_MATCH
     )
 
     verified = Counter(
@@ -119,10 +142,12 @@ def provider_quality(provider_results, ranked):
                 "discovered": discovered.get(source, 0),
                 "enriched": keep,
                 "verified": verified.get(source, 0),
-                "eligible": eligible.get(source, 0),
+                "eligible": qualified.get(source, 0),
+                "qualified": qualified.get(source, 0),
+                "possible_matches": possible.get(source, 0),
                 "relevance_rate_enriched": (
                     round(
-                        eligible.get(source, 0) / keep,
+                        qualified.get(source, 0) / keep,
                         4,
                     )
                     if keep
@@ -130,7 +155,7 @@ def provider_quality(provider_results, ranked):
                 ),
                 "relevance_rate_discovered": (
                     round(
-                        eligible.get(source, 0)
+                        qualified.get(source, 0)
                         / discovered.get(source, 0),
                         4,
                     )
@@ -148,9 +173,9 @@ def provider_quality(provider_results, ranked):
 # ============================================================
 
 def query_quality(ranked):
-    """Per-search-query enriched/eligible relevance metrics."""
+    """Per-search-query enriched/qualified relevance metrics."""
     buckets = defaultdict(
-        lambda: {"enriched": 0, "eligible": 0}
+        lambda: {"enriched": 0, "qualified": 0, "possible": 0}
     )
 
     for job in ranked:
@@ -158,8 +183,12 @@ def query_quality(ranked):
 
         buckets[key]["enriched"] += 1
 
-        if job.get("match_category") != "Ignore":
-            buckets[key]["eligible"] += 1
+        qualification = job_qualification(job)
+
+        if qualification == POSSIBLE_MATCH:
+            buckets[key]["possible"] += 1
+        elif qualification == QUALIFIED:
+            buckets[key]["qualified"] += 1
 
     rows = []
 
@@ -168,10 +197,12 @@ def query_quality(ranked):
             {
                 "search_query": query,
                 "enriched": counts["enriched"],
-                "eligible": counts["eligible"],
+                "eligible": counts["qualified"],
+                "qualified": counts["qualified"],
+                "possible_matches": counts["possible"],
                 "relevance_rate": (
                     round(
-                        counts["eligible"]
+                        counts["qualified"]
                         / counts["enriched"],
                         4,
                     )
@@ -184,7 +215,7 @@ def query_quality(ranked):
     return sorted(
         rows,
         key=lambda row: (
-            row["eligible"],
+            row["qualified"],
             row["enriched"],
         ),
         reverse=True,
@@ -234,7 +265,8 @@ def build_funnel(
     unique_jobs,
     enriched_jobs,
     ranked_jobs,
-    eligible_jobs,
+    qualified_jobs,
+    possible_matches,
     new_jobs,
     prefilter_counts,
 ):
@@ -272,15 +304,31 @@ def build_funnel(
         ranked_jobs
     )
 
+    qualified_count = len(
+        qualified_jobs
+    )
+
+    rejected_count = sum(
+        count
+        for stage, count in stages.items()
+        if stage in REJECTION_STAGES
+    )
+
     return {
         "stages": {
             "discovered": total_discovered,
             "normalized_unique": len(unique_jobs),
+            "duplicates": (
+                total_discovered - len(unique_jobs)
+            ),
             "duplicates_removed": (
                 total_discovered - len(unique_jobs)
             ),
             "prefilter_pass": prefilter_counts.get(
                 True, 0
+            ),
+            "prefilter_rejected": prefilter_counts.get(
+                False, 0
             ),
             "prefilter_rejected_priority_only": (
                 prefilter_counts.get(False, 0)
@@ -289,9 +337,12 @@ def build_funnel(
             "enriched": len(enriched_jobs),
             "verified": verified_count,
             "unverified": unverified_count,
-            "eligible": len(eligible_jobs),
+            "qualified": qualified_count,
+            "possible_matches": len(possible_matches),
+            "eligible": qualified_count,
+            "rejected": rejected_count,
             "already_sent": (
-                len(eligible_jobs) - len(new_jobs)
+                qualified_count - len(new_jobs)
             ),
             "new_telegram": len(new_jobs),
         },
@@ -307,7 +358,7 @@ def build_funnel(
                 {
                     stage: count
                     for stage, count in stages.items()
-                    if stage != "eligible"
+                    if stage in REJECTION_STAGES
                 }.items(),
                 key=lambda item: item[1],
                 reverse=True,
@@ -316,10 +367,14 @@ def build_funnel(
         "eligible_by_provider": {},
         "source_overlap": dedupe_pairs,
         "notes": (
-            "enrichment_skipped splits into jobs below the "
-            "priority bar and jobs beyond the cap; import the "
-            "prefilter_skipped report (JOB_AGENT_SAVE_SKIPPED=1) "
-            "for per-job detail. source_overlap only sees kept "
-            "jobs, so same-source duplicate removals are not pairs."
+            "qualified = no hard filter reason AND score >= "
+            "MINIMUM_SCORE; possible_match = no hard filter reason "
+            "but score below the gate (never sent, kept for analysis); "
+            "rejected = hard filter reason (always wins over score). "
+            "enrichment_skipped splits into jobs below the priority "
+            "bar and jobs beyond the cap; import the prefilter_skipped "
+            "report (JOB_AGENT_SAVE_SKIPPED=1) for per-job detail. "
+            "source_overlap only sees kept jobs, so same-source "
+            "duplicate removals are not pairs."
         ),
     }

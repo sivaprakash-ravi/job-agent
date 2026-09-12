@@ -8,7 +8,11 @@ from email.message import EmailMessage
 from pathlib import Path
 
 
-REPORT_FILE = Path("reports/jobs.json")
+REPO_ROOT = Path(
+    __file__
+).resolve().parent.parent
+
+REPORT_FILE = REPO_ROOT / "reports" / "jobs.json"
 
 
 def job_line(job):

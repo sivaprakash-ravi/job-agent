@@ -2,7 +2,8 @@
 
 The funnel must classify every ranked job into exactly one terminal
 stage so counts never double-count:
-    enriched = verified + unverified = eligible + rejected
+    enriched = verified + unverified
+             = qualified + possible_matches + rejected
 """
 
 from funnel import (
@@ -20,26 +21,45 @@ def ranked_job(
     source="githubish",
     stage_reason="",
     location="Remote",
+    score=50,
 ):
     details = {"filter_reasons": []}
 
     if category == "Ignore" and stage_reason:
         details["filter_reasons"] = [stage_reason]
 
+    if category == "Ignore":
+        qualification = "rejected"
+    elif score >= 45:
+        qualification = "qualified"
+    else:
+        qualification = "possible_match"
+
     return {
         "title": title,
         "source": source,
         "location": location,
         "match_category": category,
+        "match_score": score,
+        "qualification": qualification,
         "match_details": details,
         "verification_status": "VERIFIED",
         "search_query": "DevOps",
     }
 
 
-def test_rejection_stage_eligible():
+def test_rejection_stage_qualified():
     job = ranked_job("DevOps Engineer", category="Good match")
-    assert rejection_stage(job) == "eligible"
+    assert rejection_stage(job) == "qualified"
+
+
+def test_rejection_stage_possible_match():
+    job = ranked_job(
+        "Operations Engineer II",
+        category="Possible match",
+        score=40,
+    )
+    assert rejection_stage(job) == "possible_match"
 
 
 def test_rejection_stage_location():
@@ -96,7 +116,7 @@ def test_stage_counter_no_double_counting():
 
     counts = stage_counter(jobs)
 
-    assert counts["eligible"] == 1
+    assert counts["qualified"] == 1
     assert counts["location_rejected"] == 1
     assert counts["experience_rejected"] == 1
     assert counts["hard_filter_rejected"] == 1
@@ -120,7 +140,7 @@ def test_provider_quality_rows():
 
     ranked = [
         ranked_job("A", source="workable", category="Good match"),
-        ranked_job("B", source="workable"),
+        ranked_job("B", source="workable", stage_reason="Not full-time"),
         ranked_job("C", source="jobicy", category="Possible match"),
     ]
 
@@ -138,7 +158,7 @@ def test_provider_quality_rows():
 def test_query_quality_rows():
     ranked = [
         ranked_job("A", category="Good match", location="Remote"),
-        ranked_job("B", category="Ignore"),
+        ranked_job("B", stage_reason="Not full-time"),
     ]
 
     rows = query_quality(ranked)

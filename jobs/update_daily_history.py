@@ -5,8 +5,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-JOBS_FILE = Path("reports/jobs.json")
-HISTORY_FILE = Path("reports/daily_job_history.json")
+REPO_ROOT = Path(
+    __file__
+).resolve().parent.parent
+
+JOBS_FILE = REPO_ROOT / "reports" / "jobs.json"
+HISTORY_FILE = REPO_ROOT / "reports" / "daily_job_history.json"
 
 
 def main():

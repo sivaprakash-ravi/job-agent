@@ -15,7 +15,9 @@ from sources.base import build_locations, build_search_queries
 from sources.jobspy_source import run
 
 
-OUTPUT_DIR = Path("reports")
+OUTPUT_DIR = Path(
+    __file__
+).resolve().parent.parent / "reports"
 OUTPUT_FILE = OUTPUT_DIR / "indeed_jobs.json"
 
 

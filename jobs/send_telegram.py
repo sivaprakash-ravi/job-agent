@@ -8,7 +8,11 @@ import urllib.request
 from pathlib import Path
 
 
-REPORT_FILE = Path("reports/jobs.json")
+REPO_ROOT = Path(
+    __file__
+).resolve().parent.parent
+
+REPORT_FILE = REPO_ROOT / "reports" / "jobs.json"
 
 # Telegram sendMessage allows up to 4096 characters.
 # Keep a little safety margin.

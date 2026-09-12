@@ -23,8 +23,11 @@ import source_runner
 from canonical import job_identity
 from job_enricher import enrich_jobs
 from job_matcher import (
+    QUALIFIED,
     enrichment_priority,
     get_rejected_jobs,
+    job_qualification,
+    keep_possible_matches,
     keep_relevant_jobs,
     near_miss_score_from_details,
     prefilter_job,
@@ -41,12 +44,19 @@ from funnel import (
 )
 
 
-OUTPUT_DIR = Path("reports")
+# Reports always resolve against the repository root, never the
+# current working directory, so local and CI runs share one
+# deterministic report + sent-history location.
+JOBS_DIR = Path(__file__).resolve().parent
+REPO_ROOT = JOBS_DIR.parent
+
+OUTPUT_DIR = REPO_ROOT / "reports"
 
 OUTPUT_FILE = OUTPUT_DIR / "jobs.json"
 FULL_OUTPUT_FILE = OUTPUT_DIR / "all_ranked_jobs.json"
 REJECTED_OUTPUT_FILE = OUTPUT_DIR / "rejected_jobs.json"
 UNVERIFIED_OUTPUT_FILE = OUTPUT_DIR / "unverified_jobs.json"
+POSSIBLE_OUTPUT_FILE = OUTPUT_DIR / "possible_matches.json"
 SENT_FILE = OUTPUT_DIR / "sent_jobs.json"
 SOURCE_STATS_FILE = OUTPUT_DIR / "source_stats.json"
 PROVIDER_HEALTH_FILE = OUTPUT_DIR / "provider_health.json"
@@ -163,6 +173,42 @@ def get_match_details(job):
         return {}
 
     return details
+
+
+def new_qualified_jobs(ranked_jobs, sent_jobs):
+    """Return new + qualified jobs and mark them as sent.
+
+    Telegram sends ONLY jobs that are new (not in sent history) AND
+    qualified (no hard rejection, score >= MINIMUM_SCORE). Possible
+    matches and hard-rejected jobs are never selected, and the
+    identity is recorded so a later run never duplicates the alert.
+    """
+    new_jobs = []
+
+    for job in ranked_jobs:
+
+        if job_qualification(job) != QUALIFIED:
+            continue
+
+        identity = job_identity(
+            job
+        )
+
+        if not identity:
+            continue
+
+        if identity in sent_jobs:
+            continue
+
+        new_jobs.append(
+            job
+        )
+
+        sent_jobs.add(
+            identity
+        )
+
+    return new_jobs
 
 
 def main():
@@ -325,8 +371,14 @@ def main():
     # 6. FILTER
     # --------------------------------------------------------
 
-    relevant_jobs = (
+    qualified_jobs = (
         keep_relevant_jobs(
+            ranked_jobs
+        )
+    )
+
+    possible_matches = (
+        keep_possible_matches(
             ranked_jobs
         )
     )
@@ -379,27 +431,10 @@ def main():
 
     sent_jobs = load_sent_jobs()
 
-    new_jobs = []
-
-    for job in relevant_jobs:
-
-        identity = job_identity(
-            job
-        )
-
-        if not identity:
-            continue
-
-        if identity in sent_jobs:
-            continue
-
-        new_jobs.append(
-            job
-        )
-
-        sent_jobs.add(
-            identity
-        )
+    new_jobs = new_qualified_jobs(
+        ranked_jobs,
+        sent_jobs,
+    )
 
     save_sent_jobs(
         sent_jobs
@@ -429,6 +464,11 @@ def main():
         unverified_jobs,
     )
 
+    save_json(
+        POSSIBLE_OUTPUT_FILE,
+        possible_matches,
+    )
+
     stats["summary"].update(
         {
             "total_discovered": total_discovered,
@@ -436,7 +476,9 @@ def main():
             "total_enriched": len(enriched_jobs),
             "total_verified": verified_count,
             "total_unverified": unverified_count,
-            "total_eligible": len(relevant_jobs),
+            "total_qualified": len(qualified_jobs),
+            "total_eligible": len(qualified_jobs),
+            "total_possible_matches": len(possible_matches),
             "total_rejected": len(rejected_jobs),
             "total_new_telegram": len(new_jobs),
             "run_at_utc": (
@@ -463,12 +505,20 @@ def main():
     # 8b. RUN SUMMARY (funnel, provider/query quality, near-misses)
     # --------------------------------------------------------
 
-    eligible_by_provider = {}
+    qualified_by_provider = {}
 
-    for job in relevant_jobs:
+    for job in qualified_jobs:
         source = str(job.get("source") or "unknown")
-        eligible_by_provider[source] = (
-            eligible_by_provider.get(source, 0) + 1
+        qualified_by_provider[source] = (
+            qualified_by_provider.get(source, 0) + 1
+        )
+
+    possible_by_provider = {}
+
+    for job in possible_matches:
+        source = str(job.get("source") or "unknown")
+        possible_by_provider[source] = (
+            possible_by_provider.get(source, 0) + 1
         )
 
     rejection_counts = Counter()
@@ -493,12 +543,14 @@ def main():
         unique_jobs=unique_jobs,
         enriched_jobs=enriched_jobs,
         ranked_jobs=ranked_jobs,
-        eligible_jobs=relevant_jobs,
+        qualified_jobs=qualified_jobs,
+        possible_matches=possible_matches,
         new_jobs=new_jobs,
         prefilter_counts=prefilter_counts,
     )
 
-    funnel_report["eligible_by_provider"] = eligible_by_provider
+    funnel_report["eligible_by_provider"] = qualified_by_provider
+    funnel_report["possible_matches_by_provider"] = possible_by_provider
 
     save_json(
         FUNNEL_FILE,
@@ -613,7 +665,21 @@ def main():
         "totals": dict(stats["summary"]),
         "eligible_by_provider": dict(
             sorted(
-                eligible_by_provider.items(),
+                qualified_by_provider.items(),
+                key=lambda item: item[1],
+                reverse=True,
+            )
+        ),
+        "qualified_by_provider": dict(
+            sorted(
+                qualified_by_provider.items(),
+                key=lambda item: item[1],
+                reverse=True,
+            )
+        ),
+        "possible_matches_by_provider": dict(
+            sorted(
+                possible_by_provider.items(),
                 key=lambda item: item[1],
                 reverse=True,
             )
@@ -669,7 +735,8 @@ def main():
         ("TOTAL ENRICHED", len(enriched_jobs)),
         ("TOTAL VERIFIED", verified_count),
         ("TOTAL UNVERIFIED", unverified_count),
-        ("TOTAL ELIGIBLE", len(relevant_jobs)),
+        ("TOTAL QUALIFIED", len(qualified_jobs)),
+        ("TOTAL POSSIBLE MATCHES", len(possible_matches)),
         ("TOTAL REJECTED", len(rejected_jobs)),
         ("TOTAL NEW TELEGRAM", len(new_jobs)),
     ]
@@ -716,6 +783,7 @@ def main():
         FULL_OUTPUT_FILE,
         REJECTED_OUTPUT_FILE,
         UNVERIFIED_OUTPUT_FILE,
+        POSSIBLE_OUTPUT_FILE,
         SOURCE_STATS_FILE,
         PROVIDER_HEALTH_FILE,
         RUN_SUMMARY_FILE,

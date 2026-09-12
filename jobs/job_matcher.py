@@ -15,6 +15,10 @@ from semantic_job import score_job_semantic
 
 MINIMUM_SCORE = 45
 
+QUALIFIED = "qualified"
+POSSIBLE_MATCH = "possible_match"
+REJECTED = "rejected"
+
 
 # ============================================================
 # LOCATION
@@ -1951,6 +1955,13 @@ def score_job(job):
 
     passes = not filter_reasons
 
+    if not passes:
+        qualification = REJECTED
+    elif score >= MINIMUM_SCORE:
+        qualification = QUALIFIED
+    else:
+        qualification = POSSIBLE_MATCH
+
     result = dict(
         job
     )
@@ -1958,6 +1969,10 @@ def score_job(job):
     result[
         "match_score"
     ] = score
+
+    result[
+        "qualification"
+    ] = qualification
 
     if not passes:
 
@@ -2172,17 +2187,56 @@ def duplicate_key(job):
 # FINAL ELIGIBLE JOBS
 # ============================================================
 
+def job_qualification(job):
+    """Return the explicit qualification state for a ranked job.
+
+    ``qualified``     - no hard filter reason AND score >= MINIMUM_SCORE
+    ``possible_match``- no hard filter reason BUT score < MINIMUM_SCORE
+    ``rejected``      - hard filter reason (hard rejection always wins)
+
+    Falls back to deriving the state from the stored match details for
+    jobs scored before the field existed (or synthetic test records).
+    """
+    details = job.get("match_details") or {}
+
+    if not isinstance(details, dict):
+        details = {}
+
+    filter_reasons = details.get(
+        "filter_reasons"
+    ) or []
+
+    if filter_reasons:
+        return REJECTED
+
+    stored = job.get("qualification")
+
+    if stored in {
+        QUALIFIED,
+        POSSIBLE_MATCH,
+    }:
+        return stored
+
+    score = job.get(
+        "match_score",
+        0,
+    )
+
+    if score >= MINIMUM_SCORE:
+        return QUALIFIED
+
+    return POSSIBLE_MATCH
+
+
 def keep_relevant_jobs(
     ranked_jobs
 ):
-    """Keep jobs passing every hard filter."""
+    """Keep jobs qualified on every axis (hard filters + score gate)."""
 
     relevant = [
         job
         for job in ranked_jobs
-        if job.get(
-            "match_category"
-        ) != "Ignore"
+        if job_qualification(job) == QUALIFIED
     ]
 
     unique = []
@@ -2209,6 +2263,45 @@ def keep_relevant_jobs(
     return unique
 
 
+def keep_possible_matches(
+    ranked_jobs
+):
+    """Keep no-hard-rejection jobs that fall below the score gate.
+
+    Possible matches are NOT sent to Telegram, but stay available for
+    reporting/analysis.
+    """
+
+    possible = [
+        job
+        for job in ranked_jobs
+        if job_qualification(job) == POSSIBLE_MATCH
+    ]
+
+    unique = []
+
+    seen = set()
+
+    for job in possible:
+
+        key = duplicate_key(
+            job
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(
+            key
+        )
+
+        unique.append(
+            job
+        )
+
+    return unique
+
+
 # ============================================================
 # REJECTED JOBS
 # ============================================================
@@ -2216,12 +2309,10 @@ def keep_relevant_jobs(
 def get_rejected_jobs(
     ranked_jobs
 ):
-    """Return all rejected jobs for audit reporting."""
+    """Return all hard-filter-rejected jobs for audit reporting."""
 
     return [
         job
         for job in ranked_jobs
-        if job.get(
-            "match_category"
-        ) == "Ignore"
+        if job_qualification(job) == REJECTED
     ]
