@@ -46,6 +46,59 @@ LOCATION_ALIASES = {
     ],
 }
 
+# ============================================================
+# COUNTRY-RESTRICTED REMOTE
+# ============================================================
+#
+# "Remote" on its own, "Remote India" or "Anywhere" match the
+# profile. But "Remote - US only", "Remote (Europe)" or
+# "100% Remote - USA Only" (sometimes only in the title) do NOT
+# match: they restrict hiring to a country/region the profile does
+# not target. A job is only restricted when a non-target region is
+# named AND no accepted scope (India / global / APAC) is named.
+
+REMOTE_CONFIRM_PHRASES = [
+    "india",
+    "anywhere",
+    "global",
+    "worldwide",
+    "work from anywhere",
+    "all time zones",
+    "apac",
+    "asia",
+]
+
+REMOTE_RESTRICTION_PATTERNS = [
+    re.compile(r"\b(?:us|usa|u\.?s\.?|united states)\b", re.IGNORECASE),
+    re.compile(r"\bcanada\b", re.IGNORECASE),
+    re.compile(r"\b(?:uk|u\.?k\.?|united kingdom)\b", re.IGNORECASE),
+    re.compile(r"\b(?:europe|eu|emea)\b", re.IGNORECASE),
+    re.compile(
+        r"\b(?:germany|france|spain|italy|poland|netherlands|"
+        r"brazil|mexico)\b",
+        re.IGNORECASE,
+    ),
+]
+
+
+def _remote_is_restricted(text):
+    """Whether remote text is limited to a non-target country/region."""
+    text = clean_text(text)
+
+    if not text:
+        return False
+
+    if any(
+        contains_phrase(text, phrase)
+        for phrase in REMOTE_CONFIRM_PHRASES
+    ):
+        return False
+
+    return any(
+        pattern.search(text)
+        for pattern in REMOTE_RESTRICTION_PATTERNS
+    )
+
 
 # ============================================================
 # ADVANCED / SENIOR TITLE FILTERS
@@ -1340,27 +1393,35 @@ def matches_location(job):
         )
     )
 
+    title = clean_text(
+        job.get("title")
+    )
+
     if "Remote" in LOCATIONS:
 
-        if any(
-            contains_phrase(
-                location,
-                alias,
+        remote_hit = (
+            any(
+                contains_phrase(
+                    location,
+                    alias,
+                )
+                for alias in LOCATION_ALIASES[
+                    "Remote"
+                ]
             )
-            for alias in LOCATION_ALIASES[
-                "Remote"
-            ]
-        ):
-            return True
+            or any(
+                contains_phrase(
+                    work_mode,
+                    alias,
+                )
+                for alias in LOCATION_ALIASES[
+                    "Remote"
+                ]
+            )
+        )
 
-        if any(
-            contains_phrase(
-                work_mode,
-                alias,
-            )
-            for alias in LOCATION_ALIASES[
-                "Remote"
-            ]
+        if remote_hit and not _remote_is_restricted(
+            f"{location} {work_mode} {title}".strip()
         ):
             return True
 
@@ -1390,6 +1451,68 @@ def matches_location(job):
 # ROLE MATCHING
 # ============================================================
 
+# ============================================================
+# ROLE FAMILIES
+# ============================================================
+#
+# Profile-driven taxonomy. Every family phrase names the exact role
+# family that belongs to the profile; categories are used for
+# diversity-aware enrichment and reporting. The phrase list is
+# deliberately strict: adding a generic phrase such as
+# "platform engineer" would admit Data Platform / Sales Platform
+# roles, so precision is preferred until the sample data proves
+# otherwise.
+
+ROLE_FAMILIES = [
+    ("application support", "support"),
+    ("production support", "support"),
+    ("technical support", "support"),
+    ("cloud support", "support"),
+    ("cloud infrastructure support", "support"),
+    ("infrastructure support", "support"),
+    ("infrastructure engineer", "infrastructure"),
+    ("cloud operations", "infrastructure"),
+    ("operations engineer", "infrastructure"),
+    ("production operations", "infrastructure"),
+    ("application operations", "infrastructure"),
+    ("technical operations", "infrastructure"),
+    ("qa engineer", "qa"),
+    ("quality assurance", "qa"),
+    ("software test", "qa"),
+    ("test engineer", "qa"),
+    ("qa analyst", "qa"),
+    ("quality analyst", "qa"),
+    ("manual tester", "qa"),
+    ("software tester", "qa"),
+    ("application tester", "qa"),
+    ("devops engineer", "devops"),
+    ("junior devops", "devops"),
+    ("cloud engineer", "cloud"),
+    ("site reliability", "sre"),
+    ("sre", "sre"),
+]
+
+ROLE_FAMILY_PHRASES = [
+    phrase
+    for phrase, _category in ROLE_FAMILIES
+]
+
+
+def role_categories(matched_roles):
+    """Return the profile role families matched by a job title."""
+    categories = set()
+
+    for role in matched_roles:
+        role_clean = clean_text(role)
+
+        for phrase, category in ROLE_FAMILIES:
+            if contains_phrase(role_clean, phrase):
+                categories.add(category)
+                break
+
+    return categories
+
+
 def role_matches(job):
     """Match genuine target-role titles."""
 
@@ -1414,36 +1537,7 @@ def role_matches(job):
                 role
             )
 
-    allowed_families = [
-        "application support",
-        "production support",
-        "technical support",
-        "cloud support",
-        "cloud infrastructure support",
-        "infrastructure support",
-        "infrastructure engineer",
-        "cloud operations",
-        "operations engineer",
-        "production operations",
-        "application operations",
-        "technical operations",
-        "qa engineer",
-        "quality assurance",
-        "software test",
-        "test engineer",
-        "qa analyst",
-        "quality analyst",
-        "manual tester",
-        "software tester",
-        "application tester",
-        "devops engineer",
-        "junior devops",
-        "cloud engineer",
-        "site reliability",
-        "sre",
-    ]
-
-    for family in allowed_families:
+    for family in ROLE_FAMILY_PHRASES:
 
         if contains_phrase(
             title,
@@ -1543,6 +1637,67 @@ def prioritize_for_enrichment(jobs):
             rest.append(job)
 
     return relevant, rest
+
+
+def enrichment_priority(job):
+    """Cheap conservative pre-enrichment priority score (0-100).
+
+    This only ORDERS jobs for the enrichment cap. It never rejects,
+    so a thin or incomplete raw listing keeps every chance to be
+    enriched, scored and passed on by the full matcher.
+
+    Signals, in order of weight:
+        role family in title        (+38)
+        profile skills in listing   (+18 max)
+        location matches profile    (+12)
+        lexical role-phrase signal  (+12 max)
+    """
+    score = 0.0
+
+    if role_matches(job):
+        score += 38
+
+    content = get_job_content_text(job)
+
+    for key in (
+        "description",
+        "requirements",
+        "responsibilities",
+        "skills",
+    ):
+        value = job.get(key)
+
+        if isinstance(value, (list, tuple)):
+            value = " ".join(
+                str(item)
+                for item in value
+            )
+
+        content += " " + clean_text(value)
+
+    skill_hits = 0
+
+    for skill in SKILLS:
+        if contains_phrase(content, skill):
+            skill_hits += 1
+
+        if skill_hits >= 6:
+            break
+
+    score += min(18, skill_hits * 3)
+
+    if matches_location(job):
+        score += 12
+
+    try:
+        lexical, _notes = semantic_score(job)
+    except Exception:
+        lexical = 0.0
+
+    if lexical > 0:
+        score += round(lexical * 12)
+
+    return min(100, int(round(score)))
 
 
 # ============================================================
@@ -1832,6 +1987,36 @@ def score_job(job):
     # COMPLETE AUDIT DETAILS
     # --------------------------------------------------------
 
+    reasons = list(filter_reasons)
+
+    if passes:
+        reasons = []
+
+        if matched_roles:
+            reasons.append(
+                "Role matches: "
+                + ", ".join(matched_roles)
+            )
+
+        if matched_skills:
+            reasons.append(
+                "Skills matched: "
+                f"{len(matched_skills)}"
+            )
+
+        if matches_location(job):
+            reasons.append(
+                "Location within profile"
+            )
+
+        if (
+            experience.get("valid")
+            and experience.get("found")
+        ):
+            reasons.append(
+                "Experience requirement valid"
+            )
+
     result[
         "match_details"
     ] = {
@@ -1842,6 +2027,7 @@ def score_job(job):
         "seniority_analysis": seniority_reasons,
         "seniority_penalty": seniority_penalty,
         "filter_reasons": filter_reasons,
+        "reasons": reasons,
         "score_breakdown": {
             "role_score": role_score,
             "skill_score": skill_score,
@@ -1856,6 +2042,44 @@ def score_job(job):
     result["match_details"].update(semantic_extra)
 
     return result
+
+
+# ============================================================
+# NEAR-MISS SCORE (for possible-false-negative reporting)
+# ============================================================
+
+def near_miss_score_from_details(match_details):
+    """Closeness of a rejected job BEFORE every hard gate.
+
+    Sums the role/skills/location components and applies only the
+    seniority soft-penalty, deliberately ignoring the experience
+    hard gate. A high score means "this job would have been
+    eligible if one hard gate had not fired."
+    """
+    breakdown = (
+        (match_details or {})
+        .get("score_breakdown") or {}
+    )
+
+    near = (
+        breakdown.get("role_score", 0)
+        + breakdown.get("skill_score", 0)
+        + breakdown.get("location_score", 0)
+        - 0.5
+        * breakdown.get(
+            "seniority_penalty",
+            0,
+        )
+        + 10
+    )
+
+    return max(
+        0,
+        min(
+            100,
+            round(near),
+        ),
+    )
 
 
 # ============================================================

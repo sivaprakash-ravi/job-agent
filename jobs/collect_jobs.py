@@ -23,12 +23,22 @@ import source_runner
 from canonical import job_identity
 from job_enricher import enrich_jobs
 from job_matcher import (
+    enrichment_priority,
     get_rejected_jobs,
     keep_relevant_jobs,
-    prioritize_for_enrichment,
+    near_miss_score_from_details,
+    prefilter_job,
     rank_jobs,
 )
 from sources.base import build_locations, build_search_queries
+from funnel import (
+    build_funnel,
+    provider_quality,
+    query_quality,
+    rejection_stage,
+    source_overlap,
+    stage_counter,
+)
 
 
 OUTPUT_DIR = Path("reports")
@@ -41,6 +51,8 @@ SENT_FILE = OUTPUT_DIR / "sent_jobs.json"
 SOURCE_STATS_FILE = OUTPUT_DIR / "source_stats.json"
 PROVIDER_HEALTH_FILE = OUTPUT_DIR / "provider_health.json"
 RUN_SUMMARY_FILE = OUTPUT_DIR / "run_summary.json"
+FUNNEL_FILE = OUTPUT_DIR / "funnel.json"
+SKIPPED_FILE = OUTPUT_DIR / "prefilter_skipped.json"
 
 DEFAULT_ENRICH_CAP = 300
 
@@ -255,31 +267,22 @@ def main():
         enriched_cap,
     )
 
+    # Cheap conservative pre-filter (never a hard gate). Counted for
+    # the funnel so we can see how many unique listings have any
+    # plausible relevance signal before full-page enrichment.
+    prefilter_counts = Counter(
+        bool(prefilter_job(job))
+        for job in unique_jobs
+    )
+
     print()
     print(
         "[3/7] Fetching full available job details..."
     )
 
-    # Cheap pre-filter: enrich likely-relevant jobs first so the
-    # enrichment cap is spent where it has the most signal. The
-    # remainder is still enriched whenever cap allows, preserving
-    # recall on thin raw listings.
-    likely_relevant, rest = prioritize_for_enrichment(
+    enriched_jobs = enrich_jobs(
         enrichable
     )
-
-    enriched_jobs = enrich_jobs(
-        likely_relevant
-    )
-
-    remaining_cap = enriched_cap - len(likely_relevant)
-
-    if remaining_cap > 0 and rest:
-        enriched_jobs.extend(
-            enrich_jobs(
-                rest[:remaining_cap]
-            )
-        )
 
     verified_count = sum(
         1
@@ -314,6 +317,9 @@ def main():
     ranked_jobs = rank_jobs(
         enriched_jobs
     )
+
+    for job in ranked_jobs:
+        job["rejection_stage"] = rejection_stage(job)
 
     # --------------------------------------------------------
     # 6. FILTER
@@ -454,7 +460,7 @@ def main():
     )
 
     # --------------------------------------------------------
-    # 8b. RUN SUMMARY (provider health + rejection reasons)
+    # 8b. RUN SUMMARY (funnel, provider/query quality, near-misses)
     # --------------------------------------------------------
 
     eligible_by_provider = {}
@@ -477,6 +483,131 @@ def main():
             for reason in reasons:
                 rejection_counts[reason] += 1
 
+    rejected_stage_counts = stage_counter(
+        rejected_jobs
+    )
+
+    funnel_report = build_funnel(
+        provider_results=provider_results,
+        total_discovered=total_discovered,
+        unique_jobs=unique_jobs,
+        enriched_jobs=enriched_jobs,
+        ranked_jobs=ranked_jobs,
+        eligible_jobs=relevant_jobs,
+        new_jobs=new_jobs,
+        prefilter_counts=prefilter_counts,
+    )
+
+    funnel_report["eligible_by_provider"] = eligible_by_provider
+
+    save_json(
+        FUNNEL_FILE,
+        funnel_report,
+    )
+
+    top_false_negatives = []
+
+    for job in rejected_jobs:
+        details = get_match_details(job)
+
+        near_miss = near_miss_score_from_details(details)
+
+        if near_miss < 20:
+            continue
+
+        top_false_negatives.append(
+            {
+                "title": job.get("title"),
+                "company": job.get("company"),
+                "source": job.get("source"),
+                "url": (
+                    job.get("url")
+                    or job.get("job_url")
+                ),
+                "location": job.get("location"),
+                "match_score": job.get("match_score"),
+                "near_miss_score": near_miss,
+                "rejection_stage": job.get(
+                    "rejection_stage"
+                ),
+                "filter_reasons": details.get(
+                    "filter_reasons"
+                ),
+                "matched_roles": details.get(
+                    "matched_roles"
+                ),
+                "matched_skills": details.get(
+                    "matched_skills"
+                ),
+                "semantic_score": details.get(
+                    "semantic_score"
+                ),
+            }
+        )
+
+    top_false_negatives.sort(
+        key=lambda item: item["near_miss_score"],
+        reverse=True,
+    )
+
+    if os.environ.get("JOB_AGENT_SAVE_SKIPPED", "").lower() in {
+        "1",
+        "true",
+        "yes",
+    }:
+        enriched_ids = {
+            job_identity(job)
+            for job in enriched_jobs
+        }
+
+        skipped = []
+
+        for job in unique_jobs:
+            identity = job_identity(job)
+
+            if identity in enriched_ids:
+                continue
+
+            skipped.append(
+                {
+                    "source": job.get("source"),
+                    "source_job_id": job.get(
+                        "source_job_id"
+                    ),
+                    "title": job.get("title"),
+                    "company": job.get("company"),
+                    "location": job.get("location"),
+                    "url": (
+                        job.get("url")
+                        or job.get("job_url")
+                    ),
+                    "search_query": job.get(
+                        "search_query"
+                    ),
+                    "enrichment_priority": enrichment_priority(
+                        job
+                    ),
+                    "prefilter": bool(
+                        prefilter_job(job)
+                    ),
+                    "rejection_stage": (
+                        "enrichment_skipped"
+                    ),
+                }
+            )
+
+        skipped.sort(
+            key=lambda item: item[
+                "enrichment_priority"
+            ],
+            reverse=True,
+        )
+
+        save_json(
+            SKIPPED_FILE,
+            skipped,
+        )
+
     run_summary = {
         "run_at_utc": stats["summary"].get("run_at_utc"),
         "totals": dict(stats["summary"]),
@@ -487,6 +618,26 @@ def main():
                 reverse=True,
             )
         ),
+        "rejected_stages": dict(
+            sorted(
+                dict(rejected_stage_counts).items(),
+                key=lambda item: item[1],
+                reverse=True,
+            )
+        ),
+        "top_possible_false_negatives": (
+            top_false_negatives[:25]
+        ),
+        "provider_quality": provider_quality(
+            provider_results,
+            ranked_jobs,
+        ),
+        "query_quality": query_quality(
+            ranked_jobs
+        ),
+        "source_overlap": funnel_report[
+            "source_overlap"
+        ],
         "top_rejection_reasons": [
             {"count": count, "reason": reason}
             for reason, count in rejection_counts.most_common(20)
@@ -509,7 +660,7 @@ def main():
 
     print()
     print("=" * 70)
-    print("V1 RESULTS")
+    print("V1.1 RESULTS")
     print("=" * 70)
 
     totals = [
@@ -526,6 +677,35 @@ def main():
     for label, value in totals:
         print(f"{label:18} : {value}")
 
+    stages = funnel_report["stages"]
+
+    print()
+    print(
+        f"Prefilter signal  : "
+        f"{stages['prefilter_pass']} pass / "
+        f"{stages['prefilter_rejected_priority_only']} "
+        f"low-signal"
+    )
+
+    print(
+        f"Enrichment skipped: "
+        f"{stages['enrichment_skipped']}"
+    )
+
+    rejected_stages = funnel_report[
+        "rejected_stages"
+    ]
+
+    if rejected_stages:
+        print(
+            "Rejected stages   : "
+            + ", ".join(
+                f"{stage}={count}"
+                for stage, count in
+                rejected_stages.items()
+            )
+        )
+
     print()
     print(
         "Reports created:"
@@ -539,6 +719,7 @@ def main():
         SOURCE_STATS_FILE,
         PROVIDER_HEALTH_FILE,
         RUN_SUMMARY_FILE,
+        FUNNEL_FILE,
         SENT_FILE,
     ):
         print(f"  - {report}")
@@ -562,41 +743,65 @@ def run_all_jobs(provider_results):
 
 
 def _stratified_jobs(unique_jobs, cap):
-    """Pick up to ``cap`` jobs spread evenly across every source.
+    """Pick up to ``cap`` jobs for enrichment.
 
-    Without this, a cap truncates the largest providers first and the
-    smaller (often more relevant) sources never get enriched at all.
+    Combines two goals:
+
+    1. DIVERSITY - the cap is never swallowed by the largest
+       providers or a single search query, and both remote and
+       India-city postings get represented.
+    2. PRIORITY - inside every (source, location, query) bucket the
+       jobs with the strongest cheap relevance signal are picked
+       first, so the cap is spent where it has the most signal.
+
+    Buckets are interleaved round-robin so every bucket gets a fair
+    share while still filling the cap at one job per sweep.
     """
     from collections import defaultdict
 
-    by_source = defaultdict(list)
+    priorities = {
+        id(job): enrichment_priority(job)
+        for job in unique_jobs
+    }
+
+    buckets = defaultdict(list)
 
     for job in unique_jobs:
-        by_source[job.get("source") or "unknown"].append(job)
+        source = job.get("source") or "unknown"
+        location_bucket = _location_bucket(job)
+        query = job.get("search_query") or "(no query)"
+        buckets[(source, location_bucket, query)].append(job)
 
-    sources = list(by_source)
+    for bucket_jobs in buckets.values():
+        bucket_jobs.sort(
+            key=lambda job: priorities[id(job)],
+            reverse=True,
+        )
 
-    if not sources:
-        return []
-
-    cursor = {source: 0 for source in sources}
+    ordered_keys = sorted(
+        buckets,
+        key=lambda key: (
+            -priorities[id(buckets[key][0])],
+            key,
+        ),
+    )
 
     selected = []
+    cursor = {key: 0 for key in ordered_keys}
     count = 0
 
     while count < cap:
         progressed = False
 
-        for source in sources:
-            bucket = by_source[source]
-
-            index = cursor[source]
+        for key in ordered_keys:
+            bucket = buckets[key]
+            index = cursor[key]
 
             if index >= len(bucket):
                 continue
 
             selected.append(bucket[index])
-            cursor[source] = index + 1
+            cursor[key] = index + 1
             count += 1
             progressed = True
 
@@ -607,6 +812,46 @@ def _stratified_jobs(unique_jobs, cap):
             break
 
     return selected
+
+
+def _location_bucket(job):
+    """Classify a raw listing as remote / india-city / other."""
+    text = " ".join(
+        str(job.get(field) or "")
+        for field in (
+            "location",
+            "work_mode",
+            "remote_work_model",
+        )
+    ).lower()
+
+    if any(
+        alias in text
+        for alias in (
+            "remote",
+            "work from home",
+            "wfh",
+            "anywhere",
+        )
+    ):
+        return "remote"
+
+    if any(
+        alias in text
+        for alias in (
+            "chennai",
+            "bangalore",
+            "bengaluru",
+            "hyderabad",
+            "coimbatore",
+            "tamil nadu",
+            "karnataka",
+            "telangana",
+        )
+    ):
+        return "city"
+
+    return "other"
 
 
 def _int_or_none(value):
