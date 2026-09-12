@@ -26,7 +26,9 @@ from job_matcher import (
     QUALIFIED,
     enrichment_priority,
     get_rejected_jobs,
+    job_priority_tier,
     job_qualification,
+    job_rank_key,
     keep_possible_matches,
     keep_relevant_jobs,
     near_miss_score_from_details,
@@ -63,6 +65,19 @@ PROVIDER_HEALTH_FILE = OUTPUT_DIR / "provider_health.json"
 RUN_SUMMARY_FILE = OUTPUT_DIR / "run_summary.json"
 FUNNEL_FILE = OUTPUT_DIR / "funnel.json"
 SKIPPED_FILE = OUTPUT_DIR / "prefilter_skipped.json"
+
+_PRIORITY_ORDER = {
+    "P1": 0,
+    "P2": 1,
+    "P3": 2,
+    "None": 3,
+}
+
+
+def _priority_sort(item):
+    return _PRIORITY_ORDER.get(
+        item[0], 99
+    )
 
 DEFAULT_ENRICH_CAP = 300
 
@@ -521,6 +536,81 @@ def main():
             possible_by_provider.get(source, 0) + 1
         )
 
+    # --------------------------------------------------------
+    # PRIORITY BREAKDOWN (P1 support / P2 QA / P3 dev)
+    # --------------------------------------------------------
+
+    def _tier_or_none(job):
+        return (
+            job_priority_tier(job)
+            or "None"
+        )
+
+    discovered_by_priority = Counter(
+        _tier_or_none(job)
+        for job in unique_jobs
+    )
+
+    enriched_by_priority = Counter(
+        _tier_or_none(job)
+        for job in enriched_jobs
+    )
+
+    qualified_by_priority = Counter(
+        _tier_or_none(job)
+        for job in qualified_jobs
+    )
+
+    possible_by_priority = Counter(
+        _tier_or_none(job)
+        for job in possible_matches
+    )
+
+    new_by_priority = Counter(
+        _tier_or_none(job)
+        for job in new_jobs
+    )
+
+    top_jobs_by_priority = {}
+
+    for tier in ("P1", "P2", "P3"):
+        tier_jobs = [
+            job
+            for job in qualified_jobs
+            if job_priority_tier(job) == tier
+        ]
+
+        tier_jobs.sort(
+            key=job_rank_key,
+            reverse=True,
+        )
+
+        top_jobs_by_priority[tier] = [
+            {
+                "title": job.get("title"),
+                "company": job.get("company"),
+                "source": job.get("source"),
+                "url": (
+                    job.get("url")
+                    or job.get("job_url")
+                ),
+                "location": job.get("location"),
+                "match_score": job.get(
+                    "match_score"
+                ),
+                "rank_score": job.get(
+                    "rank_score"
+                ),
+                "job_family": job.get(
+                    "job_family"
+                ),
+                "priority_tier": job.get(
+                    "priority_tier"
+                ),
+            }
+            for job in tier_jobs[:5]
+        ]
+
     rejection_counts = Counter()
 
     for job in rejected_jobs:
@@ -663,6 +753,37 @@ def main():
     run_summary = {
         "run_at_utc": stats["summary"].get("run_at_utc"),
         "totals": dict(stats["summary"]),
+        "discovered_by_priority": dict(
+            sorted(
+                discovered_by_priority.items(),
+                key=_priority_sort,
+            )
+        ),
+        "enriched_by_priority": dict(
+            sorted(
+                enriched_by_priority.items(),
+                key=_priority_sort,
+            )
+        ),
+        "qualified_by_priority": dict(
+            sorted(
+                qualified_by_priority.items(),
+                key=_priority_sort,
+            )
+        ),
+        "possible_matches_by_priority": dict(
+            sorted(
+                possible_by_priority.items(),
+                key=_priority_sort,
+            )
+        ),
+        "new_telegram_by_priority": dict(
+            sorted(
+                new_by_priority.items(),
+                key=_priority_sort,
+            )
+        ),
+        "top_jobs_by_priority": top_jobs_by_priority,
         "eligible_by_provider": dict(
             sorted(
                 qualified_by_provider.items(),
@@ -772,6 +893,33 @@ def main():
                 rejected_stages.items()
             )
         )
+
+    print()
+    print(
+        "QUALIFIED BY PRIORITY"
+    )
+
+    for tier in ("P1", "P2", "P3"):
+        print(
+            f"{tier}                : "
+            f"{qualified_by_priority.get(tier, 0)}"
+        )
+
+    if new_jobs:
+        print()
+        print(
+            "NEW TELEGRAM BY PRIORITY"
+        )
+
+        for tier in ("P1", "P2", "P3"):
+            tier_count = (
+                new_by_priority.get(tier, 0)
+            )
+
+            if tier_count:
+                print(
+                    f"{tier}                : {tier_count}"
+                )
 
     print()
     print(

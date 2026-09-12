@@ -4,8 +4,14 @@ import re
 
 from profile import (
     EMPLOYMENT_TYPE,
+    ENRICHMENT_PRIORITY_BOOST,
+    JOB_FAMILY_LABELS,
+    JOB_FAMILY_PRIORITY,
+    JOB_FAMILY_RULES,
     LOCATIONS,
     MAX_JOB_EXPERIENCE_YEARS,
+    PRIORITY_TIERS,
+    RANK_PRIORITY_BOOST,
     SKILLS,
     TARGET_ROLES,
 )
@@ -1562,6 +1568,168 @@ def role_matches(job):
 
 
 # ============================================================
+# CAREER JOB-FAMILY DETECTION
+# ============================================================
+#
+# Career priority is purely a ranking / enrichment / reporting
+# signal. It NEVER widens eligibility: a job still has to pass the
+# existing role-family gate, experience gate, location gate etc.
+# Family detection inspects the title plus the JD content so generic
+# "support" / "quality" roles are not adopted and the highest-priority
+# genuinely-applicable family wins.
+
+def _family_content_text(job):
+    parts = []
+
+    for key in (
+        "title",
+        "description",
+        "full_job_page_text",
+        "job_description",
+        "responsibilities",
+        "requirements",
+        "qualifications",
+        "skills",
+    ):
+        value = job.get(key)
+        if value is None:
+            continue
+        if isinstance(value, (list, tuple)):
+            value = " ".join(str(item) for item in value)
+        if value:
+            parts.append(clean_text(value))
+
+    return " ".join(parts).strip()
+
+
+def detect_job_family(job):
+    """Return the highest-priority genuinely-applicable family.
+
+    Returns ``None`` when no family is genuinely applicable (e.g. a
+    call-center customer-service role). Multi-family jobs are resolved
+    by (priority, then strong-before-weak title evidence) so a precise
+    title match always beats a generic one inside the same tier.
+    """
+    text = _family_content_text(job)
+    title = clean_text(job.get("title") or "")
+
+    candidates = []
+
+    for family, rule in JOB_FAMILY_RULES.items():
+
+        exclude_hit = any(
+            contains_phrase(text, phrase)
+            for phrase in rule.get("exclude", [])
+        )
+
+        if exclude_hit:
+            continue
+
+        if any(
+            contains_phrase(title, phrase)
+            for phrase in rule.get("strong_title", [])
+        ):
+            candidates.append((family, 0))
+            continue
+
+        weak = any(
+            contains_phrase(title, phrase)
+            for phrase in rule.get("weak_title", [])
+        )
+
+        if not weak:
+            continue
+
+        evidence_hit = any(
+            contains_phrase(text, phrase)
+            for phrase in rule.get("evidence", [])
+        )
+
+        if evidence_hit:
+            candidates.append((family, 1))
+
+    if not candidates:
+        return None
+
+    candidates.sort(
+        key=lambda family_strength: (
+            JOB_FAMILY_PRIORITY.get(
+                family_strength[0], 99
+            ),
+            family_strength[1],
+            family_strength[0],
+        )
+    )
+
+    return candidates[0][0]
+
+
+def priority_profile(job):
+    """Return the career-priority metadata for a job."""
+    family = detect_job_family(job)
+
+    if family is None:
+        return {
+            "job_family": None,
+            "career_priority": None,
+            "priority_tier": None,
+            "priority_label": None,
+        }
+
+    priority = JOB_FAMILY_PRIORITY.get(
+        family, 3
+    )
+
+    tier = PRIORITY_TIERS.get(
+        priority, "P3"
+    )
+
+    return {
+        "job_family": family,
+        "career_priority": priority,
+        "priority_tier": tier,
+        "priority_label": JOB_FAMILY_LABELS.get(
+            family, family.replace("_", " ").title()
+        ),
+    }
+
+
+def job_priority_tier(job):
+    """Priority tier for a job: P1 / P2 / P3 / None."""
+    tier = job.get("priority_tier")
+    if tier:
+        return tier
+    profile = priority_profile(job)
+    return profile.get("priority_tier")
+
+
+def rank_priority_boost(job):
+    """Ranking-only priority boost (never touches match_score)."""
+    tier = job.get("priority_tier")
+    if not tier:
+        tier = job_priority_tier(job)
+    return RANK_PRIORITY_BOOST.get(tier, 0) if tier else 0
+
+
+def job_rank_key(job):
+    """Ordering key that blends relevance and career priority.
+
+    match_score stays the relevance truth (and the qualification
+    gate); the small priority boost only reorders jobs that are
+    already equally relevant enough to be compared.
+    """
+    explicit = job.get("rank_score")
+    if explicit is not None:
+        return float(explicit)
+
+    score = float(
+        job.get("match_score") or 0
+    )
+
+    return score + rank_priority_boost(job)
+
+
+# ============================================================
 # CHEAP PREFILTER (pre-enrichment signal)
 # ============================================================
 
@@ -1700,6 +1868,27 @@ def enrichment_priority(job):
 
     if lexical > 0:
         score += round(lexical * 12)
+
+    tier = job.get("priority_tier")
+    priority = job.get("career_priority")
+
+    if not tier or priority is None:
+        profile = priority_profile(job)
+        tier = (
+            job.get("priority_tier")
+            or profile.get("priority_tier")
+        )
+        priority = (
+            job.get("career_priority")
+            or profile.get("career_priority")
+        )
+
+    if (
+        tier
+        and priority is not None
+        and priority in ENRICHMENT_PRIORITY_BOOST
+    ):
+        score += ENRICHMENT_PRIORITY_BOOST[priority]
 
     return min(100, int(round(score)))
 
@@ -1974,6 +2163,30 @@ def score_job(job):
         "qualification"
     ] = qualification
 
+    # --------------------------------------------------------
+    # CAREER PRIORITY (ranking / enrichment / reporting only)
+    # --------------------------------------------------------
+
+    profile_meta = priority_profile(
+        job
+    )
+
+    result.update(
+        profile_meta
+    )
+
+    result[
+        "priority_boost"
+    ] = rank_priority_boost(
+        result
+    )
+
+    result[
+        "rank_score"
+    ] = (
+        score + result["priority_boost"]
+    )
+
     if not passes:
 
         result[
@@ -2102,7 +2315,12 @@ def near_miss_score_from_details(match_details):
 # ============================================================
 
 def rank_jobs(jobs):
-    """Rank all collected jobs."""
+    """Rank all collected jobs.
+
+    Ordering blends relevance (match_score) with the small
+    career-priority boost; match_score itself is untouched so the
+    MINIMUM_SCORE=45 qualification gate keeps its exact behavior.
+    """
 
     ranked = [
         score_job(job)
@@ -2111,10 +2329,7 @@ def rank_jobs(jobs):
 
     return sorted(
         ranked,
-        key=lambda job: job.get(
-            "match_score",
-            0,
-        ),
+        key=job_rank_key,
         reverse=True,
     )
 

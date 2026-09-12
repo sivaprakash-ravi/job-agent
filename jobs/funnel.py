@@ -27,6 +27,7 @@ from job_matcher import (
     QUALIFIED,
     job_qualification,
 )
+from sources.base import query_family_for
 
 
 # ============================================================
@@ -196,6 +197,7 @@ def query_quality(ranked):
         rows.append(
             {
                 "search_query": query,
+                "family": query_family_for(query),
                 "enriched": counts["enriched"],
                 "eligible": counts["qualified"],
                 "qualified": counts["qualified"],

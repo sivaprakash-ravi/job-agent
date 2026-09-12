@@ -122,42 +122,79 @@ HEADERS = {
 
 
 def build_search_queries(limit=None):
-    """Build multiple focused search queries from profile.py.
+    """Build focused search queries balanced across career families.
 
-    Uses role families plus the configured TARGET_ROLES, role
-    synonyms and a sensible subset of the configured skills.
-    Never one giant Boolean query.
+    Queries are generated from profile.JOB_FAMILY_QUERY_TERMS and
+    interleaved round-robin across the user's priority tiers (P1
+    support, P2 QA, P3 dev/DevOps), so no single family can dominate
+    the query budget. Generic skill / synonym / legacy terms are
+    appended afterwards for recall. Never one giant Boolean query.
     """
-    broad = [
-        "DevOps",
-        "DevOps Engineer",
-        "Cloud Engineer",
-        "Cloud Support",
-        "Cloud Operations",
-        "SRE",
-        "Site Reliability",
-        "Infrastructure",
-        "Infrastructure Engineer",
-        "System Administrator",
-        "Systems Engineer",
-        "IT Operations",
-        "IT Support",
-        "Technical Support",
-        "Application Support",
-        "Production Support",
-        "NOC",
-        "Monitoring",
-        "QA",
-        "Quality Assurance",
-        "QA Engineer",
-        "Software Tester",
-        "Test Engineer",
-        "Automation Tester",
-    ]
+    from profile import (
+        JOB_FAMILY_PRIORITY,
+        JOB_FAMILY_QUERY_TERMS,
+    )
 
-    # Role synonyms so discovery stays broad even when matching is strict.
-    role_synonyms = ROLE_SYNONYMS
+    terms_by_priority = {1: [], 2: [], 3: []}
 
+    for family, terms in JOB_FAMILY_QUERY_TERMS.items():
+        priority = JOB_FAMILY_PRIORITY.get(
+            family, 3
+        )
+        terms_by_priority[priority].extend(terms)
+
+    pools = {
+        1: list(
+            dict.fromkeys(
+                term.strip()
+                for term in terms_by_priority[1]
+                if term.strip()
+            )
+        ),
+        2: list(
+            dict.fromkeys(
+                term.strip()
+                for term in terms_by_priority[2]
+                if term.strip()
+            )
+        ),
+        3: list(
+            dict.fromkeys(
+                term.strip()
+                for term in terms_by_priority[3]
+                if term.strip()
+            )
+        ),
+    }
+
+    family_queries = []
+    index = 0
+
+    while any(
+        index < len(pool)
+        for pool in pools.values()
+    ):
+        for priority in (
+            1,
+            2,
+            3,
+        ):
+            if index < len(
+                pools[priority]
+            ):
+                family_queries.append(
+                    pools[priority][index]
+                )
+
+        index += 1
+
+    family_set = set(
+        query.lower()
+        for query in family_queries
+    )
+
+    # Generic recall tail: skills, synonyms and the legacy broad list,
+    # minus terms already covered by the family pools.
     skill_queries = [
         skill
         for skill in SKILLS
@@ -176,23 +213,59 @@ def build_search_queries(limit=None):
         }
     ]
 
-    queries = [
-        q.strip()
-        for q in (
-            broad
+    tail = [
+        term.strip()
+        for term in (
+            BROAD_QUERIES
             + TARGET_ROLES
-            + role_synonyms
+            + ROLE_SYNONYMS
             + skill_queries
         )
+        if (
+            term.strip()
+            and term.strip().lower()
+            not in family_set
+        )
     ]
-    queries = [q for q in queries if q]
 
-    unique = list(dict.fromkeys(queries))
+    queries = list(
+        dict.fromkeys(
+            family_queries + tail
+        )
+    )
 
     if limit is not None and limit > 0:
-        return unique[:limit]
+        return queries[:limit]
 
-    return unique
+    return queries
+
+
+BROAD_QUERIES = [
+    "DevOps",
+    "DevOps Engineer",
+    "Cloud Engineer",
+    "Cloud Support",
+    "Cloud Operations",
+    "SRE",
+    "Site Reliability",
+    "Infrastructure",
+    "Infrastructure Engineer",
+    "System Administrator",
+    "Systems Engineer",
+    "IT Operations",
+    "IT Support",
+    "Technical Support",
+    "Application Support",
+    "Production Support",
+    "NOC",
+    "Monitoring",
+    "QA",
+    "Quality Assurance",
+    "QA Engineer",
+    "Software Tester",
+    "Test Engineer",
+    "Automation Tester",
+]
 
 
 ROLE_SYNONYMS = [
@@ -225,6 +298,37 @@ ROLE_SYNONYMS = [
     "test analyst",
     "software tester",
 ]
+
+
+# ============================================================
+# QUERY FAMILY TRACKING
+# ============================================================
+
+def _build_search_query_families():
+    """Map each configured search term to its career family."""
+    from profile import JOB_FAMILY_QUERY_TERMS
+
+    mapping = {}
+
+    for family, terms in JOB_FAMILY_QUERY_TERMS.items():
+        for term in terms:
+            key = term.strip().lower()
+
+            if key and key not in mapping:
+                mapping[key] = family
+
+    return mapping
+
+
+SEARCH_QUERY_FAMILIES = _build_search_query_families()
+
+
+def query_family_for(query):
+    """Career family behind a search query, or 'generic'."""
+    return SEARCH_QUERY_FAMILIES.get(
+        str(query or "").strip().lower(),
+        "generic",
+    )
 
 
 def build_locations():

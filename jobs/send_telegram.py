@@ -7,6 +7,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from profile import PRIORITY_EMOJIS
+
 
 REPO_ROOT = Path(
     __file__
@@ -179,6 +181,10 @@ def format_message(jobs):
             "Match",
         )
 
+        priority_line = priority_label(
+            job
+        )
+
         experience = (
             job.get("experience")
             or experience_summary(
@@ -209,6 +215,11 @@ def format_message(jobs):
             ]
         )
 
+        lines.insert(
+            len(lines) - 1,
+            priority_line,
+        )
+
         if experience_line:
             lines.append(
                 experience_line
@@ -223,6 +234,20 @@ def format_message(jobs):
     )
 
     return "\n".join(lines)
+
+
+def priority_label(job):
+    """One-line career-priority label, e.g. '🥇 P1 — Application Support'."""
+    tier = job.get("priority_tier")
+    label = job.get("priority_label")
+
+    if not tier or not label:
+        return ""
+
+    return (
+        f"{PRIORITY_EMOJIS.get(tier, '')} "
+        f"{tier} — {label}"
+    ).strip()
 
 
 def experience_summary(job):
