@@ -15,6 +15,7 @@ Pipeline:
 
 import json
 import os
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,6 +25,7 @@ from job_enricher import enrich_jobs
 from job_matcher import (
     get_rejected_jobs,
     keep_relevant_jobs,
+    prioritize_for_enrichment,
     rank_jobs,
 )
 from sources.base import build_locations, build_search_queries
@@ -37,6 +39,8 @@ REJECTED_OUTPUT_FILE = OUTPUT_DIR / "rejected_jobs.json"
 UNVERIFIED_OUTPUT_FILE = OUTPUT_DIR / "unverified_jobs.json"
 SENT_FILE = OUTPUT_DIR / "sent_jobs.json"
 SOURCE_STATS_FILE = OUTPUT_DIR / "source_stats.json"
+PROVIDER_HEALTH_FILE = OUTPUT_DIR / "provider_health.json"
+RUN_SUMMARY_FILE = OUTPUT_DIR / "run_summary.json"
 
 DEFAULT_ENRICH_CAP = 300
 
@@ -256,9 +260,26 @@ def main():
         "[3/7] Fetching full available job details..."
     )
 
-    enriched_jobs = enrich_jobs(
+    # Cheap pre-filter: enrich likely-relevant jobs first so the
+    # enrichment cap is spent where it has the most signal. The
+    # remainder is still enriched whenever cap allows, preserving
+    # recall on thin raw listings.
+    likely_relevant, rest = prioritize_for_enrichment(
         enrichable
     )
+
+    enriched_jobs = enrich_jobs(
+        likely_relevant
+    )
+
+    remaining_cap = enriched_cap - len(likely_relevant)
+
+    if remaining_cap > 0 and rest:
+        enriched_jobs.extend(
+            enrich_jobs(
+                rest[:remaining_cap]
+            )
+        )
 
     verified_count = sum(
         1
@@ -424,6 +445,59 @@ def main():
         stats,
     )
 
+    save_json(
+        PROVIDER_HEALTH_FILE,
+        stats.get(
+            "provider_health",
+            [],
+        ),
+    )
+
+    # --------------------------------------------------------
+    # 8b. RUN SUMMARY (provider health + rejection reasons)
+    # --------------------------------------------------------
+
+    eligible_by_provider = {}
+
+    for job in relevant_jobs:
+        source = str(job.get("source") or "unknown")
+        eligible_by_provider[source] = (
+            eligible_by_provider.get(source, 0) + 1
+        )
+
+    rejection_counts = Counter()
+
+    for job in rejected_jobs:
+        details = get_match_details(job)
+        reasons = details.get("filter_reasons") or []
+
+        if not reasons:
+            rejection_counts["(no reason recorded)"] += 1
+        else:
+            for reason in reasons:
+                rejection_counts[reason] += 1
+
+    run_summary = {
+        "run_at_utc": stats["summary"].get("run_at_utc"),
+        "totals": dict(stats["summary"]),
+        "eligible_by_provider": dict(
+            sorted(
+                eligible_by_provider.items(),
+                key=lambda item: item[1],
+                reverse=True,
+            )
+        ),
+        "top_rejection_reasons": [
+            {"count": count, "reason": reason}
+            for reason, count in rejection_counts.most_common(20)
+        ],
+    }
+
+    save_json(
+        RUN_SUMMARY_FILE,
+        run_summary,
+    )
+
     # --------------------------------------------------------
     # 9. REPORT
     # --------------------------------------------------------
@@ -463,6 +537,8 @@ def main():
         REJECTED_OUTPUT_FILE,
         UNVERIFIED_OUTPUT_FILE,
         SOURCE_STATS_FILE,
+        PROVIDER_HEALTH_FILE,
+        RUN_SUMMARY_FILE,
         SENT_FILE,
     ):
         print(f"  - {report}")

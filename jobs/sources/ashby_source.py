@@ -4,24 +4,12 @@ Uses the public Ashby posting API:
 https://api.ashbyhq.com/posting-api/job-board/{company}
 """
 
+from sources.ats_registry import ASHBY_COMPANIES
 from sources.base import fetch_json, normalize_common, best_query
 
 
-MAX_COMPANIES = 12
+MAX_COMPANIES = len(ASHBY_COMPANIES)
 MAX_JOBS = 500
-
-ASHBY_COMPANIES = [
-    "Notion",
-    "Ramp",
-    "Airtable",
-    "Deel",
-    "Loom",
-    "Vercel",
-    "Linear",
-    "Plaid",
-    "Universe",
-    "Terminal",
-]
 
 
 def run(search_queries, locations=None):

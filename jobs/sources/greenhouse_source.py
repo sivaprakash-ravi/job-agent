@@ -4,26 +4,12 @@ Uses the public Greenhouse boards API:
 https://boards-api.greenhouse.io/v1/boards/{board_token}/jobs
 """
 
+from sources.ats_registry import GREENHOUSE_BOARDS
 from sources.base import fetch_json, normalize_common, best_query
 
 
-MAX_BOARDS = 12
+MAX_BOARDS = len(GREENHOUSE_BOARDS)
 MAX_JOBS = 500
-
-GREENHOUSE_BOARDS = [
-    "google",
-    "stripe",
-    "cloudflare",
-    "dropbox",
-    "github",
-    "gitlab",
-    "airbnb",
-    "instacart",
-    "coinbase",
-    "datadog",
-    "snowflake",
-    "linkedin",
-]
 
 
 def run(search_queries, locations=None):

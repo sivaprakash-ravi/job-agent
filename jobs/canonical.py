@@ -10,6 +10,7 @@ The same underlying job discovered on LinkedIn, Indeed, Google or
 any other provider must collapse into one record.
 """
 
+import hashlib
 import re
 import urllib.parse
 
@@ -27,6 +28,50 @@ TRACKING_QUERY_KEYS = frozenset(
         "igshid",
     ]
 )
+
+
+MIN_CONTENT_DEDUPE_CHARS = 250
+
+
+def content_dedupe_key(job):
+    """Return a content-based cross-provider dedupe key.
+
+    Only engages when the listing carries a rich description so two
+    genuinely distinct jobs are never merged on vague boilerplate.
+    """
+    title = normalize_title(
+        job.get("title")
+    )
+
+    if not title:
+        return None
+
+    description = str(
+        job.get("description")
+        or job.get("job_description")
+        or ""
+    ).strip()
+
+    if len(description) < MIN_CONTENT_DEDUPE_CHARS:
+        return None
+
+    words = " ".join(
+        word
+        for word in re.findall(
+            r"[a-z0-9]+",
+            normalize_text(description),
+        )
+        if len(word) > 2
+    )
+
+    digest = hashlib.sha1(
+        words.encode(
+            "utf-8",
+            errors="ignore",
+        )
+    ).hexdigest()[:24]
+
+    return f"content:{title}|{digest}"
 
 
 def normalize_url(url):
@@ -163,37 +208,67 @@ def deduplicate_jobs(jobs):
 
     Preserves the first occurrence and records which other sources
     reported the same underlying job in ``duplicate_sources``.
+
+    Two layers:
+
+    1. stable identity (url -> provider id -> company+title+location)
+    2. content hash for cross-provider duplicates whose URLs differ
+       but whose title and rich description match
     """
     unique = []
-    seen = set()
+    seen_identity = set()
+    seen_content = set()
+
+    def _record_duplicate(source, identity, content_key):
+        duplicates = []
+
+        for kept in unique:
+            kept_identity = job_identity(kept)
+            kept_content = content_dedupe_key(kept)
+
+            if (
+                identity
+                and kept_identity == identity
+            ) or (
+                content_key
+                and kept_content == content_key
+            ):
+                kept_duplicates = set(
+                    kept.get("duplicate_sources") or []
+                )
+                kept_duplicates.add(source)
+                kept["duplicate_sources"] = sorted(
+                    kept_duplicates
+                )
+                duplicates.append(kept)
+                break
+
+        return duplicates
 
     for job in jobs:
         identity = job_identity(job)
+        content_key = content_dedupe_key(job)
+        source = str(job.get("source") or "unknown")
 
-        if not identity:
+        if not identity and not content_key:
             continue
 
-        if identity in seen:
-            duplicates = job.get("duplicate_sources") or []
-            owner = job.get("source") or "unknown"
-
-            if owner not in duplicates:
-                duplicates.append(owner)
-
-            for kept in unique:
-                kept_identity = job_identity(kept)
-
-                if kept_identity == identity:
-                    kept_duplicates = set(
-                        kept.get("duplicate_sources") or []
-                    )
-                    kept_duplicates.add(owner)
-                    kept["duplicate_sources"] = sorted(kept_duplicates)
-                    break
-
+        if identity and identity in seen_identity:
+            _record_duplicate(source, identity, None)
             continue
 
-        seen.add(identity)
+        if (
+            content_key
+            and content_key in seen_content
+        ):
+            _record_duplicate(source, None, content_key)
+            continue
+
+        if identity:
+            seen_identity.add(identity)
+
+        if content_key:
+            seen_content.add(content_key)
 
         if "duplicate_sources" not in job:
             job["duplicate_sources"] = []

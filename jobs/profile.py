@@ -4,11 +4,14 @@ TARGET_ROLES = [
     "Production Support Engineer",
     "Technical Support Engineer",
     "Cloud Support Engineer",
+    "Cloud Infrastructure Support Engineer",
+    "Infrastructure Support Engineer",
     "Cloud Operations Engineer",
     "Operations Engineer",
     "Production Operations Engineer",
     "Application Operations Engineer",
     "Technical Operations Engineer",
+    "Infrastructure Engineer",
 
     # Cloud / DevOps / SRE
     "Site Reliability Engineer",

@@ -4,13 +4,16 @@ Each adapter runs independently:
 
 - a failure in one provider never stops the others
 - every provider returns {provider, status, count, error, jobs}
+- latency is recorded per provider for the health report
 - multi-board adapters (JobSpy) are expanded into per-site results
 - results are aggregated into reports/source_stats.json
 
-Status values: ok, blocked, unavailable, error.
+Status values: ok, blocked, unavailable, error, zero_results, unsupported.
 """
 
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
 
 from canonical import deduplicate_jobs
 
@@ -22,14 +25,18 @@ from sources import (
     greenhouse_source,
     himalayas_source,
     india_boards_source,
+    jobicy_source,
     jobspy_source,
     lever_source,
     naukri_source,
     remoteco_source,
     remoteok_source,
+    remotive_source,
+    rss_source,
     timesjobs_source,
     wellfound_source,
     weworkremotely_source,
+    workable_source,
     workingnomads_source,
     yc_source,
 )
@@ -68,6 +75,11 @@ SINGLE_PROVIDERS = [
     ("Greenhouse", greenhouse_source, "greenhouse"),
     ("Lever", lever_source, "lever"),
     ("Ashby", ashby_source, "ashby"),
+    ("Workable", workable_source, "workable"),
+    ("Remotive", remotive_source, "remotive"),
+    ("Jobicy", jobicy_source, "jobicy"),
+    ("EuroRemote", rss_source, "euroremote"),
+    ("PythonJobs", rss_source, "pythondotorg"),
 ]
 
 MULTI_PROVIDERS = [
@@ -177,18 +189,32 @@ def run_sources(search_queries=None, locations=None, max_workers=12):
         max_workers=max_workers,
     ) as executor:
 
+        now_iso = (
+            datetime.now(timezone.utc)
+            .isoformat(timespec="seconds")
+        )
+
         future_map = {
             executor.submit(
                 runner,
                 search_queries,
                 locations,
-            ): (label, is_multi)
+            ): (
+                label,
+                is_multi,
+                time.perf_counter(),
+            )
             for label, runner, is_multi in tasks
         }
 
         for future in as_completed(future_map):
 
-            label, is_multi = future_map[future]
+            label, is_multi, submitted_at = future_map[future]
+
+            latency_ms = round(
+                (time.perf_counter() - submitted_at) * 1000,
+                1,
+            )
 
             try:
                 result = future.result()
@@ -210,8 +236,18 @@ def run_sources(search_queries=None, locations=None, max_workers=12):
                     "jobs": [],
                 }
 
+            if isinstance(result, dict):
+                result["latency_ms"] = latency_ms
+                result["ran_at_utc"] = now_iso
+
             if is_multi:
-                results.extend(split_jobspy_result(label, result))
+                entries = split_jobspy_result(label, result)
+
+                for entry in entries:
+                    entry["latency_ms"] = latency_ms
+                    entry["ran_at_utc"] = now_iso
+
+                results.extend(entries)
             else:
                 results.append(result)
 
@@ -233,6 +269,7 @@ def run_sources(search_queries=None, locations=None, max_workers=12):
 def build_stats(results):
     """Aggregate provider stats and the full raw discovery set."""
     provider_stats = []
+    provider_health = []
     all_jobs = []
 
     for result in results:
@@ -249,10 +286,22 @@ def build_stats(results):
             }
         )
 
+        provider_health.append(
+            {
+                "provider": provider,
+                "status": result.get("status", "error"),
+                "count": count,
+                "error": result.get("error", ""),
+                "latency_ms": result.get("latency_ms"),
+                "ran_at_utc": result.get("ran_at_utc"),
+            }
+        )
+
         all_jobs.extend(jobs)
 
     stats = {
         "providers": provider_stats,
+        "provider_health": provider_health,
         "summary": {
             "total_discovered": len(all_jobs),
         },
@@ -280,6 +329,10 @@ def print_source_breakdown(results, unique_jobs, total_jobs):
         "WWR",
         "Remote.co",
         "Working Nomads",
+        "Remotive",
+        "Jobicy",
+        "EuroRemote",
+        "PythonJobs",
         "TimesJobs",
         "Shine",
         "Freshersworld",
@@ -288,6 +341,7 @@ def print_source_breakdown(results, unique_jobs, total_jobs):
         "Unstop",
         "FreeHire",
         "Greenhouse",
+        "Workable",
         "Lever",
         "Ashby",
         "Glassdoor",

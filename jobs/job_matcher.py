@@ -10,6 +10,8 @@ from profile import (
     TARGET_ROLES,
 )
 
+from semantic_job import score_job_semantic
+
 
 MINIMUM_SCORE = 45
 
@@ -1417,6 +1419,9 @@ def role_matches(job):
         "production support",
         "technical support",
         "cloud support",
+        "cloud infrastructure support",
+        "infrastructure support",
+        "infrastructure engineer",
         "cloud operations",
         "operations engineer",
         "production operations",
@@ -1456,6 +1461,88 @@ def role_matches(job):
             matched_roles
         )
     )
+
+
+# ============================================================
+# CHEAP PREFILTER (pre-enrichment signal)
+# ============================================================
+
+PREFILTER_EXTRA_TERMS = {
+    "support engineer",
+    "support",
+    "operations",
+    "systems",
+    "admin",
+    "troubleshooting",
+    "incident",
+    "monitoring",
+    "production",
+    "reliability",
+    "cloud",
+    "infrastructure",
+    "deployment",
+    "ci/cd",
+    "observability",
+}
+
+
+def prefilter_job(job):
+    """Cheap relevance signal on raw discovery data.
+
+    Used to PRIORITIZE which jobs get full-page enrichment, never as
+    a hard gate, so recall is preserved when the raw listing is thin.
+    """
+    title = clean_text(
+        job.get("title")
+    )
+
+    content = get_job_content_text(
+        job
+    ) + " "
+
+    for key in (
+        "description",
+        "requirements",
+        "responsibilities",
+        "skills",
+    ):
+        value = job.get(key)
+
+        if isinstance(value, (list, tuple)):
+            value = " ".join(
+                str(item)
+                for item in value
+            )
+
+        content += clean_text(value) + " "
+
+    if role_matches(job):
+        return True
+
+    if any(
+        contains_phrase(content, skill)
+        for skill in SKILLS
+    ):
+        return True
+
+    return any(
+        contains_phrase(content, term)
+        for term in PREFILTER_EXTRA_TERMS
+    )
+
+
+def prioritize_for_enrichment(jobs):
+    """Split jobs into (likely_relevant, rest) using the cheap signal."""
+    relevant = []
+    rest = []
+
+    for job in jobs:
+        if prefilter_job(job):
+            relevant.append(job)
+        else:
+            rest.append(job)
+
+    return relevant, rest
 
 
 # ============================================================
@@ -1639,12 +1726,17 @@ def score_job(job):
 
     # --------------------------------------------------------
     # ROLE / SKILL RELEVANCE
+    #
+    # A job is relevant when its title belongs to a target role
+    # family (TARGET_ROLES or a configured family phrase). A strong
+    # family title stays relevant even when the fetched JD is empty,
+    # so generic skill overlap is deliberately not a substitute.
+    #
+    # Roles that do NOT belong to a target family must NOT pass just
+    # because the description happens to contain generic skills.
     # --------------------------------------------------------
 
-    if (
-        not matched_roles
-        and len(matched_skills) < 4
-    ):
+    if not matched_roles:
 
         filter_reasons.append(
             "Insufficient role/skill relevance"
@@ -1685,6 +1777,20 @@ def score_job(job):
             + location_score
             + experience_score
             - seniority_penalty,
+        ),
+    )
+
+    # --------------------------------------------------------
+    # LIGHTWEIGHT SEMANTIC LAYER (additive, bonus off by default)
+    # --------------------------------------------------------
+
+    semantic_extra, semantic_bonus = score_job_semantic(job)
+
+    score = max(
+        0,
+        min(
+            100,
+            score + semantic_bonus,
         ),
     )
 
@@ -1736,7 +1842,18 @@ def score_job(job):
         "seniority_analysis": seniority_reasons,
         "seniority_penalty": seniority_penalty,
         "filter_reasons": filter_reasons,
+        "score_breakdown": {
+            "role_score": role_score,
+            "skill_score": skill_score,
+            "location_score": location_score,
+            "experience_score": experience_score,
+            "seniority_penalty": seniority_penalty,
+            "semantic_bonus": semantic_bonus,
+            "total": score,
+        },
     }
+
+    result["match_details"].update(semantic_extra)
 
     return result
 

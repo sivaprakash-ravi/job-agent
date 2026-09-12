@@ -5,7 +5,7 @@ schema defined by :func:`normalize_common` and returns a result dict::
 
     {
         "provider": "name",
-        "status": "ok" | "blocked" | "unavailable" | "error",
+        "status": "ok" | "blocked" | "unavailable" | "error" | "zero_results",
         "count": <int>,
         "error": "<description>",
         "jobs": [ <common schema jobs> ],
@@ -15,9 +15,93 @@ profile.py remains the single source of truth for roles, skills,
 locations and preferences.
 """
 
+import hashlib
+import re
+from datetime import datetime, timezone
+from html import unescape
+
 import requests
 
 from profile import LOCATIONS, SKILLS, TARGET_ROLES
+
+
+PROVIDER_STATUS = {
+    "ok": "ok",
+    "blocked": "blocked",
+    "unavailable": "unavailable",
+    "error": "error",
+    "zero_results": "zero_results",
+    "unsupported": "unsupported",
+}
+
+
+def now_utc_iso():
+    """Return the current UTC time as an ISO string."""
+    return (
+        datetime.now(timezone.utc)
+        .isoformat(timespec="seconds")
+    )
+
+
+def content_hash(value):
+    """Deterministic short hash of job content for similarity checks."""
+    return hashlib.sha1(
+        str(value or "").encode("utf-8", errors="ignore")
+    ).hexdigest()[:16]
+
+
+REMOTE_TOKENS = (
+    "remote",
+    "anywhere",
+    "work from home",
+    "wfh",
+    "fully remote",
+    "100% remote",
+)
+
+
+def detect_remote(*texts):
+    """Return True when any supplied text clearly indicates remote work."""
+    for text in texts:
+        lower = str(text or "").lower()
+
+        if any(token in lower for token in REMOTE_TOKENS):
+            return True
+
+    return False
+
+
+def html_to_text(value, max_chars=None):
+    """Convert an HTML fragment into readable plain text."""
+    text = unescape(str(value or ""))
+
+    text = re.sub(
+        r"<(script|style)\b[^>]*>.*?</\1>",
+        " ",
+        text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
+    text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
+
+    text = re.sub(
+        r"</(?:p|div|li|section|article|h[1-6])>",
+        "\n",
+        text,
+        flags=re.IGNORECASE,
+    )
+
+    text = re.sub(r"<[^>]+>", " ", text)
+
+    text = re.sub(r"[\r\n]+", " ", text)
+    text = re.sub(r"[ \t]+", " ", text)
+
+    text = unescape(text).strip()
+
+    if max_chars and len(text) > max_chars:
+        text = text[:max_chars]
+
+    return text
 
 
 REQUEST_TIMEOUT = 20
@@ -40,9 +124,9 @@ HEADERS = {
 def build_search_queries(limit=None):
     """Build multiple focused search queries from profile.py.
 
-    Uses role families plus the configured TARGET_ROLES and a
-    sensible subset of the configured skills. Never one giant
-    Boolean query.
+    Uses role families plus the configured TARGET_ROLES, role
+    synonyms and a sensible subset of the configured skills.
+    Never one giant Boolean query.
     """
     broad = [
         "DevOps",
@@ -53,6 +137,7 @@ def build_search_queries(limit=None):
         "SRE",
         "Site Reliability",
         "Infrastructure",
+        "Infrastructure Engineer",
         "System Administrator",
         "Systems Engineer",
         "IT Operations",
@@ -69,6 +154,9 @@ def build_search_queries(limit=None):
         "Test Engineer",
         "Automation Tester",
     ]
+
+    # Role synonyms so discovery stays broad even when matching is strict.
+    role_synonyms = ROLE_SYNONYMS
 
     skill_queries = [
         skill
@@ -88,7 +176,15 @@ def build_search_queries(limit=None):
         }
     ]
 
-    queries = [q.strip() for q in broad + TARGET_ROLES + skill_queries]
+    queries = [
+        q.strip()
+        for q in (
+            broad
+            + TARGET_ROLES
+            + role_synonyms
+            + skill_queries
+        )
+    ]
     queries = [q for q in queries if q]
 
     unique = list(dict.fromkeys(queries))
@@ -97,6 +193,38 @@ def build_search_queries(limit=None):
         return unique[:limit]
 
     return unique
+
+
+ROLE_SYNONYMS = [
+    "site reliability engineer",
+    "sre engineer",
+    "devops",
+    "devops engineer",
+    "cloud infrastructure",
+    "cloud infrastructure engineer",
+    "infrastructure support",
+    "infrastructure support engineer",
+    "cloud reliability",
+    "platform engineer",
+    "platform operations",
+    "sre",
+    "reliability engineer",
+    "cloud operations engineer",
+    "application support engineer",
+    "production support engineer",
+    "tech support engineer",
+    "technical operations",
+    "system operations",
+    "monitoring engineer",
+    "observability",
+    "incident management",
+    "qa tester",
+    "qa analyst",
+    "quality analyst",
+    "manual tester",
+    "test analyst",
+    "software tester",
+]
 
 
 def build_locations():
@@ -212,38 +340,71 @@ def normalize_common(
     location="",
     remote=None,
     url="",
+    apply_url="",
     description="",
+    requirements="",
+    responsibilities="",
     date_posted="",
+    posted_at="",
     employment_type="",
     experience="",
+    experience_min="",
+    experience_max="",
     salary="",
     skills=None,
     search_query="",
     search_location="",
+    json_ld=None,
     raw=None,
 ):
     """Normalize one raw job into the common job schema."""
     url = str(url or "").strip()
+    apply_url = str(apply_url or "").strip() or url
     source_job_id = str(source_job_id or "").strip()
+    location = str(location or "").strip()
 
     job = {
         "source": source,
         "source_job_id": source_job_id or url,
         "title": str(title or "").strip(),
         "company": str(company or "").strip(),
-        "location": str(location or "").strip(),
+        "location": location,
         "remote": bool(remote) if remote is not None else None,
         "url": url,
         "job_url": url,
+        "apply_url": apply_url,
         "description": str(description or "").strip(),
+        "requirements": str(requirements or "").strip(),
+        "responsibilities": str(responsibilities or "").strip(),
         "date_posted": str(date_posted or ""),
+        "posted_at": str(posted_at or "") or str(date_posted or ""),
         "employment_type": str(employment_type or ""),
         "experience": str(experience or ""),
+        "experience_min": str(experience_min or ""),
+        "experience_max": str(experience_max or ""),
         "salary": str(salary or ""),
         "skills": list(skills or []),
         "search_query": str(search_query or ""),
         "search_location": str(search_location or ""),
+        "discovered_at": now_utc_iso(),
+        "content_hash": content_hash(
+            f"{url}|{title}|{company}|{description}"
+        ),
+        "normalized_identity": "",
         "raw_source_data": dict(raw or {}),
     }
+
+    if json_ld is not None:
+        job["json_ld"] = json_ld
+
+    try:
+        from canonical import job_identity
+
+        identity = job_identity(job)
+
+        if identity:
+            job["normalized_identity"] = identity
+    except Exception:
+        job["normalized_identity"] = ""
 
     return job
