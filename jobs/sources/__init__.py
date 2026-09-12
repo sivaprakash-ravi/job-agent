@@ -1,0 +1,1 @@
+"""Source adapters for the job-agent discovery pipeline."""

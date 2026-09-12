@@ -1,151 +1,48 @@
-"""Collect, enrich, filter and prepare jobs for Telegram."""
+"""Collect, dedupe, enrich, rank, filter and prepare jobs for Telegram.
+
+Pipeline:
+
+    MANY JOB SOURCES
+        -> BROAD DISCOVERY
+        -> NORMALIZE
+        -> GLOBAL DEDUPE
+        -> FULL JOB DETAILS / JD ENRICHMENT
+        -> PROFILE MATCHING
+        -> RANKING
+        -> SENT HISTORY
+        -> REPORTS / TELEGRAM DATA
+"""
 
 import json
-import urllib.parse
-import urllib.request
+import os
+from datetime import datetime, timezone
 from pathlib import Path
 
-from profile import TARGET_ROLES, SKILLS
-
+import source_runner
+from canonical import job_identity
 from job_enricher import enrich_jobs
-
 from job_matcher import (
+    get_rejected_jobs,
     keep_relevant_jobs,
     rank_jobs,
-    get_rejected_jobs,
 )
+from sources.base import build_locations, build_search_queries
 
-
-API_URL = "https://freehire.me/api/v1/jobs/search"
 
 OUTPUT_DIR = Path("reports")
 
-INDEED_FILE = OUTPUT_DIR / "indeed_jobs.json"
-
 OUTPUT_FILE = OUTPUT_DIR / "jobs.json"
+FULL_OUTPUT_FILE = OUTPUT_DIR / "all_ranked_jobs.json"
+REJECTED_OUTPUT_FILE = OUTPUT_DIR / "rejected_jobs.json"
+UNVERIFIED_OUTPUT_FILE = OUTPUT_DIR / "unverified_jobs.json"
+SENT_FILE = OUTPUT_DIR / "sent_jobs.json"
+SOURCE_STATS_FILE = OUTPUT_DIR / "source_stats.json"
 
-FULL_OUTPUT_FILE = (
-    OUTPUT_DIR / "all_ranked_jobs.json"
-)
+DEFAULT_ENRICH_CAP = 300
 
-REJECTED_OUTPUT_FILE = (
-    OUTPUT_DIR / "rejected_jobs.json"
-)
-
-UNVERIFIED_OUTPUT_FILE = (
-    OUTPUT_DIR / "unverified_jobs.json"
-)
-
-SENT_FILE = (
-    OUTPUT_DIR / "sent_jobs.json"
-)
-
-
-# ============================================================
-# FREEHIRE
-# ============================================================
-
-def collect_freehire_jobs():
-    """Collect jobs from FreeHire."""
-
-    params = {
-        "q": " ".join(
-            TARGET_ROLES + SKILLS
-        ),
-        "countries": "IN",
-        "category": (
-            "devops,sre,support,"
-            "operations,software_engineering,"
-            "qa,testing"
-        ),
-        "seniority": "junior,middle",
-        "employment_type": "full_time",
-        "posted_within_days": "3",
-        "sort": "posted_at",
-        "order": "desc",
-        "limit": "100",
-        "offset": "0",
-    }
-
-    url = (
-        API_URL
-        + "?"
-        + urllib.parse.urlencode(params)
-    )
-
-    request = urllib.request.Request(
-        url,
-        headers={
-            "Accept": "application/json",
-            "User-Agent": "job-agent/2.0",
-        },
-    )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30,
-    ) as response:
-
-        data = json.loads(
-            response.read().decode(
-                "utf-8"
-            )
-        )
-
-    return (
-        data.get("data", []),
-        data.get("meta", {}),
-    )
-
-
-# ============================================================
-# JOBSPY
-# ============================================================
-
-def load_jobspy_jobs():
-    """Load jobs previously collected by JobSpy."""
-
-    if not INDEED_FILE.exists():
-        return []
-
-    try:
-
-        with open(
-            INDEED_FILE,
-            "r",
-            encoding="utf-8",
-        ) as file:
-
-            data = json.load(file)
-
-        if not isinstance(
-            data,
-            list,
-        ):
-            return []
-
-        return data
-
-    except (
-        json.JSONDecodeError,
-        OSError,
-    ):
-
-        print(
-            "Warning: unable to read "
-            "JobSpy report."
-        )
-
-        return []
-
-
-# ============================================================
-# HISTORY
-# ============================================================
 
 def load_sent_jobs():
     """Load previously sent job identities."""
-
     if not SENT_FILE.exists():
         return set()
 
@@ -175,10 +72,11 @@ def load_sent_jobs():
         return set()
 
 
-def save_sent_jobs(
-    sent_jobs,
-):
+def save_sent_jobs(sent_jobs):
     """Save previously sent job identities."""
+    OUTPUT_DIR.mkdir(
+        exist_ok=True
+    )
 
     with open(
         SENT_FILE,
@@ -194,15 +92,11 @@ def save_sent_jobs(
         )
 
 
-# ============================================================
-# JSON
-# ============================================================
-
-def save_json(
-    path,
-    data,
-):
+def save_json(path, data):
     """Save JSON report."""
+    OUTPUT_DIR.mkdir(
+        exist_ok=True
+    )
 
     with open(
         path,
@@ -218,85 +112,8 @@ def save_json(
         )
 
 
-# ============================================================
-# IDENTITY / DEDUPLICATION
-# ============================================================
-
-def job_identity(job):
-    """
-    Build a stable job identity.
-
-    URL is preferred.
-    Company + title is used as fallback.
-    """
-
-    url = (
-        job.get("url")
-        or job.get("job_url")
-        or ""
-    )
-
-    if url:
-        return url.strip().lower()
-
-    company = (
-        job.get("company")
-        or job.get("company_name")
-        or ""
-    )
-
-    title = (
-        job.get("title")
-        or ""
-    )
-
-    return (
-        f"{company}|{title}"
-        .strip()
-        .lower()
-    )
-
-
-def deduplicate_jobs(jobs):
-    """Remove duplicate jobs across sources."""
-
-    unique_jobs = []
-
-    seen = set()
-
-    for job in jobs:
-
-        identity = job_identity(
-            job
-        )
-
-        if not identity:
-            continue
-
-        if identity in seen:
-            continue
-
-        seen.add(
-            identity
-        )
-
-        unique_jobs.append(
-            job
-        )
-
-    return unique_jobs
-
-
-# ============================================================
-# VERIFICATION HELPERS
-# ============================================================
-
 def is_detail_verified(job):
-    """
-    Determine whether the actual job page was
-    successfully fetched.
-    """
-
+    """Determine whether the actual job page was fetched."""
     verification = job.get(
         "detail_verification",
         {},
@@ -318,7 +135,6 @@ def is_detail_verified(job):
 
 def get_match_details(job):
     """Safely return matcher details."""
-
     details = job.get(
         "match_details",
         {},
@@ -333,10 +149,6 @@ def get_match_details(job):
     return details
 
 
-# ============================================================
-# MAIN
-# ============================================================
-
 def main():
 
     OUTPUT_DIR.mkdir(
@@ -345,97 +157,113 @@ def main():
 
     print()
     print("=" * 70)
-    print("SIVA JOB AGENT — V1")
+    print("SIVA JOB AGENT - MULTI-SOURCE JOB DISCOVERY")
     print("=" * 70)
 
     # --------------------------------------------------------
-    # 1. DISCOVERY
+    # 1. SEARCH TERMS + LOCATIONS FROM profile.py
+    # --------------------------------------------------------
+
+    query_cap = _int_or_none(
+        os.environ.get("JOB_AGENT_QUERIES")
+    )
+
+    search_queries = build_search_queries(
+        limit=query_cap
+    )
+
+    locations = build_locations()
+
+    print()
+    print(
+        f"Search queries : {len(search_queries)}"
+    )
+
+    print(
+        f"Locations      : "
+        f"{', '.join(locations)}"
+    )
+
+    # --------------------------------------------------------
+    # 2. DISCOVERY
     # --------------------------------------------------------
 
     print()
     print(
-        "[1/7] Collecting FreeHire jobs..."
+        "[1/7] Running all source providers..."
     )
 
-    try:
-
-        (
-            freehire_jobs,
-            freehire_meta,
-        ) = collect_freehire_jobs()
-
-    except Exception as error:
-
-        print(
-            f"FreeHire collection failed: "
-            f"{error}"
-        )
-
-        freehire_jobs = []
-        freehire_meta = {}
-
-    print(
-        f"       FreeHire jobs: "
-        f"{len(freehire_jobs)}"
+    (
+        provider_results,
+        unique_jobs,
+        stats,
+    ) = source_runner.run_sources(
+        search_queries=search_queries,
+        locations=locations,
     )
 
-    print()
-    print(
-        "[2/7] Loading JobSpy jobs..."
+    total_discovered = sum(
+        result.get("count", 0)
+        for result in provider_results
     )
 
-    jobspy_jobs = (
-        load_jobspy_jobs()
-    )
-
-    print(
-        f"       JobSpy jobs: "
-        f"{len(jobspy_jobs)}"
+    source_runner.print_source_breakdown(
+        provider_results,
+        unique_jobs,
+        [
+            job
+            for job in run_all_jobs(provider_results)
+        ],
     )
 
     # --------------------------------------------------------
-    # 2. COMBINE
+    # 3. GLOBAL DEDUPE
     # --------------------------------------------------------
 
     print()
     print(
-        "[3/7] Combining and deduplicating..."
-    )
-
-    raw_jobs = (
-        freehire_jobs
-        + jobspy_jobs
-    )
-
-    raw_jobs = deduplicate_jobs(
-        raw_jobs
+        "[2/7] Global deduplication across providers..."
     )
 
     print(
-        f"       Unique jobs: "
-        f"{len(raw_jobs)}"
+        f"       Total discovered : "
+        f"{total_discovered}"
+    )
+
+    print(
+        f"       Total unique     : "
+        f"{len(unique_jobs)}"
     )
 
     # --------------------------------------------------------
-    # 3. ENRICH
+    # 4. ENRICH
     # --------------------------------------------------------
+
+    enriched_cap = _int_or_none(
+        os.environ.get("JOB_AGENT_MAX_ENRICH")
+    )
+
+    if enriched_cap is None:
+        enriched_cap = DEFAULT_ENRICH_CAP
+
+    enrichable = _stratified_jobs(
+        unique_jobs,
+        enriched_cap,
+    )
 
     print()
     print(
-        "[4/7] Fetching full available "
-        "job details..."
+        "[3/7] Fetching full available job details..."
     )
 
     enriched_jobs = enrich_jobs(
-        raw_jobs
+        enrichable
     )
 
     verified_count = sum(
         1
         for job in enriched_jobs
-        if is_detail_verified(
-            job
-        )
+        if is_detail_verified(job)
     )
 
     unverified_count = (
@@ -444,22 +272,22 @@ def main():
     )
 
     print(
-        f"       Successfully fetched: "
+        f"       Detail verified  : "
         f"{verified_count}"
     )
 
     print(
-        f"       Could not fetch: "
+        f"       Detail unverified: "
         f"{unverified_count}"
     )
 
     # --------------------------------------------------------
-    # 4. MATCH
+    # 5. RANK
     # --------------------------------------------------------
 
     print()
     print(
-        "[5/7] Running deep job matching..."
+        "[4/7] Running deep job matching..."
     )
 
     ranked_jobs = rank_jobs(
@@ -467,7 +295,7 @@ def main():
     )
 
     # --------------------------------------------------------
-    # 5. FINAL FILTER
+    # 6. FILTER
     # --------------------------------------------------------
 
     relevant_jobs = (
@@ -481,10 +309,6 @@ def main():
             ranked_jobs
         )
     )
-
-    # --------------------------------------------------------
-    # 6. UNVERIFIED
-    # --------------------------------------------------------
 
     unverified_jobs = []
 
@@ -518,39 +342,12 @@ def main():
             )
 
     # --------------------------------------------------------
-    # SAVE COMPLETE RANKED REPORT
-    # --------------------------------------------------------
-
-    save_json(
-        FULL_OUTPUT_FILE,
-        ranked_jobs,
-    )
-
-    # --------------------------------------------------------
-    # SAVE REJECTED REPORT
-    # --------------------------------------------------------
-
-    save_json(
-        REJECTED_OUTPUT_FILE,
-        rejected_jobs,
-    )
-
-    # --------------------------------------------------------
-    # SAVE UNVERIFIED REPORT
-    # --------------------------------------------------------
-
-    save_json(
-        UNVERIFIED_OUTPUT_FILE,
-        unverified_jobs,
-    )
-
-    # --------------------------------------------------------
-    # 7. REMOVE PREVIOUSLY SENT
+    # 7. SENT HISTORY
     # --------------------------------------------------------
 
     print()
     print(
-        "[6/7] Checking previously sent jobs..."
+        "[5/7] Checking previously sent jobs..."
     )
 
     sent_jobs = load_sent_jobs()
@@ -582,7 +379,7 @@ def main():
     )
 
     # --------------------------------------------------------
-    # FINAL TELEGRAM DATA
+    # 8. SAVE REPORTS
     # --------------------------------------------------------
 
     save_json(
@@ -590,13 +387,50 @@ def main():
         new_jobs,
     )
 
+    save_json(
+        FULL_OUTPUT_FILE,
+        ranked_jobs,
+    )
+
+    save_json(
+        REJECTED_OUTPUT_FILE,
+        rejected_jobs,
+    )
+
+    save_json(
+        UNVERIFIED_OUTPUT_FILE,
+        unverified_jobs,
+    )
+
+    stats["summary"].update(
+        {
+            "total_discovered": total_discovered,
+            "total_unique": len(unique_jobs),
+            "total_enriched": len(enriched_jobs),
+            "total_verified": verified_count,
+            "total_unverified": unverified_count,
+            "total_eligible": len(relevant_jobs),
+            "total_rejected": len(rejected_jobs),
+            "total_new_telegram": len(new_jobs),
+            "run_at_utc": (
+                datetime.now(timezone.utc)
+                .isoformat(timespec="seconds")
+            ),
+        }
+    )
+
+    save_json(
+        SOURCE_STATS_FILE,
+        stats,
+    )
+
     # --------------------------------------------------------
-    # REPORT
+    # 9. REPORT
     # --------------------------------------------------------
 
     print()
     print(
-        "[7/7] V1 filtering completed."
+        "[6/7] Reports saved."
     )
 
     print()
@@ -604,81 +438,109 @@ def main():
     print("V1 RESULTS")
     print("=" * 70)
 
-    print(
-        f"Discovered jobs       : "
-        f"{len(raw_jobs)}"
-    )
+    totals = [
+        ("TOTAL DISCOVERED", total_discovered),
+        ("TOTAL UNIQUE", len(unique_jobs)),
+        ("TOTAL ENRICHED", len(enriched_jobs)),
+        ("TOTAL VERIFIED", verified_count),
+        ("TOTAL UNVERIFIED", unverified_count),
+        ("TOTAL ELIGIBLE", len(relevant_jobs)),
+        ("TOTAL REJECTED", len(rejected_jobs)),
+        ("TOTAL NEW TELEGRAM", len(new_jobs)),
+    ]
 
-    print(
-        f"Enriched jobs         : "
-        f"{len(enriched_jobs)}"
-    )
-
-    print(
-        f"Detail verified       : "
-        f"{verified_count}"
-    )
-
-    print(
-        f"Detail unavailable    : "
-        f"{unverified_count}"
-    )
-
-    print(
-        f"Eligible jobs         : "
-        f"{len(relevant_jobs)}"
-    )
-
-    print(
-        f"Rejected jobs         : "
-        f"{len(rejected_jobs)}"
-    )
-
-    print(
-        f"Unverified jobs       : "
-        f"{len(unverified_jobs)}"
-    )
-
-    print(
-        f"New Telegram jobs     : "
-        f"{len(new_jobs)}"
-    )
+    for label, value in totals:
+        print(f"{label:18} : {value}")
 
     print()
-
     print(
         "Reports created:"
     )
 
-    print(
-        f"  ✓ {OUTPUT_FILE}"
-    )
-
-    print(
-        f"  ✓ {FULL_OUTPUT_FILE}"
-    )
-
-    print(
-        f"  ✓ {REJECTED_OUTPUT_FILE}"
-    )
-
-    print(
-        f"  ✓ {UNVERIFIED_OUTPUT_FILE}"
-    )
-
-    print(
-        f"  ✓ {SENT_FILE}"
-    )
+    for report in (
+        OUTPUT_FILE,
+        FULL_OUTPUT_FILE,
+        REJECTED_OUTPUT_FILE,
+        UNVERIFIED_OUTPUT_FILE,
+        SOURCE_STATS_FILE,
+        SENT_FILE,
+    ):
+        print(f"  - {report}")
 
     print()
+    print("=" * 70)
+    print("PIPELINE COMPLETE")
+    print("=" * 70)
 
-    print(
-        "FreeHire total matches:",
-        freehire_meta.get(
-            "total",
-            "unknown",
-        ),
-    )
+
+def run_all_jobs(provider_results):
+    """Yield every raw job from every provider result."""
+    all_jobs = []
+
+    for result in provider_results:
+        all_jobs.extend(
+            result.get("jobs", [])
+        )
+
+    return all_jobs
+
+
+def _stratified_jobs(unique_jobs, cap):
+    """Pick up to ``cap`` jobs spread evenly across every source.
+
+    Without this, a cap truncates the largest providers first and the
+    smaller (often more relevant) sources never get enriched at all.
+    """
+    from collections import defaultdict
+
+    by_source = defaultdict(list)
+
+    for job in unique_jobs:
+        by_source[job.get("source") or "unknown"].append(job)
+
+    sources = list(by_source)
+
+    if not sources:
+        return []
+
+    cursor = {source: 0 for source in sources}
+
+    selected = []
+    count = 0
+
+    while count < cap:
+        progressed = False
+
+        for source in sources:
+            bucket = by_source[source]
+
+            index = cursor[source]
+
+            if index >= len(bucket):
+                continue
+
+            selected.append(bucket[index])
+            cursor[source] = index + 1
+            count += 1
+            progressed = True
+
+            if count >= cap:
+                break
+
+        if not progressed:
+            break
+
+    return selected
+
+
+def _int_or_none(value):
+    if not value:
+        return None
+
+    try:
+        return int(value)
+    except ValueError:
+        return None
 
 
 if __name__ == "__main__":

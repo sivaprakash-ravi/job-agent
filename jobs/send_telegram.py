@@ -106,6 +106,17 @@ def get_chat_id():
 def format_message(jobs):
     """Build the main Telegram job report."""
 
+    sources = sorted(
+        {
+            str(job.get("source") or "Unknown")
+            for job in jobs
+        }
+    )
+
+    sources_text = ", ".join(
+        sources
+    ) or "Unknown"
+
     lines = [
         "Hi Siva 👋",
         "",
@@ -117,7 +128,7 @@ def format_message(jobs):
             "job(s) found"
         ),
         "",
-        "Sources: JobSpy + FreeHire",
+        f"Sources: {sources_text}",
     ]
 
     for index, job in enumerate(
@@ -164,6 +175,19 @@ def format_message(jobs):
             "Match",
         )
 
+        experience = (
+            job.get("experience")
+            or experience_summary(
+                job
+            )
+        )
+
+        experience_line = (
+            f"Exp: {experience}"
+            if experience
+            else ""
+        )
+
         lines.extend(
             [
                 "",
@@ -181,6 +205,11 @@ def format_message(jobs):
             ]
         )
 
+        if experience_line:
+            lines.append(
+                experience_line
+            )
+
     lines.extend(
         [
             "",
@@ -190,6 +219,42 @@ def format_message(jobs):
     )
 
     return "\n".join(lines)
+
+
+def experience_summary(job):
+    """Surf a short experience summary from match details."""
+    details = job.get(
+        "match_details",
+        {},
+    )
+
+    if not isinstance(
+        details,
+        dict,
+    ):
+        return ""
+
+    analysis = details.get(
+        "experience_analysis",
+    )
+
+    if not isinstance(
+        analysis,
+        dict,
+    ):
+        return ""
+
+    maximum = analysis.get(
+        "maximum_required",
+    )
+
+    if maximum is None:
+        return ""
+
+    if maximum == float("inf"):
+        return "open-ended"
+
+    return f"up to {maximum:g} years"
 
 
 def no_new_jobs_message():

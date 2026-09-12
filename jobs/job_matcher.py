@@ -182,7 +182,7 @@ EXPERIENCE_RANGE_PATTERN = re.compile(
 EXPERIENCE_PLUS_PATTERN = re.compile(
     r"\b(\d+(?:\.\d+)?)"
     r"\s*(?:\+|plus)"
-    r"\s*(?:years?|yrs?)?\b"
+    r"\s*(?:years?|yrs?)\b"
     r"|"
     r"\b(\d+(?:\.\d+)?)"
     r"\s*(?:years?|yrs?)"
@@ -209,6 +209,26 @@ MINIMUM_EXPERIENCE_PATTERN = re.compile(
 
 AT_LEAST_EXPERIENCE_PATTERN = re.compile(
     r"\bat\s+least\s+"
+    r"(\d+(?:\.\d+)?)"
+    r"\s*(?:years?|yrs?)\b",
+    re.IGNORECASE,
+)
+
+
+APPROXIMATE_EXPERIENCE_PATTERN = re.compile(
+    r"\b(?:"
+    r"around"
+    r"|approximately"
+    r"|approx\.?"
+    r"|about"
+    r"|min\.?"
+    r"|minimum"
+    r"|at\s+least"
+    r"|over"
+    r"|more\s+than"
+    r"|greater\s+than"
+    r"|up\s+to"
+    r")\s+"
     r"(\d+(?:\.\d+)?)"
     r"\s*(?:years?|yrs?)\b",
     re.IGNORECASE,
@@ -488,7 +508,43 @@ def extract_experience_content(
             )
         )
 
+        if _is_numeric_experience(field_name):
+
+            texts.append(
+                (
+                    field_name,
+                    f"{text} years of "
+                    f"experience required",
+                )
+            )
+
     return texts
+
+
+def _is_numeric_experience(field_name):
+    """Whether a field is an explicit minimum-experience value."""
+    name = (
+        str(field_name)
+        .lower()
+        .replace("_", " ")
+        .strip()
+    )
+
+    return any(
+        marker in name
+        for marker in (
+            "experience years min",
+            "minimum experience",
+            "minimum years",
+            "required experience",
+            "required years",
+            "years of experience min",
+            "minimum required experience",
+        )
+    ) and (
+        "max" not in name
+        and "maximum" not in name
+    )
 
 
 # ============================================================
@@ -687,11 +743,14 @@ def title_experience_above_limit(title):
     """
     Reject title experience above the configured limit.
 
+    A plus form such as "2+ years" means "at least 2 years" and is
+    acceptable. Only values actually above the limit reject.
+
     Example:
-        3 years -> reject
+        3 years  -> reject
         3+ years -> reject
-        2+ years -> reject
-        2 years -> allowed
+        2+ years -> allowed
+        2 years  -> allowed
     """
 
     title = clean_text(
@@ -706,26 +765,7 @@ def title_experience_above_limit(title):
             match.group(1)
         )
 
-        matched = clean_text(
-            match.group(0)
-        )
-
-        is_plus = (
-            "+"
-            in matched
-            or "plus"
-            in matched
-        )
-
-        if is_plus:
-
-            if (
-                years
-                >= MAX_JOB_EXPERIENCE_YEARS
-            ):
-                return True
-
-        elif (
+        if (
             years
             > MAX_JOB_EXPERIENCE_YEARS
         ):
@@ -765,6 +805,7 @@ def extract_experience_requirements(text):
         maximum,
         matched,
         requirement_type="mandatory",
+        kind="single",
     ):
 
         results.append(
@@ -775,6 +816,7 @@ def extract_experience_requirements(text):
                     matched
                 ),
                 requirement_type,
+                kind,
             )
         )
 
@@ -798,10 +840,15 @@ def extract_experience_requirements(text):
             minimum,
             maximum,
             match.group(0),
+            kind="range",
         )
 
     # --------------------------------------------------------
     # PLUS
+    #
+    # "2+ years" is a minimum-only requirement. It is NOT rejected
+    # just because the word "plus" appears. Only values above the
+    # configured maximum reject ("3+ years" with max 2).
     # --------------------------------------------------------
 
     for match in EXPERIENCE_PLUS_PATTERN.finditer(
@@ -819,8 +866,9 @@ def extract_experience_requirements(text):
 
         add(
             years,
-            float("inf"),
+            years,
             match.group(0),
+            kind="plus",
         )
 
     # --------------------------------------------------------
@@ -857,6 +905,26 @@ def extract_experience_requirements(text):
             years,
             years,
             match.group(0),
+            kind="plus",
+        )
+
+    # --------------------------------------------------------
+    # AROUND / APPROXIMATELY / MIN / MORE THAN
+    # --------------------------------------------------------
+
+    for match in APPROXIMATE_EXPERIENCE_PATTERN.finditer(
+        text
+    ):
+
+        years = float(
+            match.group(1)
+        )
+
+        add(
+            years,
+            years,
+            match.group(0),
+            kind="plus",
         )
 
     # --------------------------------------------------------
@@ -957,29 +1025,13 @@ def extract_experience_requirements(text):
         maximum,
         matched,
         requirement_type,
+        kind,
     ) in results:
 
-        index = text.find(
-            matched
+        context = containing_sentence(
+            text,
+            matched,
         )
-
-        context = ""
-
-        if index >= 0:
-
-            start = max(
-                0,
-                index - 120,
-            )
-
-            end = min(
-                len(text),
-                index + len(matched) + 120,
-            )
-
-            context = text[
-                start:end
-            ]
 
         if any(
             marker in context
@@ -994,6 +1046,7 @@ def extract_experience_requirements(text):
                 maximum,
                 matched,
                 requirement_type,
+                kind,
             )
         )
 
@@ -1012,6 +1065,7 @@ def extract_experience_requirements(text):
             item[1],
             item[2],
             item[3],
+            item[4],
         )
 
         if key in seen:
@@ -1028,6 +1082,69 @@ def extract_experience_requirements(text):
     return unique
 
 
+def containing_sentence(text, matched):
+    """
+    Return the sentence or bullet containing ``matched``.
+
+    Experience classification must use the actual sentence / bullet
+    that contains the experience statement. A word such as
+    "preferred" elsewhere in a large description must not turn a
+    mandatory requirement into a preferred one.
+    """
+    index = text.find(
+        matched
+    )
+
+    if index < 0:
+        return ""
+
+    start_index = index
+    end_index = index + len(matched)
+
+    boundary_pattern = re.compile(
+        r"[.!?\n]"
+    )
+
+    before = list(
+        boundary_pattern.finditer(
+            text,
+            0,
+            start_index,
+        )
+    )
+
+    after = list(
+        boundary_pattern.finditer(
+            text,
+            end_index,
+        )
+    )
+
+    segment_start = (
+        before[-1].end()
+        if before
+        else 0
+    )
+
+    segment_end = (
+        after[0].start()
+        if after
+        else len(text)
+    )
+
+    segment = text[
+        segment_start:segment_end
+    ].strip()
+
+    if len(segment) > 400:
+        segment = text[
+            max(0, start_index - 120):
+            min(len(text), end_index + 120)
+        ]
+
+    return segment
+
+
 # ============================================================
 # DEEP EXPERIENCE ANALYSIS
 # ============================================================
@@ -1041,7 +1158,9 @@ def analyse_experience(job):
         Any mandatory requirement above the configured
         maximum rejects the entire job.
 
-    Plus-years are treated as open-ended requirements.
+    Plus / "at least" forms ("2+ years", "at least 2 years") are
+    minimum-only requirements and are acceptable whenever the value
+    is not above the configured maximum.
     """
 
     title = clean_text(
@@ -1097,6 +1216,7 @@ def analyse_experience(job):
             maximum,
             matched,
             requirement_type,
+            kind,
         ) in detected:
 
             key = (
@@ -1105,6 +1225,7 @@ def analyse_experience(job):
                 maximum,
                 matched,
                 requirement_type,
+                kind,
             )
 
             if key in seen:
@@ -1114,17 +1235,32 @@ def analyse_experience(job):
                 key
             )
 
+            plausible = [
+                value
+                for value in (minimum, maximum)
+                if value is not None
+                and 0 <= value <= 40
+            ]
+
+            if not plausible:
+                continue
+
+            open_ended = (
+                kind == "plus"
+            )
+
             requirements.append(
                 {
                     "field": field_name,
                     "minimum": minimum,
                     "maximum": (
                         None
-                        if maximum == float("inf")
+                        if open_ended
                         else maximum
                     ),
                     "text": matched,
                     "type": requirement_type,
+                    "open_ended": open_ended,
                 }
             )
 
@@ -1144,15 +1280,19 @@ def analyse_experience(job):
 
     for requirement in mandatory:
 
-        maximum = requirement[
-            "maximum"
-        ]
+        if requirement["open_ended"]:
 
-        value = (
-            float("inf")
-            if maximum is None
-            else float(maximum)
-        )
+            value = float(
+                requirement["minimum"]
+            )
+
+        else:
+
+            value = float(
+                requirement["maximum"]
+                if requirement["maximum"] is not None
+                else requirement["minimum"]
+            )
 
         if (
             maximum_required is None
@@ -1360,17 +1500,20 @@ def score_job(job):
 
     filter_reasons = []
 
+    seniority_penalty = 0
+
     # --------------------------------------------------------
-    # TITLE SENIORITY
+    # TITLE SENIORITY (soft signal)
+    #
+    # A senior-sounding title alone is NOT a hard rejection.
+    # The actual experience requirements in the job decide.
     # --------------------------------------------------------
 
     if has_advanced_title(
         title
     ):
 
-        filter_reasons.append(
-            "Advanced/senior-level designation"
-        )
+        seniority_penalty += 20
 
     # --------------------------------------------------------
     # SENIORITY METADATA
@@ -1386,23 +1529,17 @@ def score_job(job):
 
         for item in seniority_reasons:
 
-            filter_reasons.append(
-                "Advanced seniority metadata: "
-                f"{item['field']}="
-                f"{item['value']}"
-            )
+            seniority_penalty += 15
 
     # --------------------------------------------------------
-    # ADVANCED DOMAIN
+    # ADVANCED DOMAIN TITLE
     # --------------------------------------------------------
 
     if has_advanced_domain(
         title
     ):
 
-        filter_reasons.append(
-            "Advanced DevOps/SRE designation"
-        )
+        seniority_penalty += 15
 
     # --------------------------------------------------------
     # EXPERIENCE HARD GATE
@@ -1546,7 +1683,8 @@ def score_job(job):
             role_score
             + skill_score
             + location_score
-            + experience_score,
+            + experience_score
+            - seniority_penalty,
         ),
     )
 
@@ -1596,6 +1734,7 @@ def score_job(job):
         "experience_analysis": experience,
         "graduate_analysis": graduate,
         "seniority_analysis": seniority_reasons,
+        "seniority_penalty": seniority_penalty,
         "filter_reasons": filter_reasons,
     }
 

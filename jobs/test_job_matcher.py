@@ -37,14 +37,15 @@ assert strong_result["match_category"] in {"Excellent match", "Good match"}
 assert poor_result["match_category"] == "Ignore"
 assert strong_result["match_score"] > poor_result["match_score"]
 assert score_job(close_role_match)["match_score"] >= 45
+
 assert poor_result["match_details"]["filter_reasons"] == [
+    "Mandatory experience exceeds 2 years (detected: 4 years)",
     "Outside preferred locations",
-    "Requires more than 2 years of experience",
-    "Not enough target-role or skill overlap",
+    "Insufficient role/skill relevance",
 ]
 
-ranked = rank_jobs([poor_match, strong_match])
+ranked = rank_jobs([poor_match, strong_match, close_role_match])
 assert ranked[0]["title"] == "Cloud Support Engineer"
-assert len(keep_relevant_jobs(ranked)) == 1
+assert len(keep_relevant_jobs(ranked)) == 2
 
 print("Job matcher checks passed.")
