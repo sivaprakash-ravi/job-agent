@@ -27316,5 +27316,1898 @@
       },
       "rejection_stage": "qualified"
     }
+  ],
+  "2026-09-16": [
+    {
+      "source": "indeed",
+      "source_job_id": "in-757a819b12206fb4",
+      "title": "Cloud Engineer",
+      "company": "Zimble One Private Limited",
+      "location": "Remote, IN",
+      "remote": true,
+      "url": "https://in.indeed.com/viewjob?jk=757a819b12206fb4",
+      "job_url": "https://in.indeed.com/viewjob?jk=757a819b12206fb4",
+      "apply_url": "https://in.indeed.com/viewjob?jk=757a819b12206fb4",
+      "description": "**Job Title:** Entry\\-Level Cloud Engineer\n\n**Location:** Remote\n\n**Job Type:** Full\\-time\n\n**Experience:** Minimum 1 year in AWS, GCP, or Azure\n\n**About Us – Zimble One**\n\nZimble One is a fast\\-growing managed services provider specializing in supporting Cloud Service Providers (CSPs) across **AWS, Microsoft Azure, and Google Cloud Platform (GCP)**. With a tight\\-knit, expert team, we deliver scalable, secure, and cost\\-optimized cloud solutions to clients around the globe.\n\nWe're currently expanding our team and are looking for passionate, technically curious individuals to grow with us.\n\n**Position Summary**\n\nWe are hiring **Entry\\-Level Cloud Engineers** who have **at least 1 year of hands\\-on experience** working with **AWS, Azure, or GCP**. The role is fully remote and offers a fantastic opportunity to work across multiple cloud environments, contribute to real\\-world projects, and accelerate your career in cloud infrastructure and DevOps.\n\n**Key Responsibilities**\n\n* Assist in the design, deployment, and management of cloud infrastructure on **AWS, Azure, and GCP**\n* Perform routine system monitoring, performance tuning, and maintenance\n* Troubleshoot and resolve infrastructure issues with guidance\n* Assist with cloud cost optimization and security hardening\n* Create and maintain documentation for cloud deployments and configurations\n* Collaborate with senior engineers to support client projects\n* Stay up to date with emerging cloud technologies and best practices\n\n**Required Skills \\& Qualifications**\n\n* **Minimum 1 year of experience** with any of the three major cloud platforms (AWS, Azure, GCP)\n* Basic understanding of cloud networking, storage, compute, IAM, and monitoring services\n* Familiarity with Linux/Windows system administration in cloud environments\n* Exposure to Infrastructure as Code (Terraform, CloudFormation, or ARM templates) is a plus\n* Good troubleshooting and analytical skills\n* Ability to work independently in a remote setup\n* Strong verbal and written communication skills\n* Bachelor’s degree in Computer Science, IT, or a related field (preferred but not mandatory)\n\n**Nice to Have (Bonus Points)**\n\n* Cloud certifications (e.g., AWS Certified Cloud Practitioner / Solutions Architect Associate, Azure Fundamentals, Google Associate Cloud Engineer)\n* Experience with DevOps tools like Git, CI/CD pipelines, or containers (Docker/Kubernetes)\n* Scripting experience (Python, Bash, or PowerShell)\n\n**What We Offer**\n\n* 100% Remote Work Environment\n* Hands\\-on exposure to real client projects\n* Learning and certification support\n* Flat hierarchy and direct collaboration with founders\n* Opportunity to grow with the company\n\n**How to Apply**\n\nIf you're ready to take the next step in your cloud career, send your resume and a brief cover letter to **hr@zimbleone.com** with the subject line: **“Entry\\-Level Cloud Engineer – \\[Your Name]”**\n\nJob Types: Full\\-time, Permanent\n\nEducation:\n\n* Bachelor's (Required)\n\nExperience:\n\n* Cloud computing: 1 year (Required)\n\nLanguage:\n\n* English (Required)\n* Hindi (Required)\n\nWork Location: Remote",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-16",
+      "posted_at": "2026-09-16",
+      "employment_type": "fulltime",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Platform Support Engineer",
+      "search_location": "Remote",
+      "discovered_at": "2026-09-16T08:14:44+00:00",
+      "content_hash": "a6284b3cf328b5b8",
+      "normalized_identity": "url:https://in.indeed.com/viewjob?jk=757a819b12206fb4",
+      "raw_source_data": {
+        "id": "in-757a819b12206fb4",
+        "site": "indeed",
+        "job_url": "https://in.indeed.com/viewjob?jk=757a819b12206fb4",
+        "job_url_direct": "http://in.indeed.com/job/cloud-engineer-757a819b12206fb4",
+        "title": "Cloud Engineer",
+        "company": "Zimble One Private Limited",
+        "location": "Remote, IN",
+        "date_posted": "2026-09-16",
+        "job_type": "fulltime",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "True",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "hr@zimbleone.com",
+        "description": "**Job Title:** Entry\\-Level Cloud Engineer\n\n**Location:** Remote\n\n**Job Type:** Full\\-time\n\n**Experience:** Minimum 1 year in AWS, GCP, or Azure\n\n**About Us – Zimble One**\n\nZimble One is a fast\\-growing managed services provider specializing in supporting Cloud Service Providers (CSPs) across **AWS, Microsoft Azure, and Google Cloud Platform (GCP)**. With a tight\\-knit, expert team, we deliver scalable, secure, and cost\\-optimized cloud solutions to clients around the globe.\n\nWe're currently expanding our team and are looking for passionate, technically curious individuals to grow with us.\n\n**Position Summary**\n\nWe are hiring **Entry\\-Level Cloud Engineers** who have **at least 1 year of hands\\-on experience** working with **AWS, Azure, or GCP**. The role is fully remote and offers a fantastic opportunity to work across multiple cloud environments, contribute to real\\-world projects, and accelerate your career in cloud infrastructure and DevOps.\n\n**Key Responsibilities**\n\n* Assist in the design, deployment, and management of cloud infrastructure on **AWS, Azure, and GCP**\n* Perform routine system monitoring, performance tuning, and maintenance\n* Troubleshoot and resolve infrastructure issues with guidance\n* Assist with cloud cost optimization and security hardening\n* Create and maintain documentation for cloud deployments and configurations\n* Collaborate with senior engineers to support client projects\n* Stay up to date with emerging cloud technologies and best practices\n\n**Required Skills \\& Qualifications**\n\n* **Minimum 1 year of experience** with any of the three major cloud platforms (AWS, Azure, GCP)\n* Basic understanding of cloud networking, storage, compute, IAM, and monitoring services\n* Familiarity with Linux/Windows system administration in cloud environments\n* Exposure to Infrastructure as Code (Terraform, CloudFormation, or ARM templates) is a plus\n* Good troubleshooting and analytical skills\n* Ability to work independently in a remote setup\n* Strong verbal and written communication skills\n* Bachelor’s degree in Computer Science, IT, or a related field (preferred but not mandatory)\n\n**Nice to Have (Bonus Points)**\n\n* Cloud certifications (e.g., AWS Certified Cloud Practitioner / Solutions Architect Associate, Azure Fundamentals, Google Associate Cloud Engineer)\n* Experience with DevOps tools like Git, CI/CD pipelines, or containers (Docker/Kubernetes)\n* Scripting experience (Python, Bash, or PowerShell)\n\n**What We Offer**\n\n* 100% Remote Work Environment\n* Hands\\-on exposure to real client projects\n* Learning and certification support\n* Flat hierarchy and direct collaboration with founders\n* Opportunity to grow with the company\n\n**How to Apply**\n\nIf you're ready to take the next step in your cloud career, send your resume and a brief cover letter to **hr@zimbleone.com** with the subject line: **“Entry\\-Level Cloud Engineer – \\[Your Name]”**\n\nJob Types: Full\\-time, Permanent\n\nEducation:\n\n* Bachelor's (Required)\n\nExperience:\n\n* Cloud computing: 1 year (Required)\n\nLanguage:\n\n* English (Required)\n* Hindi (Required)\n\nWork Location: Remote",
+        "company_industry": "",
+        "company_url": "https://in.indeed.com/cmp/Zimble-One-Private-Limited",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "technical_support",
+        "priority": 1,
+        "discovery_round": 2
+      },
+      "detail_verification": {
+        "status": "UNVERIFIED",
+        "success": false,
+        "error": "HTTP 401",
+        "url": "https://in.indeed.com/viewjob?jk=757a819b12206fb4"
+      },
+      "verification_status": "UNVERIFIED",
+      "match_score": 100,
+      "qualification": "qualified",
+      "job_family": "cloud_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Cloud Support",
+      "priority_boost": 12,
+      "rank_score": 112,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "Cloud Engineer",
+          "cloud engineer"
+        ],
+        "matched_skills": [
+          "GCP",
+          "Google Cloud",
+          "AWS",
+          "Azure",
+          "Linux",
+          "Python",
+          "Docker",
+          "Kubernetes",
+          "Git",
+          "CI/CD",
+          "DevOps",
+          "System Monitoring"
+        ],
+        "experience_analysis": {
+          "found": true,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": 1.0,
+          "mandatory_requirements": [
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": 1.0,
+              "text": "minimum 1 year",
+              "type": "mandatory",
+              "open_ended": false
+            },
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": null,
+              "text": "at least 1 year",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": null,
+              "text": "minimum 1 year",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": 1.0,
+              "text": "1 year of experience",
+              "type": "mandatory",
+              "open_ended": false
+            }
+          ],
+          "preferred_requirements": [],
+          "all_requirements": [
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": 1.0,
+              "text": "minimum 1 year",
+              "type": "mandatory",
+              "open_ended": false
+            },
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": null,
+              "text": "at least 1 year",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": null,
+              "text": "minimum 1 year",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "description",
+              "minimum": 1.0,
+              "maximum": 1.0,
+              "text": "1 year of experience",
+              "type": "mandatory",
+              "open_ended": false
+            }
+          ]
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: Cloud Engineer, cloud engineer",
+          "Skills matched: 12",
+          "Location within profile",
+          "Experience requirement valid"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 40,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 100
+        },
+        "semantic_score": 0.667,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 2
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4410979803",
+      "title": "Production Support Analyst",
+      "company": "BNP Paribas",
+      "location": "Chennai, Tamil Nadu, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4410979803",
+      "job_url": "https://www.linkedin.com/jobs/view/4410979803",
+      "apply_url": "https://www.linkedin.com/jobs/view/4410979803",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-13",
+      "posted_at": "2026-09-13",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Technical Support",
+      "search_location": "Chennai",
+      "discovered_at": "2026-09-16T08:04:11+00:00",
+      "content_hash": "b2321e7acfae8ca3",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4410979803",
+      "raw_source_data": {
+        "id": "li-4410979803",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4410979803",
+        "job_url_direct": "",
+        "title": "Production Support Analyst",
+        "company": "BNP Paribas",
+        "location": "Chennai, Tamil Nadu, India",
+        "date_posted": "2026-09-13",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://fr.linkedin.com/company/bnp-paribas",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [
+        "linkedin"
+      ],
+      "search_attribution": {
+        "query_family": "technical_support",
+        "priority": 1,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "VERIFIED_SOURCE",
+        "success": true,
+        "error": "",
+        "url": "https://www.linkedin.com/jobs/view/4410979803"
+      },
+      "full_job_page_text": "Production Support Analyst at BNP Paribas — Chennai, Tamil Nadu, India | LinkedIn Jobs\nSkip to main content\nLinkedIn\nProduction Support Analyst in Moses Lake, WA\nExpand search\nThis button displays the currently selected search type. When expanded it provides a list of search options that will switch the search inputs to match the current selection.\nJobs\nPeople\nLearning\nClear text\nClear text\nClear text\nClear text\nClear text\nSign in\nJoin now\nProduction Support Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\nApply\nJoin or sign in to find your next job\nJoin to apply for the Production Support Analyst role at BNP Paribas\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nProduction Support Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\n2 days ago\nOver 200 applicants\nSee who BNP Paribas has hired for this role\nApply\nJoin or sign in to find your next job\nJoin to apply for the Production Support Analyst role at BNP Paribas\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSave\nJoin or sign in to save this job\nJoin to save Production Support Analyst at BNP Paribas\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nReport this job\nUse AI to assess how you fit\nGet AI-powered advice on this job and more exclusive features.\nAm I a good fit for this job?\nTailor my resume\nSign in to access AI-powered advices\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to evaluate your skills\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to tailor your resume\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nJob Title: IT Operations & Application Production Support Engineer\nDepartment: IPS- CARDIF\nAbout Business Line/Function\nBNP Paribas CARDIF is the insurance subsidiary of BNP Paribas. We are a worldwide leader of the Credit Protection Insurance market with strong positions in savings and protection insurance in more than 30 countries in Europe, Asia and Latin America.\nThe Infrastructure & Production function is responsible for ensuring stability, performance, security and availability of application services throughout their lifecycle. Operating in a continuously evolving technical environment, the team works closely with development and business stakeholders within an Agile and DevOps framework, while driving operational excellence and continuous improvement.\nPosition Purpose\nThe IT Operations & Application Production Support Engineer (Confirmed) operates with a high level of autonomy in a constantly changing technical environment. The role requires strong learning agility, adaptability and the ability to continuously evolve alongside new technologies, tools and organizational changes.\nPrimarily focused on IT Operations activities, the position also includes Application Production Support responsibilities within the RUN scope. As part of this role, the engineer coordinates and plans RUN activities and regularly participates in IT–Business meetings to ensure alignment between technical operations and business needs.\nContext & Objective Of This Position\nWithin a critical and evolving production environment, we are looking for an IT Ops / DevOps Production Engineer responsible for:\nDelivering and evolving infrastructure and automation solutions (BUILD)\nDriving operational governance (planning, prioritization, reporting)\nThe role operates in a transversal organization, with strong interaction across BP2I teams, Tribes, and ITG teams.\nContribution over platform stability and security (RUN) by reviewing on the pre checks need on migration task and after migration – overview on the platform.\nResponsibilities\nDirect Responsibilities:\nContribute to continuous improvement (stability, automation, reliability)\nDeploy and configure infrastructure (on-prem, cloud, containers)\nImplement automation and Infrastructure as Code solutions\nContribute to transformation initiatives (containerization, modernization)\nManage application flows and inter-system exchanges\nProduce and maintain technical documentation\nContributing Responsibilities\nManage production incidents (diagnosis, resolution, escalation)\nPerform advanced root cause analysis (RCA) for recurring issues\nMonitor system and application performance\nProactively manage vulnerabilities and obsolescence:\nidentify outdated components (OS, middleware, platforms)\nplan and execute upgrades and patching\nensure compliance with security standards\nTechnical & Behavioral Competencies\nIncident support: ITIL Concept, Service Now\nIT operations and application production\nMonitoring, supervision and alerting tools with Dynatrace tools appreciate\nContainerization and orchestration: Docker, Kubernetes, OpenShift\nIncident, problem and change management\nOperation systems: Linux and Windows\nSCM – Gitlab\nNetwork & Security - Firewall, Port opening etc..\nCI/CD and release management tools: Argo CD, Jenkins, XL Release\nInfrastructure as Code: Terraform\nConfiguration management and automation: Ansible Tower\nScheduling and workload automation: Control-M\nFile transfer and data flows: CFT\nDatabases: Oracle (Exadata & Exacc) / SQL\nApplication performance analysis: ELK logs, traces and events\nRelease and deployment processes in Agile / DevOps environments—CI/CD\nSpecific Qualifications\nGood to have people with\nHashi Corp Certified Terraform Associate or any other DevOps platform tools\nCertified Red hat Linux\nBehavioral Skills\nSkills Referential (Required knowledge, skills and abilities)\nStructure and manage workload across RUN, BUILD, and security activities.\nEffectively prioritize critical incidents, vulnerabilities, and project tasks.\nHandle multiple parallel activities with strong attention to detail and discipline.\nPlan operational activities such as patching, upgrades, and deployments.\nTrack deadlines, deliverables, and commitments consistently.\nAnticipate operational and technical risks proactively.\nProvide regular updates on incident status, vulnerabilities, and obsolescence tracking .\nTrack and communicate project progress effectively.\nEnsure visibility on risks, blockers, and priorities.\nCommunicate clearly with stakeholders across all levels.\nDemonstrate strong ownership, accountability, and visibility across all assigned activities\nCoordinate with BP2I teams, Tribes, and ITG teams.\nWork closely with infrastructure, network, security, and development teams.\nParticipate in crisis management activities when required.\nSoft Skills\nStrong analytical and problem-solving mindset\nAbility to operate under pressure in critical environments\nClear and structured communication\nStrong prioritization and organizational skills\nProactive and solution-oriented mindset\nAbility to work in a transversal environment\nStrong reporting and ownership culture\nEducation Level: Bachelor’s degree in engineering or science\nLocation: Chennai\nAbout BNP Paribas Group\nBNP Paribas is the European Union’s leading bank and key player in international banking. It operates in 65 countries and has nearly 185,000 employees, including more than 145,000 in Europe. The Group has key positions in its three main fields of activity: Commercial, Personal Banking & Services for the Group’s commercial & personal banking and several specialized businesses including BNP Paribas Personal Finance and Arval; Investment & Protection Services for savings, investment, and protection solutions; and Corporate & Institutional Banking, focused on corporate and institutional clients. Based on its strong diversified and integrated model, the Group helps all its clients (individuals, community associations, entrepreneurs, SMEs, corporates and institutional clients) to realize their projects through solutions spanning financing, investment, savings and protection insurance. In Europe, BNP Paribas has four domestic markets: Belgium, France, Italy, and Luxembourg. The Group is rolling out its integrated commercial & personal banking model across several Mediterranean countries, Turkey, and Eastern Europe. As a key player in international banking, the Group has leading platforms and business lines in Europe, a strong presence in the Americas as well as a solid and fast-growing business in Asia-Pacific. BNP Paribas has implemented a Corporate Social Responsibility approach in all its activities, enabling it to contribute to the construction of a sustainable future, while ensuring the Group's performance and stability.\nAbout BNP Paribas India Solutions\nEstablished in 2005, BNP Paribas India Solutions is a wholly owned subsidiary of BNP Paribas SA, European Union’s leading bank with an international reach. With delivery centers located in Bengaluru, Chennai and Mumbai, we are a 24x7 global delivery center. India Solutions services three business lines: Corporate and Institutional Banking, Investment Solutions and Retail Banking for BNP Paribas across the Group. Driving innovation and growth, we are harnessing the potential of over 10000 employees, to provide support and develop best-in-class solutions.\nCommitment to Diversity and Inclusion\nAt BNP Paribas, we passionately embrace diversity and are committed to fostering an inclusive workplace where all employees are valued, respected and can bring their authentic selves to work. We prohibit Discrimination and Harassment of any kind and our policies promote equal employment opportunity for all employees and applicants, irrespective of, but not limited to their gender, gender identity, sex, sexual orientation, ethnicity, race, colour, national origin, age, religion, social status, mental or physical disabilities, veteran status etc. As a global Bank, we truly believe that inclusion and diversity of our teams is key to our success in serving our clients and the communities we operate in. As a global Bank, we truly believe that inclusion and diversity of our teams is key to our success in serving our clients and the communities we operate in.\nShow more\nShow less\nSeniority level\nMid-Senior level\nEmployment type\nFull-time\nJob function\nInformation Technology\nIndustries\nBanking\nReferrals increase your chances of interviewing at BNP Paribas by 2x\nSee who you know\nGet notified when a new job is posted.\nSet alert\nSign in to set job alerts for “Production Support Analyst” roles.\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nJobs\nProduction Support Engineer jobs\nProduction Support Analyst\nSimilar jobs\nApplication Production Support\nApplication Production Support\nCiti\nChennai, Tamil Nadu, India\n1 week ago\nSupport Analyst\nSupport Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nApplications Support Analyst\nApplications Support Analyst\nCiti\nChennai, Tamil Nadu, India\n1 week ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Production Support – Functional Support\nApplication Production Support – Functional Support\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nConsulting Analyst\nConsulting Analyst\nCognizant\nChennai, Tamil Nadu, India\n9 hours ago\nTechnical Support Engineer\nTechnical Support Engineer\nSourcingXPress\nChennai, Tamil Nadu, India\n1 month ago\nAnalyst - MES/MOM Application Support & Operations\nAnalyst - MES/MOM Application Support & Operations\nVestas\nChennai, Tamil Nadu, India\n4 days ago\nApplication Production Support\nApplication Production Support\nInfotel UK Consulting\nChennai, Tamil Nadu, India\n3 months ago\nMulesoft Support (Live Operations Analyst)\nMulesoft Support (Live Operations Analyst)\nReveleer\nGreater Chennai Area\n5 days ago\nMetricstream Solution Support Analyst (Junior)\nMetricstream Solution Support Analyst (Junior)\nGlencore\nChennai, Tamil Nadu, India\n13 hours ago\nProduction Support Engineer\nProduction Support Engineer\nKumaran Systems\nChennai, Tamil Nadu, India\n5 days ago\nRPA Production Support + Development : 3 Yrs\nRPA Production Support + Development : 3 Yrs\nMizuho\nChennai, Tamil Nadu, India\n3 weeks ago\nTechnical Lead\nTechnical Lead\nCognizant\nChennai, Tamil Nadu, India\n1 week ago\nSupport Analyst\nSupport Analyst\nRotork\nChennai, Tamil Nadu, India\n1 month ago\nProduction Support Developer\nProduction Support Developer\nCTC\nChennai, Tamil Nadu, India\n6 days ago\nSr. Analyst, Production Eng, WRB Tech\nSr. Analyst, Production Eng, WRB Tech\nStandard Chartered India\nChennai, Tamil Nadu, India\n3 weeks ago\nAssoc, Production Eng, WRB Tech\nAssoc, Production Eng, WRB Tech\nStandard Chartered India\nChennai, Tamil Nadu, India\n5 days ago\nApplication Support Analyst\nApplication Support Analyst\nWillsmarg Technologies LLC\nChennai, Tamil Nadu, India\n1 month ago\nRPA Production Support + Development : 6 Yrs\nRPA Production Support + Development : 6 Yrs\nMizuho\nChennai, Tamil Nadu, India\n3 weeks ago\nApplication Support Analyst\nApplication Support Analyst\nOmnicom Global Solutions\nChennai, Tamil Nadu, India\n4 weeks ago\nPython Production Support\nPython Production Support\nTata Consultancy Services\nChennai, Tamil Nadu, India\n5 days ago\nDigital Production Support Analyst\nDigital Production Support Analyst\nCiti\nChennai, Tamil Nadu, India\n1 week ago\nAssociate\nAssociate\nBNP Paribas\nChennai, Tamil Nadu, India\n1 week ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n1 day ago\nAssociate - ITG Production\nAssociate - ITG Production\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nSenior Support Analyst\nSenior Support Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nShow more jobs like this\nShow fewer jobs like this\nPeople also viewed\nApplication Production Support - MQ Specialist\nApplication Production Support - MQ Specialist\nBNP Paribas\nChennai, Tamil Nadu, India\n1 week ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n4 days ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n6 days ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n1 week ago\nApplication Support Technology Lead Analyst - Vice President\nApplication Support Technology Lead Analyst - Vice President\nCiti\nChennai, Tamil Nadu, India\n2 weeks ago\nSupport Analyst\nSupport Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\n5 days ago\nSupport Analyst\nSupport Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n1 week ago\nSupport Analyst\nSupport Analyst\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nSimilar Searches\nProduction Support Engineer jobs\n51,636 open jobs\nUnix Linux System Administrator jobs\n251 open jobs\nApplication Support Engineer jobs\n2,608 open jobs\nProduction Support Manager jobs\n493 open jobs\nUnix Developer jobs\n520 open jobs\nSenior Database Specialist jobs\n241 open jobs\nSupport Developer jobs\n54,942 open jobs\nOperations Support Engineer jobs\n2,103 open jobs\nLead System Analyst jobs\n2,709 open jobs\nIncident Problem Manager jobs\n242 open jobs\nJava Analyst jobs\n157 open jobs\nSystem Support Engineer jobs\n3,574 open jobs\nProduct Support Engineer jobs\n47,604 open jobs\nDeployment Engineer jobs\n6,328 open jobs\nProduction Scheduler jobs\n125 open jobs\nMainframe Programmer jobs\n644 open jobs\nCognos Developer jobs\n175 open jobs\nSenior Technical Business Analyst jobs\n322 open jobs\nSenior Application Support Engineer jobs\n1,468 open jobs\nDispatch Manager jobs\n2,908 open jobs\nMainframe System Programmer jobs\n83 open jobs\nIncident Manager jobs\n894 open jobs\nIncident Management Specialist jobs\n2,440 open jobs\nOracle Technical Consultant jobs\n1,327 open jobs\nMiddleware Administrator jobs\n479 open jobs\nShow more\nShow less\nExplore top content on LinkedIn\nFind curated posts and insights for relevant topics all in one place.\nView top content\nMore searches\nMore searches\nProduction Support Engineer jobs\nUnix Linux System Administrator jobs\nApplication Support Engineer jobs\nProduction Support Manager jobs\nUnix Developer jobs\nSenior Database Specialist jobs\nSupport Developer jobs\nOperations Support Engineer jobs\nLead System Analyst jobs\nIncident Problem Manager jobs\nJava Analyst jobs\nSystem Support Engineer jobs\nProduct Support Engineer jobs\nDeployment Engineer jobs\nProduction Scheduler jobs\nMainframe Programmer jobs\nCognos Developer jobs\nSenior Technical Business Analyst jobs\nIdeas2IT Technologies jobs\nSenior Application Support Engineer jobs\nDispatch Manager jobs\nMainframe System Programmer jobs\nIncident Manager jobs\nIncident Management Specialist jobs\nOracle Technical Consultant jobs\nMiddleware Administrator jobs\nProduct Support Specialist jobs\nRelease Manager jobs\nRelease Engineer jobs\nSap Basis jobs\nInventory Analyst jobs\nDeployment Manager jobs\nProgramming Analyst jobs\nSite Reliability Engineer jobs\nConsul jobs\nFIS jobs\nService Delivery Analyst jobs\nTechnical Analyst jobs\nOracle Functional Consultant jobs\nUST jobs\nInfrastructure Architect jobs\nProcess Integration Engineer jobs\nGainsight jobs\nMigration Engineer jobs\nNetwork Operations Center Engineer jobs\nLinux System Engineer jobs\nNLB Services jobs\nCobol Programmer jobs\nSQL Developer jobs\nFraud Specialist jobs\nCerner Corporation jobs\nSLK jobs\nIntegration Engineer jobs\nMonitoring Engineer jobs\nVirtusa jobs\nLinux Engineer jobs\nInformation Technology Analyst jobs\nBusiness Intelligence Consultant jobs\nLead Business Analyst jobs\nSalesforce Consultant jobs\nLinkedIn\n© 2026\nAbout\nAccessibility\nUser Agreement\nPrivacy Policy\nYour California Privacy Choices\nCookie Policy\nCopyright Policy\nBrand Policy\nGuest Controls\nCommunity Guidelines\nالعربية (Arabic)\nবাংলা (Bangla)\nČeština (Czech)\nDansk (Danish)\nDeutsch (German)\nΕλληνικά (Greek)\nEnglish (English)\nEspañol (Spanish)\nفارسی (Persian)\nSuomi (Finnish)\nFrançais (French)\nहिंदी (Hindi)\nMagyar (Hungarian)\nBahasa Indonesia (Indonesian)\nItaliano (Italian)\nעברית (Hebrew)\n日本語 (Japanese)\n한국어 (Korean)\nमराठी (Marathi)\nBahasa Malaysia (Malay)\nNederlands (Dutch)\nNorsk (Norwegian)\nਪੰਜਾਬੀ (Punjabi)\nPolski (Polish)\nPortuguês (Portuguese)\nRomână (Romanian)\nРусский (Russian)\nSvenska (Swedish)\nతెలుగు (Telugu)\nภาษาไทย (Thai)\nTagalog (Tagalog)\nTürkçe (Turkish)\nУкраїнська (Ukrainian)\nTiếng Việt (Vietnamese)\n简体中文 (Chinese (Simplified))\n正體中文 (Chinese (Traditional))\nLanguage\nLinkedIn\nKnow when new jobs open up\nNever miss a job alert with the new LinkedIn app for Windows.\nGet the app\nAgree & Join LinkedIn\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to see who you already know at BNP Paribas\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nLinkedIn\nLinkedIn is better on the app\nDon’t have the app? Get it in the Microsoft Store.\nOpen the app",
+      "verification_status": "VERIFIED",
+      "match_score": 100,
+      "qualification": "qualified",
+      "job_family": "production_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Production Support",
+      "priority_boost": 12,
+      "rank_score": 112,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "production support"
+        ],
+        "matched_skills": [
+          "Linux",
+          "Python",
+          "Java",
+          "SQL",
+          "Docker",
+          "Kubernetes",
+          "CI/CD",
+          "DevOps",
+          "Production Support",
+          "Application Support",
+          "Incident Management",
+          "Root Cause Analysis"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: production support",
+          "Skills matched: 12",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 40,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 100
+        },
+        "semantic_score": 1.0,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 8
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "workable",
+      "source_job_id": "95fa369c-bf7c-41a4-a40b-66f2d57a5cc1",
+      "title": "Application Production Support",
+      "company": "Infotel UK",
+      "location": "Chennai, Tamil Nadu, India",
+      "remote": false,
+      "url": "https://jobs.workable.com/view/jw9LCkQdZJ3RijhqpSvWje/application-production-support-in-chennai-at-infotel-uk",
+      "job_url": "https://jobs.workable.com/view/jw9LCkQdZJ3RijhqpSvWje/application-production-support-in-chennai-at-infotel-uk",
+      "apply_url": "https://jobs.workable.com/view/jw9LCkQdZJ3RijhqpSvWje/application-production-support-in-chennai-at-infotel-uk",
+      "description": "Responsibilities Direct Responsibilities ·         For a predefined applications scope take care of:  o    Incidents  o    Requests  o    Changes  ·         Ensure that SLA targets are met for above activities  ·         Handover to Paris teams if knowledge and skills are not available in ISPL  ·         Coordinate closely with Paris OPS teams and all other BNP Paribas IT teams (Incident coordination, Security, Infrastructure, Development teams, etc.)    Contributing Responsibilities ·         Contribute to the knowledge transfer with Paris OPS teams ·         Contribute to the definition of procedures and processes necessary for the team ·         Help build team spirit and integrate into BNP Paribas culture ·         Contribute to the regular activity reporting and KPI calculation ·         Contribute to continuous improvement actions ·         Develop, implement, and manage ITSM processes based on ITIL or similar frameworks. ·         Oversee incident, problem, change, release and project management processes. ·         Work with cross-functional teams to ensure IT services align with business needs and service level agreements (SLAs). ·         Conduct regular reviews of ITSM processes and recommend improvements. ·         Manage the IT service catalog and ensure accurate documentation of services and processes. Technical & Behavioral Competencies ·         Knowledge and experience with RedHat Linux administration, Windows, AIX, WAS, CFT and MQ Series   ·         Experience with Service Now ticketing system   ·         Familiarity with Autosys   ·         Knowledge on any monitoring tools (e.g., Dynatrace, SysDig, Kibana)  ·         Familiarity with database technology is required: Oracle, SQL Server and MongoDB. Capability to execute basic scripts and queries   ·         Familiarity with DevOps tools including Gitlab, Ansible, Jenkins.  ·         Expertise in scripting on one of these (e.g., Python, Bash, PowerShell).  ·         Familiarity with containerization technologies (e.g., Docker, Kubernetes).  ·         Experience with any cloud platforms (preferably IBM Cloud).  ·         Understanding of ITIL or similar ITSM frameworks & tools(e.g, ServiceNow, JIRA service management)  ·         Knowledge of IT production backup and resilience setup (High Availability setup, Disaster Recovery Plan, etc.)   ·         Ability to grasp functional knowledge of application  ·         Good written and spoken English   ·         Measure and identify areas for improving Quality and overall Delivery   ·         Able to communicate efficiently   ·         Good Team Player   Specific Qualifications:   Skills Referential (Required knowledge, skills and abilities) Technical Skills: Linux/Windows SQL/MongoDB Cloud Kubernetes and Gitlab Behavioral Skills: Ability to collaborate / Teamwork Communication skills - oral & written Creativity & Innovation / Problem solving Critical thinking Decision Making Education Level: Bachelor Degree or equivalent Location: Chennai",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-06-10T07:52:00.248Z",
+      "posted_at": "2026-06-10T07:52:00.248Z",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Application Support Analyst",
+      "search_location": "Chennai, Tamil Nadu, India",
+      "discovered_at": "2026-09-16T08:10:11+00:00",
+      "content_hash": "87e1b1b3b2b43b6f",
+      "normalized_identity": "url:https://jobs.workable.com/view/jw9lckqdzj3rijhqpsvwje/application-production-support-in-chennai-at-infotel-uk",
+      "raw_source_data": {
+        "workplace": "on_site",
+        "language": "en",
+        "isFeatured": false,
+        "departments": null
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "application_support",
+        "priority": 1,
+        "discovery_round": 2
+      },
+      "detail_verification": {
+        "status": "VERIFIED_SOURCE",
+        "success": true,
+        "error": "",
+        "url": "https://jobs.workable.com/view/jw9LCkQdZJ3RijhqpSvWje/application-production-support-in-chennai-at-infotel-uk"
+      },
+      "full_job_page_text": "Application Production Support | Infotel UK | Jobs By Workable",
+      "job_page_json_ld": [
+        {
+          "@context": "https://schema.org/",
+          "@type": "JobPosting",
+          "title": "Application Production Support",
+          "description": "<p>Responsibilities</p><p>Direct Responsibilities</p><p>·         For a predefined applications scope take care of: </p><p>o    Incidents </p><p>o    Requests </p><p>o    Changes </p><p>·         Ensure that SLA targets are met for above activities </p><p>·         Handover to Paris teams if knowledge and skills are not available in ISPL </p><p>·         Coordinate closely with Paris OPS teams and all other BNP Paribas IT teams (Incident coordination, Security, Infrastructure, Development teams, etc.) </p><p> </p><p>Contributing Responsibilities</p><p>·         Contribute to the knowledge transfer with Paris OPS teams</p><p>·         Contribute to the definition of procedures and processes necessary for the team</p><p>·         Help build team spirit and integrate into BNP Paribas culture</p><p>·         Contribute to the regular activity reporting and KPI calculation</p><p>·         Contribute to continuous improvement actions</p><p>·         Develop, implement, and manage ITSM processes based on ITIL or similar frameworks.</p><p>·         Oversee incident, problem, change, release and project management processes.</p><p>·         Work with cross-functional teams to ensure IT services align with business needs and service level agreements (SLAs).</p><p>·         Conduct regular reviews of ITSM processes and recommend improvements.</p><p>·         Manage the IT service catalog and ensure accurate documentation of services and processes.</p><p></p><p>Technical &amp; Behavioral Competencies</p><p>·         Knowledge and experience with RedHat Linux administration, Windows, AIX, WAS, CFT and MQ Series  </p><p>·         Experience with Service Now ticketing system  </p><p>·         Familiarity with Autosys  </p><p>·         Knowledge on any monitoring tools (e.g., Dynatrace, SysDig, Kibana) </p><p>·         Familiarity with database technology is required: Oracle, SQL Server and MongoDB. Capability to execute basic scripts and queries  </p><p>·         Familiarity with DevOps tools including Gitlab, Ansible, Jenkins. </p><p>·         Expertise in scripting on one of these (e.g., Python, Bash, PowerShell). </p><p>·         Familiarity with containerization technologies (e.g., Docker, Kubernetes). </p><p>·         Experience with any cloud platforms (preferably IBM Cloud). </p><p>·         Understanding of ITIL or similar ITSM frameworks &amp; tools(e.g, ServiceNow, JIRA service management) </p><p>·         Knowledge of IT production backup and resilience setup (High Availability setup, Disaster Recovery Plan, etc.)  </p><p>·         Ability to grasp functional knowledge of application </p><p>·         Good written and spoken English  </p><p>·         Measure and identify areas for improving Quality and overall Delivery  </p><p>·         Able to communicate efficiently  </p><p>·         Good Team Player  </p><p></p><p>Specific Qualifications:</p><p> </p><p>Skills Referential (Required knowledge, skills and abilities)</p><p>Technical Skills:</p><ul><ul><li>Linux/Windows</li><li>SQL/MongoDB</li><li>Cloud </li><li>Kubernetes and Gitlab</li></ul></ul><p>Behavioral Skills: </p><ul><ul><li>                Ability to collaborate / Teamwork </li><li>                Communication skills - oral &amp; written </li><li>                Creativity &amp; Innovation / Problem solving </li><li>                Critical thinking </li><li>                Decision Making </li></ul></ul><p></p><p>Education Level:       Bachelor Degree or equivalent</p><p>Location: Chennai</p>",
+          "identifier": {
+            "@type": "PropertyValue",
+            "name": "id",
+            "value": "95fa369c-bf7c-41a4-a40b-66f2d57a5cc1"
+          },
+          "datePosted": "2026-06-10T07:52:00.248Z",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "name": "Infotel UK",
+            "logo": "https://workablehr.s3.amazonaws.com/uploads/account/logo/591162/logo",
+            "url": "https://infotel-consulting.co.uk/",
+            "description": "<p>Infotel UK Consulting (part of Infotel Group) is a thriving consulting company driven by our desire for innovation. We work with companies around the world to improve their business output through strategic IT systems and applications. We offer you a fantastic opportunity in a thriving and challenging environment to further your development and analytical skills alongside other passionate IT professionals.</p>",
+            "sameAs": "https://jobs.workable.com/company/9Ls4ntp8Y8Dszxxfnji7EV/jobs-at-infotel-uk"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Chennai",
+              "addressRegion": "Tamil Nadu",
+              "addressCountry": "India"
+            }
+          },
+          "directApply": true,
+          "id": "95fa369c-bf7c-41a4-a40b-66f2d57a5cc1",
+          "url": "https://jobs.workable.com/view/jw9LCkQdZJ3RijhqpSvWje/application-production-support-in-chennai-at-infotel-uk"
+        }
+      ],
+      "job_page_json_ld_text": "@context: https://schema.org/\n@type: JobPosting\ntitle: Application Production Support\ndescription: <p>Responsibilities</p><p>Direct Responsibilities</p><p>·         For a predefined applications scope take care of: </p><p>o    Incidents </p><p>o    Requests </p><p>o    Changes </p><p>·         Ensure that SLA targets are met for above activities </p><p>·         Handover to Paris teams if knowledge and skills are not available in ISPL </p><p>·         Coordinate closely with Paris OPS teams and all other BNP Paribas IT teams (Incident coordination, Security, Infrastructure, Development teams, etc.) </p><p> </p><p>Contributing Responsibilities</p><p>·         Contribute to the knowledge transfer with Paris OPS teams</p><p>·         Contribute to the definition of procedures and processes necessary for the team</p><p>·         Help build team spirit and integrate into BNP Paribas culture</p><p>·         Contribute to the regular activity reporting and KPI calculation</p><p>·         Contribute to continuous improvement actions</p><p>·         Develop, implement, and manage ITSM processes based on ITIL or similar frameworks.</p><p>·         Oversee incident, problem, change, release and project management processes.</p><p>·         Work with cross-functional teams to ensure IT services align with business needs and service level agreements (SLAs).</p><p>·         Conduct regular reviews of ITSM processes and recommend improvements.</p><p>·         Manage the IT service catalog and ensure accurate documentation of services and processes.</p><p></p><p>Technical &amp; Behavioral Competencies</p><p>·         Knowledge and experience with RedHat Linux administration, Windows, AIX, WAS, CFT and MQ Series  </p><p>·         Experience with Service Now ticketing system  </p><p>·         Familiarity with Autosys  </p><p>·         Knowledge on any monitoring tools (e.g., Dynatrace, SysDig, Kibana) </p><p>·         Familiarity with database technology is required: Oracle, SQL Server and MongoDB. Capability to execute basic scripts and queries  </p><p>·         Familiarity with DevOps tools including Gitlab, Ansible, Jenkins. </p><p>·         Expertise in scripting on one of these (e.g., Python, Bash, PowerShell). </p><p>·         Familiarity with containerization technologies (e.g., Docker, Kubernetes). </p><p>·         Experience with any cloud platforms (preferably IBM Cloud). </p><p>·         Understanding of ITIL or similar ITSM frameworks &amp; tools(e.g, ServiceNow, JIRA service management) </p><p>·         Knowledge of IT production backup and resilience setup (High Availability setup, Disaster Recovery Plan, etc.)  </p><p>·         Ability to grasp functional knowledge of application </p><p>·         Good written and spoken English  </p><p>·         Measure and identify areas for improving Quality and overall Delivery  </p><p>·         Able to communicate efficiently  </p><p>·         Good Team Player  </p><p></p><p>Specific Qualifications:</p><p> </p><p>Skills Referential (Required knowledge, skills and abilities)</p><p>Technical Skills:</p><ul><ul><li>Linux/Windows</li><li>SQL/MongoDB</li><li>Cloud </li><li>Kubernetes and Gitlab</li></ul></ul><p>Behavioral Skills: </p><ul><ul><li>                Ability to collaborate / Teamwork </li><li>                Communication skills - oral &amp; written </li><li>                Creativity &amp; Innovation / Problem solving </li><li>                Critical thinking </li><li>                Decision Making </li></ul></ul><p></p><p>Education Level:       Bachelor Degree or equivalent</p><p>Location: Chennai</p>\nidentifier: {\"@type\": \"PropertyValue\", \"name\": \"id\", \"value\": \"95fa369c-bf7c-41a4-a40b-66f2d57a5cc1\"}\ndatePosted: 2026-06-10T07:52:00.248Z\nhiringOrganization: {\"@type\": \"Organization\", \"name\": \"Infotel UK\", \"logo\": \"https://workablehr.s3.amazonaws.com/uploads/account/logo/591162/logo\", \"url\": \"https://infotel-consulting.co.uk/\", \"description\": \"<p>Infotel UK Consulting (part of Infotel Group) is a thriving consulting company driven by our desire for innovation. We work with companies around the world to improve their business output through strategic IT systems and applications. We offer you a fantastic opportunity in a thriving and challenging environment to further your development and analytical skills alongside other passionate IT professionals.</p>\", \"sameAs\": \"https://jobs.workable.com/company/9Ls4ntp8Y8Dszxxfnji7EV/jobs-at-infotel-uk\"}\njobLocation: {\"@type\": \"Place\", \"address\": {\"@type\": \"PostalAddress\", \"addressLocality\": \"Chennai\", \"addressRegion\": \"Tamil Nadu\", \"addressCountry\": \"India\"}}\ndirectApply: True\nid: 95fa369c-bf7c-41a4-a40b-66f2d57a5cc1\nurl: https://jobs.workable.com/view/jw9LCkQdZJ3RijhqpSvWje/application-production-support-in-chennai-at-infotel-uk",
+      "verification_status": "VERIFIED",
+      "match_score": 96,
+      "qualification": "qualified",
+      "job_family": "production_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Production Support",
+      "priority_boost": 12,
+      "rank_score": 108,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "production support"
+        ],
+        "matched_skills": [
+          "Linux",
+          "Python",
+          "SQL",
+          "ServiceNow",
+          "Docker",
+          "Kubernetes",
+          "DevOps",
+          "Production Support",
+          "Jira"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: production support",
+          "Skills matched: 9",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 36,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 96
+        },
+        "semantic_score": 0.5,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 1
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4467761115",
+      "title": "Unix/Linux Production Support",
+      "company": "Tata Consultancy Services",
+      "location": "Bengaluru, Karnataka, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4467761115",
+      "job_url": "https://www.linkedin.com/jobs/view/4467761115",
+      "apply_url": "https://www.linkedin.com/jobs/view/4467761115",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "",
+      "posted_at": "",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Production Support Analyst",
+      "search_location": "Bangalore",
+      "discovered_at": "2026-09-16T08:11:59+00:00",
+      "content_hash": "f7836556a25da45f",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4467761115",
+      "raw_source_data": {
+        "id": "li-4467761115",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4467761115",
+        "job_url_direct": "",
+        "title": "Unix/Linux Production Support",
+        "company": "Tata Consultancy Services",
+        "location": "Bengaluru, Karnataka, India",
+        "date_posted": "",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://in.linkedin.com/company/tata-consultancy-services",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "production_support",
+        "priority": 1,
+        "discovery_round": 2
+      },
+      "detail_verification": {
+        "status": "VERIFIED_SOURCE",
+        "success": true,
+        "error": "",
+        "url": "https://www.linkedin.com/jobs/view/4467761115"
+      },
+      "full_job_page_text": "Tata Consultancy Services hiring Unix/Linux Production Support in Bengaluru, Karnataka, India | LinkedIn\nSkip to main content\nLinkedIn\nUnix/Linux Production Support in Moses Lake, WA\nExpand search\nThis button displays the currently selected search type. When expanded it provides a list of search options that will switch the search inputs to match the current selection.\nJobs\nPeople\nLearning\nClear text\nClear text\nClear text\nClear text\nClear text\nSign in\nJoin now\nUnix/Linux Production Support\nTata Consultancy Services\nBengaluru, Karnataka, India\nApply\nUnix/Linux Production Support\nTata Consultancy Services\nBengaluru, Karnataka, India\n19 hours ago\nOver 200 applicants\nSee who Tata Consultancy Services has hired for this role\nApply\nSave\nJoin or sign in to save this job\nJoin to save Unix/Linux Production Support at Tata Consultancy Services\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nReport this job\nDirect message the job poster from Tata Consultancy Services\nSRIJU MANIKANDAN\nSRIJU MANIKANDAN\nIT Recruiter | Enterprise & Niche Technology Hiring | ServiceNow, Cloud, DevOps & Infrastructure, Automation | Mid‑Senior & Bulk Recruitment | MBA…\nKey Responsibilities\nIncident & Problem Management: Troubleshoot and resolve complex production issues related to Unix/Linux environments, databases, and scheduled batch jobs.\nRoot Cause Analysis (RCA): Perform in-depth investigations into recurring failures, implement permanent fixes, and document findings.\nBatch Monitoring & Scheduling: Manage, monitor, and automate routine operational workflows using job scheduling tools like Autosys or Control-M.\nSystem Monitoring: Oversee application health and server metrics using enterprise monitoring tools like Splunk, Dynatrace, ITRS, or AppDynamics.\nDeployment & Release Support: Assist with code deployments, configuration changes, system patch validation, and rollback procedures during maintenance windows.\nStakeholder Communication: Coordinate with L3 development teams, business users, and infrastructure groups during high-severity (P1/P2) outages.\nShow more\nShow less\nSeniority level\nMid-Senior level\nEmployment type\nFull-time\nIndustries\nIT Services and IT Consulting\nReferrals increase your chances of interviewing at Tata Consultancy Services by 2x\nSee who you know\nGet notified about new Linux Specialist jobs in Bengaluru, Karnataka, India .\nSign in to create job alert\nSimilar jobs\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nOperations Engineer\nOperations Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nSystem Support Engineer\nSystem Support Engineer\nVimaan\nBengaluru, Karnataka, India\n4 days ago\nApplication Support Engineer\nApplication Support Engineer\nMillennium\nBengaluru, Karnataka, India\n1 week ago\nHPC Operations Engineer\nHPC Operations Engineer\nNVIDIA\nBengaluru, Karnataka, India\n5 days ago\nTechnical Operations Engineer\nTechnical Operations Engineer\nJeppesen ForeFlight\nBengaluru, Karnataka, India\n4 days ago\nLinux Engineer\nLinux Engineer\nHewlett Packard Enterprise\nBengaluru, Karnataka, India\n2 months ago\nUbuntu Linux Engineer\nUbuntu Linux Engineer\nPoint72\nBengaluru, Karnataka, India\n6 months ago\nLinux Administrator\nLinux Administrator\nInfosys\nBengaluru East, Karnataka, India\n6 hours ago\nTechnical Support Engineer – Slurm\nTechnical Support Engineer – Slurm\nNVIDIA\nBengaluru, Karnataka, India\n1 day ago\nProduction/L3 Support Engineer\nProduction/L3 Support Engineer\nUST\nBengaluru, Karnataka, India\n6 days ago\nTechnical Support Engineer – Slurm\nTechnical Support Engineer – Slurm\nNVIDIA AI\nBengaluru, Karnataka, India\n1 day ago\nAPPLICATION PRODUCTION SUPPORT - SRE Eng.\nAPPLICATION PRODUCTION SUPPORT - SRE Eng.\nBNP Paribas\nBengaluru, Karnataka, India\n1 day ago\nCore Tech Support Engineer\nCore Tech Support Engineer\nMillennium\nBengaluru, Karnataka, India\n13 hours ago\nDevOps Support Engineer\nDevOps Support Engineer\nUST\nBengaluru, Karnataka, India\n6 days ago\nApplication Operations & Automation Engineer\nApplication Operations & Automation Engineer\nRohde & Schwarz\nBengaluru East, Karnataka, India\n1 month ago\nSite Reliability Engineer (SRE) Support\nSite Reliability Engineer (SRE) Support\nCognizant\nBangalore Urban, Karnataka, India\n17 hours ago\nApplication Support Engineer\nApplication Support Engineer\nSemperFI Solutions\nBengaluru, Karnataka, India\n₹1,000,000.00\n-\n₹1,500,000.00\n11 months ago\nProduction Support Engineer\nProduction Support Engineer\nDexian India\nBengaluru, Karnataka, India\n2 weeks ago\nTCS Walkin Drive For Unix/Linux Production Support\nTCS Walkin Drive For Unix/Linux Production Support\nTata Consultancy Services\nBengaluru, Karnataka, India\n2 days ago\nProduct Support Engineer 2\nProduct Support Engineer 2\nGroww\nBengaluru, Karnataka, India\n1 week ago\nUnix / RedHat Linux Administrator (BAU Support)\nUnix / RedHat Linux Administrator (BAU Support)\nTata Consultancy Services\nBengaluru, Karnataka, India\n1 week ago\nLinux System Administrator (IT Infrastructure & Operations)\nLinux System Administrator (IT Infrastructure & Operations)\nAnalog Devices\nGreater Bengaluru Area\n2 weeks ago\nApplication Support Engineer, India, OEX\nApplication Support Engineer, India, OEX\nCrypto.com\nBengaluru, Karnataka, India\n19 hours ago\nInfra Tech Support Practitioner\nInfra Tech Support Practitioner\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nInfra Tech Support Practitioner\nInfra Tech Support Practitioner\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nInfra Tech Support Practitioner\nInfra Tech Support Practitioner\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nShow more jobs like this\nShow fewer jobs like this\nPeople also viewed\nInfra Tech Support Practitioner\nInfra Tech Support Practitioner\nAccenture in India\nBengaluru, Karnataka, India\n1 week ago\nTechnology Support Engineer\nTechnology Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n6 days ago\nInfra Tech Support Practitioner\nInfra Tech Support Practitioner\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nTechnology Support Engineer\nTechnology Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n1 week ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n1 week ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nSimilar Searches\nLinux Consultant jobs\n25 open jobs\nUnix Linux System Administrator jobs\n251 open jobs\nSenior Linux System Administrator jobs\n129 open jobs\nUnix Developer jobs\n520 open jobs\nLinux System Administrator jobs\n1,311 open jobs\nLinux Administrator jobs\n1,067 open jobs\nUnix System Administrator jobs\n1,185 open jobs\nLinux System Engineer jobs\n3,440 open jobs\nMiddleware Specialist jobs\n49,678 open jobs\nLinux Engineer jobs\n4,338 open jobs\nExecutive Assistant Project Manager jobs\n117 open jobs\nUnix Engineer jobs\n1,055 open jobs\nAssociate Technical Consultant jobs\n32 open jobs\nData Center Architect jobs\n1,213 open jobs\nSenior Linux Administrator jobs\n669 open jobs\nUnix Linux Administrator jobs\n3,101 open jobs\nLinux Developer jobs\n475 open jobs\nMiddleware Administrator jobs\n479 open jobs\nSenior System Administrator jobs\n2,752 open jobs\nEmbedded Developer jobs\n1,342 open jobs\nPrincipal System Engineer jobs\n538 open jobs\nLead System Engineer jobs\n1,842 open jobs\nInformation Technology Professor jobs\n37 open jobs\nTechnology Architect jobs\n4,892 open jobs\nSystem Administrator jobs\n4,544 open jobs\nShow more\nShow less\nExplore top content on LinkedIn\nFind curated posts and insights for relevant topics all in one place.\nView top content\nMore searches\nMore searches\nLinux Consultant jobs\nUnix Linux System Administrator jobs\nSenior Linux System Administrator jobs\nUnix Developer jobs\nLinux System Administrator jobs\nLinux Administrator jobs\nUnix System Administrator jobs\nLinux System Engineer jobs\nMiddleware Specialist jobs\nLinux Engineer jobs\nExecutive Assistant Project Manager jobs\nUnix Engineer jobs\nAssociate Technical Consultant jobs\nData Center Architect jobs\nSenior Linux Administrator jobs\nUnix Linux Administrator jobs\nLinux Developer jobs\nMiddleware Administrator jobs\nSenior System Administrator jobs\nEmbedded Developer jobs\nPrincipal System Engineer jobs\nLead System Engineer jobs\nInformation Technology Professor jobs\nTechnology Architect jobs\nSystem Administrator jobs\nSHI Solutions India Pvt. Ltd. jobs\nJunior System Engineer jobs\nServer Administrator jobs\nUnix Manager jobs\nWebsphere Administrator jobs\nWindows Administrator jobs\nSenior System Engineer jobs\nApplication Support Engineer jobs\nLead Software Test Engineer jobs\nInfrastructure Architect jobs\nDuck Creek Technologies jobs\nSystem Security Analyst jobs\nNetwork Specialist jobs\nSenior Server Administrator jobs\nEmbedded Engineer jobs\nInformation Security Engineer jobs\nSystem Network Administrator jobs\nForeign Trade Manager jobs\nFunctional Architect jobs\nInfosys BPM jobs\nVideo Engineer jobs\nTata Capital jobs\nUnix Specialist jobs\nDatacenter Technician jobs\nWingify jobs\nDatabase Specialist jobs\nEmbedded Software Engineer jobs\n3i Infotech Ltd. jobs\nCSG jobs\nSenior Infrastructure Engineer jobs\nNetwork Operations Center Engineer jobs\nFreelance Copywriter jobs\nE-Solutions jobs\nMiddleware Engineer jobs\nInfrastructure Engineer jobs\nLinkedIn\n© 2026\nAbout\nAccessibility\nUser Agreement\nPrivacy Policy\nYour California Privacy Choices\nCookie Policy\nCopyright Policy\nBrand Policy\nGuest Controls\nCommunity Guidelines\nالعربية (Arabic)\nবাংলা (Bangla)\nČeština (Czech)\nDansk (Danish)\nDeutsch (German)\nΕλληνικά (Greek)\nEnglish (English)\nEspañol (Spanish)\nفارسی (Persian)\nSuomi (Finnish)\nFrançais (French)\nहिंदी (Hindi)\nMagyar (Hungarian)\nBahasa Indonesia (Indonesian)\nItaliano (Italian)\nעברית (Hebrew)\n日本語 (Japanese)\n한국어 (Korean)\nमराठी (Marathi)\nBahasa Malaysia (Malay)\nNederlands (Dutch)\nNorsk (Norwegian)\nਪੰਜਾਬੀ (Punjabi)\nPolski (Polish)\nPortuguês (Portuguese)\nRomână (Romanian)\nРусский (Russian)\nSvenska (Swedish)\nతెలుగు (Telugu)\nภาษาไทย (Thai)\nTagalog (Tagalog)\nTürkçe (Turkish)\nУкраїнська (Ukrainian)\nTiếng Việt (Vietnamese)\n简体中文 (Chinese (Simplified))\n正體中文 (Chinese (Traditional))\nLanguage\nLinkedIn\nKnow when new jobs open up\nNever miss a job alert with the new LinkedIn app for Windows.\nGet the app\nAgree & Join LinkedIn\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to see who you already know at Tata Consultancy Services\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nLinkedIn\nLinkedIn is better on the app\nDon’t have the app? Get it in the Microsoft Store.\nOpen the app",
+      "verification_status": "VERIFIED",
+      "match_score": 92,
+      "qualification": "qualified",
+      "job_family": "production_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Production Support",
+      "priority_boost": 12,
+      "rank_score": 104,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "production support"
+        ],
+        "matched_skills": [
+          "Linux",
+          "ServiceNow",
+          "DevOps",
+          "SRE",
+          "Production Support",
+          "Application Support",
+          "Root Cause Analysis",
+          "System Monitoring"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: production support",
+          "Skills matched: 8",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 32,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 92
+        },
+        "semantic_score": 1.0,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 12
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "in-76359332271b09b6",
+      "title": "Embedded Test Engineer",
+      "company": "Rove Dash Cam",
+      "location": "Remote, IN",
+      "remote": true,
+      "url": "https://in.indeed.com/viewjob?jk=76359332271b09b6",
+      "job_url": "https://in.indeed.com/viewjob?jk=76359332271b09b6",
+      "apply_url": "https://in.indeed.com/viewjob?jk=76359332271b09b6",
+      "description": "**Role Summary**\n\nWe are seeking a detail\\-oriented, hands\\-on Embedded/Firmware Test Engineer to validate the firmware and hardware\\-firmware interactions that power Rove dashcams. Unlike a generalist QA role, this position is focused specifically on the embedded layer: capture pipeline, sensor behavior, real\\-time recording logic, OTA firmware updates, and low\\-level device reliability. The role ensures that firmware is stable, recoverable, and production\\-ready before it ever reaches a customer's vehicle.\n\n**Key Responsibilities**\n\n* Develop and execute test plans, test cases, and test matrices focused on embedded firmware behavior across dashcam hardware revisions.\n* Perform functional, regression, stress, and reliability testing directly on physical devices and development boards, not just through application\\-layer interfaces.\n* Test core firmware subsystems: continuous loop recording, parking mode, G\\-sensor/collision event detection, ISP/video pipeline (H.264/H.265\\), night vision/HDR behavior, and SD card file system integrity.\n* Validate low\\-level device connectivity and protocol behavior: UART, I2C/SPI, USB, Wi\\-Fi, Bluetooth/BLE, GPS/GNSS, and data handoff to the companion mobile app.\n* Own OTA firmware update testing: installation success, interruption and recovery, restart behavior, version upgrade/downgrade paths, rollback safety, and data retention across updates.\n* Analyze firmware and hardware debug logs (UART/serial console output, crash dumps, core files) to investigate failures, reproduce issues, and communicate root cause to firmware engineers.\n* Run environmental and edge\\-case testing: power\\-loss during recording, extreme temperature, vibration/shock, low battery/supercapacitor failure, and long\\-duration soak testing.\n* Build and maintain hardware\\-in\\-the\\-loop (HIL) test rigs and automation scripts (Python/shell) to make firmware regression testing repeatable across builds.\n* Identify, document, prioritize, and track firmware\\-level defects in Jira or a comparable tool; verify fixes and re\\-run regression before release.\n* Maintain test evidence, defect records, and release\\-readiness status specific to firmware builds and hardware revisions.\n* Partner directly with firmware engineers and hardware engineers to resolve issues at the device level, distinct from application/cloud\\-layer QA.\n\n**Required Qualifications \\& Skills**\n\n* 3\\+ years of experience in embedded testing, firmware QA, or embedded systems engineering with a testing focus; equivalent practical experience may be considered.\n* Hands\\-on experience testing firmware running on physical hardware — embedded Linux and/or RTOS environments — not limited to app or web\\-layer testing.\n* Working knowledge of the embedded software development lifecycle: firmware build/flash process, version control (Git), and defect life cycle for hardware\\-tied bugs.\n* Comfortable with lab equipment: multimeters, power supplies, oscilloscopes, and logic analyzers for diagnosing hardware\\-firmware interaction issues.\n* Solid understanding of communication protocols relevant to embedded devices: UART, I2C/SPI, USB, Wi\\-Fi, Bluetooth, GPS.\n* Experience with defect\\-tracking tools, preferably Jira, and reading/interpreting serial console or crash logs.\n* Ability to reproduce intermittent, timing\\-sensitive, or power\\-related hardware bugs reliably.\n* Strong analytical, documentation, and communication skills — able to translate low\\-level firmware behavior into clear findings for engineering and release stakeholders.\n* Bachelor's degree in Electronics, Computer Engineering, Computer Science, or a related field; equivalent experience may be considered.\n\n**Preferred Qualifications**\n\n* Experience testing dashcams, IoT devices, automotive electronics, or other camera/sensor\\-based consumer products.\n* Scripting ability in Python and/or shell for building embedded test automation.\n* Experience with SD card file systems (FAT32/exFAT), wear\\-leveling, and power\\-loss data integrity testing.\n* Familiarity with CI/CD pipelines for embedded firmware builds.\n* Exposure to environmental/reliability test standards for consumer electronics.\n* Understanding of GPS/GNSS module validation and dead\\-reckoning behavior.\n\nPay: ₹1,500,000\\.00 \\- ₹3,000,000\\.00 per year\n\nBenefits:\n\n* Flexible schedule\n\nApplication Question(s):\n\n* Do you have hands\\-on experience testing firmware on physical hardware (embedded Linux and/or RTOS environments), not limited to app or web\\-layer testing?\n* Which ocommunication protocols have you tested or validated in embedded devices?\n* Have you previously tested dashcams, IoT devices, or automotive electronics?\n* Are you comfortable analyzing firmware debug logs to identify root causes?\n* Do you have experience testing embedded systems or firmware, including hardware\\-software integration?\n\nWork Location: Remote",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-15",
+      "posted_at": "2026-09-15",
+      "employment_type": "fulltime",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "QA Engineer",
+      "search_location": "Remote",
+      "discovered_at": "2026-09-16T08:07:52+00:00",
+      "content_hash": "0b3140ec609086e2",
+      "normalized_identity": "url:https://in.indeed.com/viewjob?jk=76359332271b09b6",
+      "raw_source_data": {
+        "id": "in-76359332271b09b6",
+        "site": "indeed",
+        "job_url": "https://in.indeed.com/viewjob?jk=76359332271b09b6",
+        "job_url_direct": "http://in.indeed.com/job/embedded-test-engineer-76359332271b09b6",
+        "title": "Embedded Test Engineer",
+        "company": "Rove Dash Cam",
+        "location": "Remote, IN",
+        "date_posted": "2026-09-15",
+        "job_type": "fulltime",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "True",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "**Role Summary**\n\nWe are seeking a detail\\-oriented, hands\\-on Embedded/Firmware Test Engineer to validate the firmware and hardware\\-firmware interactions that power Rove dashcams. Unlike a generalist QA role, this position is focused specifically on the embedded layer: capture pipeline, sensor behavior, real\\-time recording logic, OTA firmware updates, and low\\-level device reliability. The role ensures that firmware is stable, recoverable, and production\\-ready before it ever reaches a customer's vehicle.\n\n**Key Responsibilities**\n\n* Develop and execute test plans, test cases, and test matrices focused on embedded firmware behavior across dashcam hardware revisions.\n* Perform functional, regression, stress, and reliability testing directly on physical devices and development boards, not just through application\\-layer interfaces.\n* Test core firmware subsystems: continuous loop recording, parking mode, G\\-sensor/collision event detection, ISP/video pipeline (H.264/H.265\\), night vision/HDR behavior, and SD card file system integrity.\n* Validate low\\-level device connectivity and protocol behavior: UART, I2C/SPI, USB, Wi\\-Fi, Bluetooth/BLE, GPS/GNSS, and data handoff to the companion mobile app.\n* Own OTA firmware update testing: installation success, interruption and recovery, restart behavior, version upgrade/downgrade paths, rollback safety, and data retention across updates.\n* Analyze firmware and hardware debug logs (UART/serial console output, crash dumps, core files) to investigate failures, reproduce issues, and communicate root cause to firmware engineers.\n* Run environmental and edge\\-case testing: power\\-loss during recording, extreme temperature, vibration/shock, low battery/supercapacitor failure, and long\\-duration soak testing.\n* Build and maintain hardware\\-in\\-the\\-loop (HIL) test rigs and automation scripts (Python/shell) to make firmware regression testing repeatable across builds.\n* Identify, document, prioritize, and track firmware\\-level defects in Jira or a comparable tool; verify fixes and re\\-run regression before release.\n* Maintain test evidence, defect records, and release\\-readiness status specific to firmware builds and hardware revisions.\n* Partner directly with firmware engineers and hardware engineers to resolve issues at the device level, distinct from application/cloud\\-layer QA.\n\n**Required Qualifications \\& Skills**\n\n* 3\\+ years of experience in embedded testing, firmware QA, or embedded systems engineering with a testing focus; equivalent practical experience may be considered.\n* Hands\\-on experience testing firmware running on physical hardware — embedded Linux and/or RTOS environments — not limited to app or web\\-layer testing.\n* Working knowledge of the embedded software development lifecycle: firmware build/flash process, version control (Git), and defect life cycle for hardware\\-tied bugs.\n* Comfortable with lab equipment: multimeters, power supplies, oscilloscopes, and logic analyzers for diagnosing hardware\\-firmware interaction issues.\n* Solid understanding of communication protocols relevant to embedded devices: UART, I2C/SPI, USB, Wi\\-Fi, Bluetooth, GPS.\n* Experience with defect\\-tracking tools, preferably Jira, and reading/interpreting serial console or crash logs.\n* Ability to reproduce intermittent, timing\\-sensitive, or power\\-related hardware bugs reliably.\n* Strong analytical, documentation, and communication skills — able to translate low\\-level firmware behavior into clear findings for engineering and release stakeholders.\n* Bachelor's degree in Electronics, Computer Engineering, Computer Science, or a related field; equivalent experience may be considered.\n\n**Preferred Qualifications**\n\n* Experience testing dashcams, IoT devices, automotive electronics, or other camera/sensor\\-based consumer products.\n* Scripting ability in Python and/or shell for building embedded test automation.\n* Experience with SD card file systems (FAT32/exFAT), wear\\-leveling, and power\\-loss data integrity testing.\n* Familiarity with CI/CD pipelines for embedded firmware builds.\n* Exposure to environmental/reliability test standards for consumer electronics.\n* Understanding of GPS/GNSS module validation and dead\\-reckoning behavior.\n\nPay: ₹1,500,000\\.00 \\- ₹3,000,000\\.00 per year\n\nBenefits:\n\n* Flexible schedule\n\nApplication Question(s):\n\n* Do you have hands\\-on experience testing firmware on physical hardware (embedded Linux and/or RTOS environments), not limited to app or web\\-layer testing?\n* Which ocommunication protocols have you tested or validated in embedded devices?\n* Have you previously tested dashcams, IoT devices, or automotive electronics?\n* Are you comfortable analyzing firmware debug logs to identify root causes?\n* Do you have experience testing embedded systems or firmware, including hardware\\-software integration?\n\nWork Location: Remote",
+        "company_industry": "",
+        "company_url": "https://in.indeed.com/cmp/Rove-Dash-Cam",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "qa_testing",
+        "priority": 2,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "UNVERIFIED",
+        "success": false,
+        "error": "HTTP 401",
+        "url": "https://in.indeed.com/viewjob?jk=76359332271b09b6"
+      },
+      "verification_status": "UNVERIFIED",
+      "match_score": 88,
+      "qualification": "qualified",
+      "job_family": "qa_testing",
+      "career_priority": 2,
+      "priority_tier": "P2",
+      "priority_label": "QA",
+      "priority_boost": 8,
+      "rank_score": 96,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "Test Engineer",
+          "test engineer"
+        ],
+        "matched_skills": [
+          "Linux",
+          "Python",
+          "Git",
+          "CI/CD",
+          "Test Cases",
+          "Regression Testing",
+          "Jira"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: Test Engineer, test engineer",
+          "Skills matched: 7",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 28,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 88
+        },
+        "semantic_score": 0.5,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 1
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "in-9dc9a682569b0edc",
+      "title": "Temenos Functional Test Analyst",
+      "company": "Luxoft",
+      "location": "Remote, IN",
+      "remote": true,
+      "url": "https://in.indeed.com/viewjob?jk=9dc9a682569b0edc",
+      "job_url": "https://in.indeed.com/viewjob?jk=9dc9a682569b0edc",
+      "apply_url": "https://in.indeed.com/viewjob?jk=9dc9a682569b0edc",
+      "description": "##### **Project description**\n\nWe are looking for Temenos T24/Transact professionals to support a global private banking and wealth management bank on a portfolio of enhancement and transformation initiatives. The engagement involves working on ongoing platform improvements, functional enhancements, and targeted transformation programs across the Temenos landscape. Team members will collaborate with distributed stakeholders, contribute to stable long\\-term programs, and work within a mature banking environment that values structured delivery, quality, and domain depth.\n\n\n##### **Responsibilities**\n\n\nPerform System Integration Testing (SIT), User Acceptance Testing (UAT), Regression Testing for T24 applications.\n\n\nDesign, prepare, and execute test cases and test scenarios based on business and functional requirements.\n\n\nPrepare and manage test data required for end\\-to\\-end testing.\n\n\nIdentify, analyze, track, and manage defects through to resolution.\n\n\nValidate seamless integration between T24 modules and interfacing systems.\n\n\nSupport business users during UAT and provide testing status updates to stakeholders.\n\n\nCollaborate closely with business analysts, developers, product owners, and automation testing teams.\n\n\nParticipate actively in Agile ceremonies, including sprint planning, reviews, and retrospectives.\n\n\n##### **Skills**\n\n\nMust have\n\n\n8\\+ years of experience and strong hands\\-on experience in T24 (Temenos) application testing in banking.\n\n\nHands on experience testing integrations across T24 modules such as Lending, Term Deposits, Transaction Accounts, Savings Accounts.\n\n\nExperience in Functional, System Integration Testing (SIT), End\\-to\\-End (E2E), Regression, and UAT support.\n\n\nAbility to analyze business requirements, functional specifications, and technical solutions to design effective test scenarios and test cases.\n\n\nExpertise in creating and maintaining Test Plans, Test Cases, Test Scripts, Test Data, Test Reports\n\n\nProficiency in defect management, issue tracking, root cause analysis, and test execution monitoring.\n\n\nExperience with Test Management and Defect Tracking tools such as JIRA, ALM or similar.\n\n\nAbility to develop test strategies, execute test plans, and ensure quality deliverables within project timelines.\n\n\nExcellent verbal and written communication skills with the ability to collaborate effectively with business stakeholders, developers, and QA teams.\n\n\nSelf\\-driven, detail\\-oriented team player capable of working independently and in a collaborative environment.\n\n\nNice to have\n\n\nStrong communication skills, Stakeholder communication skills. Automation testing\n\n\n##### **Other**\n\n\nLanguages\n\n\nEnglish: C2 Proficient\n\n\nSeniority\n\n\nSenior\n\n\n  \nRemote India, India\n\n\nReq. VR\\-124886\n\n\nTemenos\n\n\nBCM Industry\n\n\n14/09/2026\n\n\nReq. VR\\-124886",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-14",
+      "posted_at": "2026-09-14",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Application Support Analyst",
+      "search_location": "Remote",
+      "discovered_at": "2026-09-16T08:13:51+00:00",
+      "content_hash": "b2bb1799781ebeb6",
+      "normalized_identity": "url:https://in.indeed.com/viewjob?jk=9dc9a682569b0edc",
+      "raw_source_data": {
+        "id": "in-9dc9a682569b0edc",
+        "site": "indeed",
+        "job_url": "https://in.indeed.com/viewjob?jk=9dc9a682569b0edc",
+        "job_url_direct": "https://career.luxoft.com/jobs/temenos-functional-test-analyst-27312",
+        "title": "Temenos Functional Test Analyst",
+        "company": "Luxoft",
+        "location": "Remote, IN",
+        "date_posted": "2026-09-14",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "True",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "##### **Project description**\n\nWe are looking for Temenos T24/Transact professionals to support a global private banking and wealth management bank on a portfolio of enhancement and transformation initiatives. The engagement involves working on ongoing platform improvements, functional enhancements, and targeted transformation programs across the Temenos landscape. Team members will collaborate with distributed stakeholders, contribute to stable long\\-term programs, and work within a mature banking environment that values structured delivery, quality, and domain depth.\n\n\n##### **Responsibilities**\n\n\nPerform System Integration Testing (SIT), User Acceptance Testing (UAT), Regression Testing for T24 applications.\n\n\nDesign, prepare, and execute test cases and test scenarios based on business and functional requirements.\n\n\nPrepare and manage test data required for end\\-to\\-end testing.\n\n\nIdentify, analyze, track, and manage defects through to resolution.\n\n\nValidate seamless integration between T24 modules and interfacing systems.\n\n\nSupport business users during UAT and provide testing status updates to stakeholders.\n\n\nCollaborate closely with business analysts, developers, product owners, and automation testing teams.\n\n\nParticipate actively in Agile ceremonies, including sprint planning, reviews, and retrospectives.\n\n\n##### **Skills**\n\n\nMust have\n\n\n8\\+ years of experience and strong hands\\-on experience in T24 (Temenos) application testing in banking.\n\n\nHands on experience testing integrations across T24 modules such as Lending, Term Deposits, Transaction Accounts, Savings Accounts.\n\n\nExperience in Functional, System Integration Testing (SIT), End\\-to\\-End (E2E), Regression, and UAT support.\n\n\nAbility to analyze business requirements, functional specifications, and technical solutions to design effective test scenarios and test cases.\n\n\nExpertise in creating and maintaining Test Plans, Test Cases, Test Scripts, Test Data, Test Reports\n\n\nProficiency in defect management, issue tracking, root cause analysis, and test execution monitoring.\n\n\nExperience with Test Management and Defect Tracking tools such as JIRA, ALM or similar.\n\n\nAbility to develop test strategies, execute test plans, and ensure quality deliverables within project timelines.\n\n\nExcellent verbal and written communication skills with the ability to collaborate effectively with business stakeholders, developers, and QA teams.\n\n\nSelf\\-driven, detail\\-oriented team player capable of working independently and in a collaborative environment.\n\n\nNice to have\n\n\nStrong communication skills, Stakeholder communication skills. Automation testing\n\n\n##### **Other**\n\n\nLanguages\n\n\nEnglish: C2 Proficient\n\n\nSeniority\n\n\nSenior\n\n\n  \nRemote India, India\n\n\nReq. VR\\-124886\n\n\nTemenos\n\n\nBCM Industry\n\n\n14/09/2026\n\n\nReq. VR\\-124886",
+        "company_industry": "",
+        "company_url": "https://in.indeed.com/cmp/Luxoft",
+        "company_logo": "https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/aa682d67782d68b9b76c5316f9b70e4d",
+        "company_url_direct": "https://www.luxoft.com/",
+        "company_addresses": "Zug",
+        "company_num_employees": "10,000+",
+        "company_revenue": "Decline to state",
+        "company_description": "Luxoft helps businesses innovate, adapt and compete in a constantly changing technology landscape.",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [
+        "indeed"
+      ],
+      "search_attribution": {
+        "query_family": "application_support",
+        "priority": 1,
+        "discovery_round": 2
+      },
+      "detail_verification": {
+        "status": "UNVERIFIED",
+        "success": false,
+        "error": "HTTP 401",
+        "url": "https://in.indeed.com/viewjob?jk=9dc9a682569b0edc"
+      },
+      "verification_status": "UNVERIFIED",
+      "match_score": 84,
+      "qualification": "qualified",
+      "job_family": "qa_testing",
+      "career_priority": 2,
+      "priority_tier": "P2",
+      "priority_label": "QA",
+      "priority_boost": 8,
+      "rank_score": 92,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "Test Analyst"
+        ],
+        "matched_skills": [
+          "Root Cause Analysis",
+          "Test Cases",
+          "Test Execution",
+          "Regression Testing",
+          "Defect Tracking",
+          "Jira"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: Test Analyst",
+          "Skills matched: 6",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 24,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 84
+        },
+        "semantic_score": 0.5,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 1
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4420298267",
+      "title": "Application Support Engineering Associate Director",
+      "company": "The Depository Trust & Clearing Corporation (DTCC)",
+      "location": "Chennai, Tamil Nadu, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4420298267",
+      "job_url": "https://www.linkedin.com/jobs/view/4420298267",
+      "apply_url": "https://www.linkedin.com/jobs/view/4420298267",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-13",
+      "posted_at": "2026-09-13",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "DevOps",
+      "search_location": "Chennai",
+      "discovered_at": "2026-09-16T08:04:34+00:00",
+      "content_hash": "115a542f78eb803d",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4420298267",
+      "raw_source_data": {
+        "id": "li-4420298267",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4420298267",
+        "job_url_direct": "",
+        "title": "Application Support Engineering Associate Director",
+        "company": "The Depository Trust & Clearing Corporation (DTCC)",
+        "location": "Chennai, Tamil Nadu, India",
+        "date_posted": "2026-09-13",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://www.linkedin.com/company/dtcc",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [
+        "linkedin"
+      ],
+      "search_attribution": {
+        "query_family": "devops",
+        "priority": 3,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "VERIFIED_SOURCE",
+        "success": true,
+        "error": "",
+        "url": "https://www.linkedin.com/jobs/view/4420298267"
+      },
+      "full_job_page_text": "The Depository Trust & Clearing Corporation (DTCC) hiring Application Support Engineering Associate Director in Chennai, Tamil Nadu, India | LinkedIn\nSkip to main content\nLinkedIn\nApplication Support Engineering Associate Director in Moses Lake, WA\nExpand search\nThis button displays the currently selected search type. When expanded it provides a list of search options that will switch the search inputs to match the current selection.\nJobs\nPeople\nLearning\nClear text\nClear text\nClear text\nClear text\nClear text\nSign in\nJoin now\nApplication Support Engineering Associate Director\nThe Depository Trust & Clearing Corporation (DTCC)\nChennai, Tamil Nadu, India\nApply\nJoin or sign in to find your next job\nJoin to apply for the Application Support Engineering Associate Director role at The Depository Trust & Clearing Corporation (DTCC)\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nApplication Support Engineering Associate Director\nThe Depository Trust & Clearing Corporation (DTCC)\nChennai, Tamil Nadu, India\n2 days ago\nOver 200 applicants\nSee who The Depository Trust & Clearing Corporation (DTCC) has hired for this role\nApply\nJoin or sign in to find your next job\nJoin to apply for the Application Support Engineering Associate Director role at The Depository Trust & Clearing Corporation (DTCC)\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSave\nJoin or sign in to save this job\nJoin to save Application Support Engineering Associate Director at The Depository Trust & Clearing Corporation (DTCC)\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nReport this job\nUse AI to assess how you fit\nGet AI-powered advice on this job and more exclusive features.\nAm I a good fit for this job?\nTailor my resume\nSign in to access AI-powered advices\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to evaluate your skills\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to tailor your resume\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nAre you ready to make an impact at DTCC?\nDo you want to work on innovative projects, collaborate with a dynamic and supportive team, and receive investment in your professional development? At DTCC, we are at the forefront of innovation in the financial markets. We are committed to helping our employees grow and succeed. We believe that you have the skills and drive to make a real impact. We foster a thriving internal community and are committed to creating a workplace that looks like the world that we serve.\nThe Information Technology group delivers secure, reliable technology solutions that enable DTCC to be the trusted infrastructure of the global capital markets. The team delivers high-quality information through activities that include development of essential, building infrastructure capabilities to meet client needs and implementing data standards and governance.\nPay And Benefits\nCompetitive compensation, including base pay and annual incentive\nComprehensive health and life insurance and well-being benefits, based on location\nPension / Retirement benefits\nPaid Time Off and Personal/Family Care, and other leaves of absence when needed to support your physical, financial, and emotional well-being.\nDTCC offers a flexible/hybrid model of 3 days onsite and 2 days remote (onsite Tuesdays, Wednesdays and a third day unique to each team or employee).\nThe Impact You Will Have In This Role\nThe Enterprise Application Support (EAS) team is responsible for providing technical application support for ITP and ECS lines of business. Within EAS, the Associate Director Application Support Engineering / SRE Lead (Site Reliability Engineer Lead) is a senior technical role responsible for driving the overall reliability, scalability, and performance of critical systems by implementing standard methodologies, participating in incident response, automating processes, and collaborating with development teams to ensure system stability and uptime across the organization, often acting as a technical partner in promoting a strong SRE culture within the company; key responsibilities include designing monitoring systems, capacity planning, and actively identifying and mitigating potential issues before they impact users.\nThe SRE team works closely with development teams, infrastructure and network partners, security partners, Scrum Masters, and internal / external clients to improve observability, operational supportability, resiliency, and mean time to restore service through driving improvements to support capabilities.\nYour Primary Responsibilities\nScrum Participation: Join all project collaborators planning and design sessions, sprint zero and stand-ups for all new delivery, to champion SRE requirements reflective of a strong observability and resiliency traits.\nSystem Reliability Architecture: Drive Design and help implement reliable, resilient, and scalable systems, considering redundancy, fault tolerance, and disaster recovery strategies. Make design recommendations that will allow the application to recover without cleanup activities or create a recovery runbook for application support team to follow for improved application recovery times.\nMonitoring and Alerting: Develop comprehensive monitoring systems to identify potential issues proactively, define actionable alerts, and establish SLIs (Service Level Indicators) and SLOs (Service Level Objectives).\nIncident Management: Lead incident response during critical system outages, facilitating timely problem diagnosis and resolution, conducting post-mortem analysis to identify root causes and prevent future occurrences.\nAutomation and Tooling: Develop and maintain automation scripts to streamline operational tasks, including self-healing, application deployments, scaling, and infrastructure management.\nCollaboration with Development Teams: Work closely with development teams to integrate SRE practices into the software development lifecycle, promoting code quality, reliability, and observability.\nSecurity Integration: Collaborate with security teams to ensure system resilience against cyber threats, implementing security best practices and supervising for vulnerabilities.\nTechnical Expertise: Stay updated on emerging technologies and industry trends related to cloud computing, distributed systems, and reliability engineering.\nOperational Readiness: Attend and present operational readiness with application support (EAS L2) at each project management meeting - raise any operational risks and concerns. Test SRE requirements in UAT environments to validate effectiveness and completeness of operational capabilities.\nRisk Management: Partner with IT Embedded Risk Managers to identify strategic solutions for risk incidents.\nMetrics and Reporting: Demonstrate operational improvements through defined KPIs.\nCapacity Planning: Proactively assess system capacity needs, plan for future growth, and implement scaling strategies to ensure optimal performance under high load.\nPerformance Optimization: Analyze system performance metrics to identify bottlenecks and implement optimization strategies to improve system responsiveness and efficiency.\nQualifications\nMinimum of 8 years of related experience\nBachelor's degree preferred or equivalent experience\nTalents Needed For Success\nStrong Programming Skills: Proficiency in one or more programming languages like Python, Java, Go, etc. including the use of AI technology (Amazon Q, Kiro), for automation and development of monitoring and SRE compliance validation tools.\nSystem Administration: Expertise in Linux/Unix operating systems, network administration, and cloud platforms (AWS, Azure, GCP). Mainframe experience is a plus.\nMonitoring and Observability: Deep understanding of monitoring tools (Splunk, Grafana, Dynatrace, ITSI, etc.) and experience in designing robust monitoring systems.\nIncident Management: Proven track record to participate in incident response teams under pressure, effectively solving complex issues.\nExperience in the financial services industry is good to have\nActual salary is determined based on the role, location, individual experience, skills, and other considerations. We are an equal opportunity employer and value diversity at our company. We do not discriminate on the basis of race, religion, color, national origin, sex, gender, gender expression, sexual orientation, age, marital status, veteran status, or disability status. We will ensure that individuals with disabilities are provided reasonable accommodation to participate in the job application or interview process, to perform essential job functions, and to receive other benefits and privileges of employment. Please contact us to request accommodation.\nShow more\nShow less\nSeniority level\nMid-Senior level\nEmployment type\nFull-time\nJob function\nEngineering and Information Technology\nIndustries\nFinancial Services\nReferrals increase your chances of interviewing at The Depository Trust & Clearing Corporation (DTCC) by 2x\nSee who you know\nGet notified when a new job is posted.\nSet alert\nSign in to set job alerts for “Engineering Associate” roles.\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSimilar jobs\nVP - Head of Application Production Support Global - WM\nVP - Head of Application Production Support Global - WM\nBNP Paribas\nChennai, Tamil Nadu, India\n5 days ago\nVice President, Production Services Application Support\nVice President, Production Services Application Support\nBNY\nChennai, Tamil Nadu, India\n1 week ago\nSenior Manager, Application Support & Data Platforms\nSenior Manager, Application Support & Data Platforms\nCiti\nChennai, Tamil Nadu, India\n1 week ago\nDirector, Technology\nDirector, Technology\nNielsenIQ\nChennai, Tamil Nadu, India\n6 days ago\nApplication Support Technology Lead Analyst - Vice President\nApplication Support Technology Lead Analyst - Vice President\nCiti\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Production Support – Tech Lead\nApplication Production Support – Tech Lead\nBNP Paribas\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nAVP Engineering Lead\nAVP Engineering Lead\nStandard Chartered India\nChennai, Tamil Nadu, India\n3 weeks ago\nCustom Software Engineer\nCustom Software Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nVP, Engineering Lead, NRRP\nVP, Engineering Lead, NRRP\nStandard Chartered India\nChennai, Tamil Nadu, India\n2 weeks ago\nAI&E - SM - Operate Solutions Hub\nAI&E - SM - Operate Solutions Hub\nDeloitte\nChennai, Tamil Nadu, India\n2 weeks ago\nDirector of Engineering\nDirector of Engineering\nOneMagnify\nChennai, Tamil Nadu, India\n5 days ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n1 week ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n4 days ago\nEngineering Manager\nEngineering Manager\nBNP Paribas\nChennai, Tamil Nadu, India\n1 week ago\nApplications Support Senior Analyst - Assistant Vice President\nApplications Support Senior Analyst - Assistant Vice President\nCiti\nChennai, Tamil Nadu, India\n1 day ago\nVP Engineering Transformation\nVP Engineering Transformation\nBNP Paribas\nChennai, Tamil Nadu, India\n5 days ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nShow more jobs like this\nShow fewer jobs like this\nPeople also viewed\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n1 week ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n3 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nChennai, Tamil Nadu, India\n2 weeks ago\nSimilar Searches\nAssistant Mechanical Engineer jobs\n258 open jobs\nProduct Engineering Manager jobs\n2,525 open jobs\nAssistant Engineer jobs\n1,803 open jobs\nAssociate Civil Engineer jobs\n421 open jobs\nPrincipal Structural Engineer jobs\n157 open jobs\nTransportation Engineer jobs\n793 open jobs\nStructural Design Engineer jobs\n1,300 open jobs\nAssociate Mechanical Engineer jobs\n147 open jobs\nAssociate Engineer jobs\n5,311 open jobs\nFirst Engineer jobs\n973 open jobs\nAssistant Associate Professor jobs\n449 open jobs\nEngineering Apprentice jobs\n26 open jobs\nEngineer in Training jobs\n10,172 open jobs\nDesign Engineering Intern jobs\n2,334 open jobs\nNetwork Operations Engineer jobs\n1,193 open jobs\nAssociate Network Engineer jobs\n96 open jobs\nAssistant Project Engineer jobs\n815 open jobs\nSenior Reliability Engineer jobs\n279 open jobs\nElectronic Technologist jobs\n16 open jobs\nExecutive Engineer jobs\n13,973 open jobs\nLead Structural Engineer jobs\n169 open jobs\nAssociate Technical Consultant jobs\n32 open jobs\nSecond Engineer jobs\n102 open jobs\nAnalog Design Engineer jobs\n975 open jobs\nAssistant Engineering Manager jobs\n175 open jobs\nShow more\nShow less\nExplore top content on LinkedIn\nFind curated posts and insights for relevant topics all in one place.\nView top content\nMore searches\nMore searches\nAssistant Mechanical Engineer jobs\nProduct Engineering Manager jobs\nAssistant Engineer jobs\nAssociate Civil Engineer jobs\nPrincipal Structural Engineer jobs\nTransportation Engineer jobs\nStructural Design Engineer jobs\nAssociate Mechanical Engineer jobs\nAssociate Engineer jobs\nFirst Engineer jobs\nAssistant Associate Professor jobs\nEngineering Apprentice jobs\nEngineer in Training jobs\nDesign Engineering Intern jobs\nNetwork Operations Engineer jobs\nAssociate Network Engineer jobs\nAssistant Project Engineer jobs\nSenior Reliability Engineer jobs\nElectronic Technologist jobs\nExecutive Engineer jobs\nLead Structural Engineer jobs\nAssociate Technical Consultant jobs\nSecond Engineer jobs\nAnalog Design Engineer jobs\nAssistant Engineering Manager jobs\nProgram Developer jobs\nStage Manager jobs\nLean Engineer jobs\nJunior Electrical Engineer jobs\nAir Conditioning Engineer jobs\nCivil Engineer jobs\nSenior Structural Engineer jobs\nResearch Engineer jobs\nMechanical Project Engineer jobs\nWater Resources Engineer jobs\nFurniture Designer jobs\nJunglee Games jobs\nConstruction Engineer jobs\nConfiguration Manager jobs\nEngineer Intern jobs\nChemical Process Engineer jobs\nMechanical Engineer jobs\nEnvironment Specialist jobs\nProcess Development Scientist jobs\nGraduate Civil Engineer jobs\nJunior Process Engineer jobs\nInteraction Designer jobs\nStructural Engineer jobs\nPetroleum Engineer jobs\nNuclear Engineer jobs\nEngineering Specialist jobs\nAssistant Civil Engineer jobs\nLearning Specialist jobs\nGraduate Mechanical Engineer jobs\nAFRY jobs\nGraduate Engineer jobs\nProduct Design Engineer jobs\nDesign Engineer jobs\nProcess Engineer jobs\nEngineer jobs\nLinkedIn\n© 2026\nAbout\nAccessibility\nUser Agreement\nPrivacy Policy\nYour California Privacy Choices\nCookie Policy\nCopyright Policy\nBrand Policy\nGuest Controls\nCommunity Guidelines\nالعربية (Arabic)\nবাংলা (Bangla)\nČeština (Czech)\nDansk (Danish)\nDeutsch (German)\nΕλληνικά (Greek)\nEnglish (English)\nEspañol (Spanish)\nفارسی (Persian)\nSuomi (Finnish)\nFrançais (French)\nहिंदी (Hindi)\nMagyar (Hungarian)\nBahasa Indonesia (Indonesian)\nItaliano (Italian)\nעברית (Hebrew)\n日本語 (Japanese)\n한국어 (Korean)\nमराठी (Marathi)\nBahasa Malaysia (Malay)\nNederlands (Dutch)\nNorsk (Norwegian)\nਪੰਜਾਬੀ (Punjabi)\nPolski (Polish)\nPortuguês (Portuguese)\nRomână (Romanian)\nРусский (Russian)\nSvenska (Swedish)\nతెలుగు (Telugu)\nภาษาไทย (Thai)\nTagalog (Tagalog)\nTürkçe (Turkish)\nУкраїнська (Ukrainian)\nTiếng Việt (Vietnamese)\n简体中文 (Chinese (Simplified))\n正體中文 (Chinese (Traditional))\nLanguage\nLinkedIn\nKnow when new jobs open up\nNever miss a job alert with the new LinkedIn app for Windows.\nGet the app\nAgree & Join LinkedIn\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to see who you already know at The Depository Trust & Clearing Corporation (DTCC)\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nLinkedIn\nLinkedIn is better on the app\nDon’t have the app? Get it in the Microsoft Store.\nOpen the app",
+      "verification_status": "VERIFIED",
+      "match_score": 80,
+      "qualification": "qualified",
+      "job_family": "application_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Application Support",
+      "priority_boost": 12,
+      "rank_score": 92,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "application support"
+        ],
+        "matched_skills": [
+          "GCP",
+          "AWS",
+          "Azure",
+          "Linux",
+          "Python",
+          "Java",
+          "SRE",
+          "Production Support",
+          "Application Support",
+          "Incident Management"
+        ],
+        "experience_analysis": {
+          "found": true,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [
+            {
+              "field": "full_job_page_text",
+              "minimum": 8.0,
+              "maximum": 8.0,
+              "text": "minimum of 8 years",
+              "type": "preferred",
+              "open_ended": false
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 8.0,
+              "maximum": 8.0,
+              "text": "8 years of related experience",
+              "type": "preferred",
+              "open_ended": false
+            }
+          ],
+          "all_requirements": [
+            {
+              "field": "full_job_page_text",
+              "minimum": 8.0,
+              "maximum": 8.0,
+              "text": "minimum of 8 years",
+              "type": "preferred",
+              "open_ended": false
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 8.0,
+              "maximum": 8.0,
+              "text": "8 years of related experience",
+              "type": "preferred",
+              "open_ended": false
+            }
+          ]
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 20,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: application support",
+          "Skills matched: 10",
+          "Location within profile",
+          "Experience requirement valid"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 40,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 20,
+          "semantic_bonus": 0,
+          "total": 80
+        },
+        "semantic_score": 1.0,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 6
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "in-382e4c28e7d0d2b7",
+      "title": "QA Engineer",
+      "company": "Glatro Commerce Private Limited",
+      "location": "Remote, IN",
+      "remote": true,
+      "url": "https://in.indeed.com/viewjob?jk=382e4c28e7d0d2b7",
+      "job_url": "https://in.indeed.com/viewjob?jk=382e4c28e7d0d2b7",
+      "apply_url": "https://in.indeed.com/viewjob?jk=382e4c28e7d0d2b7",
+      "description": "QA Engineer – Mobile \\& Server Testing\n\n**Experience:** 2\\+ Years  \n**Job Type:** Full\\-Time \\| Remote  \n**Working Days:** Monday to Friday  \n**Working Hours:** 10:00 AM – 7:00 PM IST  \n**Work Location:** Work From Home\n\nAbout the Role\n\nWe are looking for an experienced **QA Engineer** with at least **2 years of hands\\-on experience** in software testing. The ideal candidate should have strong experience testing **iOS and Android applications**, along with knowledge of **server load and performance testing**.\n\nKey Responsibilities\n\n* Test **iOS and Android mobile applications** across different devices and OS versions.\n* Perform functional, regression, integration, UI/UX, usability, and end\\-to\\-end testing.\n* Identify, document, track, and verify bugs and issues.\n* Perform **server load, stress, and performance testing** to evaluate application stability under different traffic conditions.\n* Monitor server performance, response times, errors, and resource utilization during load tests.\n* Test APIs and backend services to ensure reliability and performance.\n* Verify bug fixes and conduct regression testing before releases.\n* Prepare and maintain detailed test cases, test scenarios, and testing documentation.\n* Work closely with developers and product teams to identify and resolve issues.\n* Ensure applications are stable and production\\-ready before deployment.\n\nRequirements\n\n* **Minimum 2 years of experience in QA/Software Testing.**\n* Strong hands\\-on experience in **iOS and Android application testing**.\n* Good knowledge of **server load, stress, and performance testing**.\n* Experience with load\\-testing tools such as **JMeter, k6, LoadRunner, or similar tools**.\n* Experience with **API testing**, preferably using Postman or similar tools.\n* Good understanding of **SDLC and STLC**.\n* Strong bug reporting and troubleshooting skills.\n* Excellent attention to detail and analytical skills.\n* Ability to work independently in a remote environment.\n\nGood to Have\n\n* **Personal iPhone/iOS device for testing** — a plus.\n* Experience testing mobile applications across multiple devices and OS versions.\n* Understanding of server monitoring and performance metrics.\n* Experience testing applications with high concurrent users/traffic.\n* Experience with AWS or cloud\\-based applications.\n\nWhat We Offer\n\n* **100% Work From Home / Remote**\n* **Monday to Friday**\n* **10:00 AM – 7:00 PM IST**\n* Opportunity to work with a fast\\-growing startup\n* Growth and learning opportunities\n* Collaborative remote work environment\n\n**If you have strong mobile application testing experience and can ensure both application quality and server performance under load, we’d love to hear from you.**\n\nPay: Up to ₹15,000\\.00 per month\n\nBenefits:\n\n* Paid sick time\n* Paid time off\n* Work from home\n\nWork Location: Remote",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-15",
+      "posted_at": "2026-09-15",
+      "employment_type": "fulltime",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "QA Engineer",
+      "search_location": "Remote",
+      "discovered_at": "2026-09-16T08:07:52+00:00",
+      "content_hash": "97d8c31edc188037",
+      "normalized_identity": "url:https://in.indeed.com/viewjob?jk=382e4c28e7d0d2b7",
+      "raw_source_data": {
+        "id": "in-382e4c28e7d0d2b7",
+        "site": "indeed",
+        "job_url": "https://in.indeed.com/viewjob?jk=382e4c28e7d0d2b7",
+        "job_url_direct": "http://in.indeed.com/job/qa-engineer-382e4c28e7d0d2b7",
+        "title": "QA Engineer",
+        "company": "Glatro Commerce Private Limited",
+        "location": "Remote, IN",
+        "date_posted": "2026-09-15",
+        "job_type": "fulltime",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "True",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "QA Engineer – Mobile \\& Server Testing\n\n**Experience:** 2\\+ Years  \n**Job Type:** Full\\-Time \\| Remote  \n**Working Days:** Monday to Friday  \n**Working Hours:** 10:00 AM – 7:00 PM IST  \n**Work Location:** Work From Home\n\nAbout the Role\n\nWe are looking for an experienced **QA Engineer** with at least **2 years of hands\\-on experience** in software testing. The ideal candidate should have strong experience testing **iOS and Android applications**, along with knowledge of **server load and performance testing**.\n\nKey Responsibilities\n\n* Test **iOS and Android mobile applications** across different devices and OS versions.\n* Perform functional, regression, integration, UI/UX, usability, and end\\-to\\-end testing.\n* Identify, document, track, and verify bugs and issues.\n* Perform **server load, stress, and performance testing** to evaluate application stability under different traffic conditions.\n* Monitor server performance, response times, errors, and resource utilization during load tests.\n* Test APIs and backend services to ensure reliability and performance.\n* Verify bug fixes and conduct regression testing before releases.\n* Prepare and maintain detailed test cases, test scenarios, and testing documentation.\n* Work closely with developers and product teams to identify and resolve issues.\n* Ensure applications are stable and production\\-ready before deployment.\n\nRequirements\n\n* **Minimum 2 years of experience in QA/Software Testing.**\n* Strong hands\\-on experience in **iOS and Android application testing**.\n* Good knowledge of **server load, stress, and performance testing**.\n* Experience with load\\-testing tools such as **JMeter, k6, LoadRunner, or similar tools**.\n* Experience with **API testing**, preferably using Postman or similar tools.\n* Good understanding of **SDLC and STLC**.\n* Strong bug reporting and troubleshooting skills.\n* Excellent attention to detail and analytical skills.\n* Ability to work independently in a remote environment.\n\nGood to Have\n\n* **Personal iPhone/iOS device for testing** — a plus.\n* Experience testing mobile applications across multiple devices and OS versions.\n* Understanding of server monitoring and performance metrics.\n* Experience testing applications with high concurrent users/traffic.\n* Experience with AWS or cloud\\-based applications.\n\nWhat We Offer\n\n* **100% Work From Home / Remote**\n* **Monday to Friday**\n* **10:00 AM – 7:00 PM IST**\n* Opportunity to work with a fast\\-growing startup\n* Growth and learning opportunities\n* Collaborative remote work environment\n\n**If you have strong mobile application testing experience and can ensure both application quality and server performance under load, we’d love to hear from you.**\n\nPay: Up to ₹15,000\\.00 per month\n\nBenefits:\n\n* Paid sick time\n* Paid time off\n* Work from home\n\nWork Location: Remote",
+        "company_industry": "",
+        "company_url": "https://in.indeed.com/cmp/Glatro-Commerce-Private-Limited",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "qa_testing",
+        "priority": 2,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "UNVERIFIED",
+        "success": false,
+        "error": "HTTP 401",
+        "url": "https://in.indeed.com/viewjob?jk=382e4c28e7d0d2b7"
+      },
+      "verification_status": "UNVERIFIED",
+      "match_score": 84,
+      "qualification": "qualified",
+      "job_family": "qa_testing",
+      "career_priority": 2,
+      "priority_tier": "P2",
+      "priority_label": "QA",
+      "priority_boost": 8,
+      "rank_score": 92,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "QA Engineer",
+          "qa engineer"
+        ],
+        "matched_skills": [
+          "AWS",
+          "API Testing",
+          "Postman",
+          "Software Testing",
+          "Test Cases",
+          "Regression Testing"
+        ],
+        "experience_analysis": {
+          "found": true,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": 2.0,
+          "mandatory_requirements": [
+            {
+              "field": "description",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": false
+            },
+            {
+              "field": "description",
+              "minimum": 2.0,
+              "maximum": null,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "description",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "2 years of experience",
+              "type": "mandatory",
+              "open_ended": false
+            }
+          ],
+          "preferred_requirements": [],
+          "all_requirements": [
+            {
+              "field": "description",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": false
+            },
+            {
+              "field": "description",
+              "minimum": 2.0,
+              "maximum": null,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "description",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "2 years of experience",
+              "type": "mandatory",
+              "open_ended": false
+            }
+          ]
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: QA Engineer, qa engineer",
+          "Skills matched: 6",
+          "Location within profile",
+          "Experience requirement valid"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 24,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 84
+        },
+        "semantic_score": 0.5,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 1
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4448346390",
+      "title": "Application Support Engineer",
+      "company": "Accenture in India",
+      "location": "Bengaluru, Karnataka, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4448346390",
+      "job_url": "https://www.linkedin.com/jobs/view/4448346390",
+      "apply_url": "https://www.linkedin.com/jobs/view/4448346390",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "",
+      "posted_at": "",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Production Support Analyst",
+      "search_location": "Bangalore",
+      "discovered_at": "2026-09-16T08:11:59+00:00",
+      "content_hash": "2e5d012cf46d97e8",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4448346390",
+      "raw_source_data": {
+        "id": "li-4448346390",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4448346390",
+        "job_url_direct": "",
+        "title": "Application Support Engineer",
+        "company": "Accenture in India",
+        "location": "Bengaluru, Karnataka, India",
+        "date_posted": "",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://in.linkedin.com/company/accentureindia",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "production_support",
+        "priority": 1,
+        "discovery_round": 2
+      },
+      "detail_verification": {
+        "status": "VERIFIED_SOURCE",
+        "success": true,
+        "error": "",
+        "url": "https://www.linkedin.com/jobs/view/4448346390"
+      },
+      "full_job_page_text": "Application Support Engineer at Accenture in India — Bengaluru, Karnataka, India | LinkedIn Jobs\nSkip to main content\nLinkedIn\nApplication Support Engineer in Moses Lake, WA\nExpand search\nThis button displays the currently selected search type. When expanded it provides a list of search options that will switch the search inputs to match the current selection.\nJobs\nPeople\nLearning\nClear text\nClear text\nClear text\nClear text\nClear text\nSign in\nJoin now\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\nApply\nJoin or sign in to find your next job\nJoin to apply for the Application Support Engineer role at Accenture in India\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n16 hours ago\n39 applicants\nSee who Accenture in India has hired for this role\nApply\nJoin or sign in to find your next job\nJoin to apply for the Application Support Engineer role at Accenture in India\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSave\nReport this job\nUse AI to assess how you fit\nGet AI-powered advice on this job and more exclusive features.\nAm I a good fit for this job?\nTailor my resume\nSign in to access AI-powered advices\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to evaluate your skills\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to tailor your resume\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nProject Role : Application Support Engineer\nProject Role Description : Act as software detectives, provide a dynamic service identifying and solving issues within multiple components of critical business systems.\nMust have skills : Epic Systems\nGood to have skills : NA\nMinimum 2 Year(s) Of Experience Is Required\nEducational Qualification : 15 years full time education\nSummary:\nAs an Application Support Engineer, a typical day involves acting as a software detective by investigating and resolving issues across various components of essential business systems. This role requires a proactive approach to identifying problems, analyzing system behavior, and ensuring smooth operation of critical applications. The position demands continuous monitoring, collaboration with different teams, and delivering timely solutions to maintain system reliability and performance in a dynamic environment.\nRoles & Responsibilities:\nExpected to perform independently and become an SME.\nRequired active participation/contribution in team discussions.\nContribute in providing solutions to work related problems.\nCollaborate with cross-functional teams to understand system requirements and troubleshoot complex issues.\nDocument findings and resolutions to support knowledge sharing and continuous improvement.\nAssist in the implementation of system updates and enhancements to improve overall functionality.\nSupport junior team members by providing guidance and sharing expertise.\nProfessional & Technical Skills:\nMust To Have Skills: Proficiency in Epic Systems.\nStrong analytical and problem-solving abilities to diagnose and resolve software issues effectively.\nExperience with system monitoring tools and incident management processes.\nAbility to communicate technical information clearly to both technical and non-technical stakeholders.\nFamiliarity with software lifecycle and support methodologies.\nCapability to work under pressure and manage multiple priorities in a fast-paced environment.\nAdditional Information:\nThe candidate should have minimum 2 years of experience in Epic Systems.\nThis position is based at our BDC14A - STPI office.\nA 15 years full time education is required.\nShow more\nShow less\nSeniority level\nMid-Senior level\nEmployment type\nFull-time\nJob function\nInformation Technology\nIndustries\nIT Services and IT Consulting\nReferrals increase your chances of interviewing at Accenture in India by 2x\nSee who you know\nGet notified when a new job is posted.\nSet alert\nSign in to set job alerts for “Application Support Engineer” roles.\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nJobs\nApplication Support Engineer jobs\nApplication Support Engineer\nSimilar jobs\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n6 days ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n10 hours ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nShow more jobs like this\nShow fewer jobs like this\nPeople also viewed\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n1 week ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n6 days ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nApplication Support Engineer\nApplication Support Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nSimilar Searches\nApplication Support Engineer jobs\n2,608 open jobs\nSecurity Administrator jobs\n3,025 open jobs\nLinux Administrator jobs\n1,067 open jobs\nPlatform Engineer jobs\n9,812 open jobs\nLinux System Engineer jobs\n3,440 open jobs\nDesktop Engineer jobs\n3,256 open jobs\nLinux Engineer jobs\n4,338 open jobs\nEngineer jobs\n71,158 open jobs\nLinux System Administrator jobs\n1,311 open jobs\nInformation Technology Analyst jobs\n51,380 open jobs\nAnalyst jobs\n55,566 open jobs\nSenior System Software Engineer jobs\n8,592 open jobs\nSoftware Engineer jobs\n59,663 open jobs\nProduction Support Engineer jobs\n51,636 open jobs\nSenior Business Analyst jobs\n6,993 open jobs\nSystem Analyst jobs\n57,912 open jobs\nScientist jobs\n2,584 open jobs\nLegal Consultant jobs\n653 open jobs\nFrontend Developer jobs\n10,770 open jobs\nDeveloper jobs\n73,513 open jobs\nSenior Application Support Engineer jobs\n1,468 open jobs\nImplementation Support Engineer jobs\n2,868 open jobs\nProduct Support Engineer jobs\n47,604 open jobs\nUnix Support Engineer jobs\n264 open jobs\nUnix Linux System Administrator jobs\n251 open jobs\nShow more\nShow less\nExplore top content on LinkedIn\nFind curated posts and insights for relevant topics all in one place.\nView top content\nMore searches\nMore searches\nApplication Support Engineer jobs\nTorrent Power jobs\nSecurity Administrator jobs\nLinux Administrator jobs\nICICI Bank jobs\nFujitsu jobs\nPlatform Engineer jobs\nLinux System Engineer jobs\nDesktop Engineer jobs\nSapiens jobs\nAccenture jobs\nLinux Engineer jobs\nEngineer jobs\nLinux System Administrator jobs\nIBM jobs\nBlue Yonder jobs\nE-Solutions jobs\nOracle jobs\nInformatica jobs\nInformation Technology Analyst jobs\nAmazon jobs\nEricsson jobs\nTata Consultancy Services jobs\nAnalyst jobs\nCognizant jobs\nJPMorganChase jobs\nSenior System Software Engineer jobs\nSoftware Engineer jobs\nLuxoft jobs\nProduction Support Engineer jobs\nSenior Business Analyst jobs\nSamsung Electronics jobs\nSystem Analyst jobs\nScientist jobs\nLegal Consultant jobs\nFrontend Developer jobs\nTech Mahindra jobs\nDeveloper jobs\nSenior Application Support Engineer jobs\nImplementation Support Engineer jobs\nProduct Support Engineer jobs\nUnix Support Engineer jobs\nUnix Linux System Administrator jobs\nCustomer Application Engineer jobs\nCovalense jobs\nSupport Developer jobs\nSystem Support Engineer jobs\nUnix Developer jobs\nMiddleware Administrator jobs\nEnterprise Network Engineer jobs\nSenior Technical Account Manager jobs\nPortal Developer jobs\nSoftware Administrator jobs\nSoftware Application Specialist jobs\nSystem Service Engineer jobs\nAssociate System Administrator jobs\nMiddleware Engineer jobs\nMiddleware Specialist jobs\nSenior Customer Support Engineer jobs\nProduction Support Manager jobs\nLinkedIn\n© 2026\nAbout\nAccessibility\nUser Agreement\nPrivacy Policy\nYour California Privacy Choices\nCookie Policy\nCopyright Policy\nBrand Policy\nGuest Controls\nCommunity Guidelines\nالعربية (Arabic)\nবাংলা (Bangla)\nČeština (Czech)\nDansk (Danish)\nDeutsch (German)\nΕλληνικά (Greek)\nEnglish (English)\nEspañol (Spanish)\nفارسی (Persian)\nSuomi (Finnish)\nFrançais (French)\nहिंदी (Hindi)\nMagyar (Hungarian)\nBahasa Indonesia (Indonesian)\nItaliano (Italian)\nעברית (Hebrew)\n日本語 (Japanese)\n한국어 (Korean)\nमराठी (Marathi)\nBahasa Malaysia (Malay)\nNederlands (Dutch)\nNorsk (Norwegian)\nਪੰਜਾਬੀ (Punjabi)\nPolski (Polish)\nPortuguês (Portuguese)\nRomână (Romanian)\nРусский (Russian)\nSvenska (Swedish)\nతెలుగు (Telugu)\nภาษาไทย (Thai)\nTagalog (Tagalog)\nTürkçe (Turkish)\nУкраїнська (Ukrainian)\nTiếng Việt (Vietnamese)\n简体中文 (Chinese (Simplified))\n正體中文 (Chinese (Traditional))\nLanguage\nLinkedIn\nKnow when new jobs open up\nNever miss a job alert with the new LinkedIn app for Windows.\nGet the app\nAgree & Join LinkedIn\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to see who you already know at Accenture in India\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nLinkedIn\nLinkedIn is better on the app\nDon’t have the app? Get it in the Microsoft Store.\nOpen the app",
+      "verification_status": "VERIFIED",
+      "match_score": 80,
+      "qualification": "qualified",
+      "job_family": "application_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Application Support",
+      "priority_boost": 12,
+      "rank_score": 92,
+      "match_category": "Excellent match",
+      "match_details": {
+        "matched_roles": [
+          "Application Support Engineer",
+          "application support"
+        ],
+        "matched_skills": [
+          "Linux",
+          "Production Support",
+          "Application Support",
+          "Incident Management",
+          "System Monitoring"
+        ],
+        "experience_analysis": {
+          "found": true,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": 2.0,
+          "mandatory_requirements": [
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": false
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": null,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "2 years of experience",
+              "type": "mandatory",
+              "open_ended": false
+            }
+          ],
+          "preferred_requirements": [
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "minimum 2 year",
+              "type": "preferred",
+              "open_ended": false
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": null,
+              "text": "minimum 2 year",
+              "type": "preferred",
+              "open_ended": true
+            }
+          ],
+          "all_requirements": [
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "minimum 2 year",
+              "type": "preferred",
+              "open_ended": false
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": false
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": null,
+              "text": "minimum 2 year",
+              "type": "preferred",
+              "open_ended": true
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": null,
+              "text": "minimum 2 years",
+              "type": "mandatory",
+              "open_ended": true
+            },
+            {
+              "field": "full_job_page_text",
+              "minimum": 2.0,
+              "maximum": 2.0,
+              "text": "2 years of experience",
+              "type": "mandatory",
+              "open_ended": false
+            }
+          ]
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: Application Support Engineer, application support",
+          "Skills matched: 5",
+          "Location within profile",
+          "Experience requirement valid"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 20,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 80
+        },
+        "semantic_score": 1.0,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 4
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4465911428",
+      "title": "Quality Assurance Engineer (Bangalore)",
+      "company": "GeneralMind",
+      "location": "Bengaluru, Karnataka, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4465911428",
+      "job_url": "https://www.linkedin.com/jobs/view/4465911428",
+      "apply_url": "https://www.linkedin.com/jobs/view/4465911428",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "",
+      "posted_at": "",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "QA Analyst",
+      "search_location": "Bangalore",
+      "discovered_at": "2026-09-16T08:06:06+00:00",
+      "content_hash": "3a6b604159ee0b1a",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4465911428",
+      "raw_source_data": {
+        "id": "li-4465911428",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4465911428",
+        "job_url_direct": "",
+        "title": "Quality Assurance Engineer (Bangalore)",
+        "company": "GeneralMind",
+        "location": "Bengaluru, Karnataka, India",
+        "date_posted": "",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://de.linkedin.com/company/generalmind",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "qa_testing",
+        "priority": 2,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "VERIFIED_SOURCE",
+        "success": true,
+        "error": "",
+        "url": "https://www.linkedin.com/jobs/view/4465911428"
+      },
+      "full_job_page_text": "GeneralMind hiring Quality Assurance Engineer (Bangalore) in Bengaluru, Karnataka, India | LinkedIn\nSkip to main content\nLinkedIn\nQuality Assurance Engineer (Bangalore) in Moses Lake, WA\nExpand search\nThis button displays the currently selected search type. When expanded it provides a list of search options that will switch the search inputs to match the current selection.\nJobs\nPeople\nLearning\nClear text\nClear text\nClear text\nClear text\nClear text\nSign in\nJoin now\nQuality Assurance Engineer (Bangalore)\nGeneralMind\nBengaluru, Karnataka, India\nApply\nJoin or sign in to find your next job\nJoin to apply for the Quality Assurance Engineer (Bangalore) role at GeneralMind\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nQuality Assurance Engineer (Bangalore)\nGeneralMind\nBengaluru, Karnataka, India\n12 hours ago\nOver 200 applicants\nSee who GeneralMind has hired for this role\nApply\nJoin or sign in to find your next job\nJoin to apply for the Quality Assurance Engineer (Bangalore) role at GeneralMind\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSave\nJoin or sign in to save this job\nJoin to save Quality Assurance Engineer (Bangalore) at GeneralMind\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nReport this job\nUse AI to assess how you fit\nGet AI-powered advice on this job and more exclusive features.\nAm I a good fit for this job?\nTailor my resume\nSign in to access AI-powered advices\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to evaluate your skills\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to tailor your resume\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nGeneralMind is a Berlin-founded AI company building its own System of Action for modern enterprises: an operational AI layer on top of ERP systems. This is not a copilot. It's an autopilot: human-supervised, with approvals where needed. Our AI Autopilot autonomously executes recurring, complex workflows end-to-end across email, Excel, and enterprise systems. Incoming tasks are captured, analyzed, and completed with human-level capability, tracking handovers, meeting deadlines, and ensuring compliance across multiple stakeholders. Designed for mid-sized and large enterprises, GeneralMind helps organizations eliminate inbox-driven work, improve execution across goods and money flows, and keep supply chains moving at scale. Founded in 2025, GeneralMind serves customers across industry, commerce, and logistics in Europe and beyond.\nTasks\nTest the platform from a real user's perspective, running through both typical flows and the unusual ones (\"what happens if I enter the wrong thing?\").\nTrack down bugs, crashes, display issues, and illogical behaviour, and document them clearly with steps to reproduce.\nJudge whether features work the way they should, and flag anything confusing, clunky, or inconsistent (usability).\nCheck different devices, browsers, and screen sizes to make sure everything works everywhere.\nRank bugs by severity (critical vs. cosmetic) and prioritise them so the team knows what to fix first.\nRetest fixed bugs and confirm that the fixes didn't break anything else (regression testing).\nWork closely with engineering and product, answer their questions, and help reproduce issues.\nRequirements\nA sharp, thorough eye for detail and the patience to get to the bottom of things.\nA structured, clear way of documenting bugs so anyone can follow them.\nThe ability to think like a user and to use software \"the wrong way\" on purpose to find its limits.\nClear, easy-to-understand communication, both written and spoken.\nFirst experience with software testing, QA tools, or ticketing systems (e.g. Jira, Linear) is a plus, but not a must depending on focus.\nWerde Teil von GeneralMind als Quality Assurance Engineer! Entwickle deine Fähigkeiten in einem innovativen AI-Unternehmen in Berlin und gestalte die Zukunft der Automatisierung. Bewirb dich jetzt!\nShow more\nShow less\nSeniority level\nAssociate\nEmployment type\nFull-time\nJob function\nInformation Technology\nIndustries\nSoftware Development\nReferrals increase your chances of interviewing at GeneralMind by 2x\nSee who you know\nGet notified when a new job is posted.\nSet alert\nSign in to set job alerts for “Quality Assurance Engineer” roles.\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSimilar jobs\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester, Manual)\nQuality Engineer (Tester, Manual)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Assurance Engineer\nQuality Assurance Engineer\nNEXUS AIDC\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Assurance Engineer\nQuality Assurance Engineer\nGlean\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Assurance Engineer\nQuality Assurance Engineer\nbolt\nGreater Bengaluru Area\n2 weeks ago\nQuality Engineer\nQuality Engineer\nPrerana Engineering\nBengaluru, Karnataka, India\n1 month ago\nQuality Assurance Engineer\nQuality Assurance Engineer\nSiemens Energy\nBangalore Urban, Karnataka, India\n1 week ago\nQuality Assurance Engineer II\nQuality Assurance Engineer II\nNeo\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Assurance Engineer\nQuality Assurance Engineer\nSourcingXPress\nBengaluru, Karnataka, India\n₹800,000.00\n-\n₹2,000,000.00\n6 months ago\nProduct Quality Engineer\nProduct Quality Engineer\nBirla Pivot\nBangalore Urban, Karnataka, India\n1 week ago\nQuality Engineer\nQuality Engineer\nsymplr\nBengaluru, Karnataka, India\n2 weeks ago\nTest Professional\nTest Professional\nSiemens\nBangalore Urban, Karnataka, India\n19 hours ago\nQuality Engineer Software\nQuality Engineer Software\nPhilips\nBengaluru, Karnataka, India\n5 days ago\nQuality Assurance Engineer\nQuality Assurance Engineer\nArcana\nGreater Bengaluru Area\n1 week ago\nQA Engineer [T500-29337]\nQA Engineer [T500-29337]\nNeighborly®\nBengaluru, Karnataka, India\n5 days ago\nQA Engineer - II\nQA Engineer - II\nGroww\nBengaluru, Karnataka, India\n3 weeks ago\nQA Engineer\nQA Engineer\nRadius\nBengaluru, Karnataka, India\n1 month ago\nQA Engineer\nQA Engineer\nWapHire\nBengaluru, Karnataka, India\n3 weeks ago\nQuality Engineer (Tester)\nQuality Engineer (Tester)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester)\nQuality Engineer (Tester)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nTest Automation Engineer\nTest Automation Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester, Manual)\nQuality Engineer (Tester, Manual)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester, Manual)\nQuality Engineer (Tester, Manual)\nAccenture in India\nBengaluru, Karnataka, India\n1 week ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester, Manual)\nQuality Engineer (Tester, Manual)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nShow more jobs like this\nShow fewer jobs like this\nPeople also viewed\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n6 days ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n1 week ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester, Manual)\nQuality Engineer (Tester, Manual)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer (Tester, Manual)\nQuality Engineer (Tester, Manual)\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nQuality Engineer\nQuality Engineer\nAccenture in India\nBengaluru, Karnataka, India\n2 weeks ago\nSimilar Searches\nAssociate Quality Assurance Engineer jobs\n1,600 open jobs\nSoftware Quality Assurance Engineer jobs\n2,899 open jobs\nSenior Quality Assurance Engineer jobs\n849 open jobs\nQuality Assurance Automation Engineer jobs\n2,321 open jobs\nQuality Assurance Test Engineer jobs\n2,449 open jobs\nSoftware Test Engineer jobs\n3,583 open jobs\nBusiness Test Analyst jobs\n2,637 open jobs\nSoftware Tester jobs\n2,341 open jobs\nSoftware Quality Assurance Intern jobs\n132 open jobs\nSoftware Quality Assurance Tester jobs\n1,875 open jobs\nPlaywright jobs\n862 open jobs\nSenior Software Test Engineer jobs\n1,321 open jobs\nTest Automation Specialist jobs\n3,330 open jobs\nAssociate Software Quality Assurance Engineer jobs\n1,130 open jobs\nSenior Software Quality Assurance Engineer jobs\n716 open jobs\nSoftware Quality Assurance Analyst jobs\n2,032 open jobs\nContract Test Engineer jobs\n920 open jobs\nSoftware Quality Engineer jobs\n3,188 open jobs\nTest Engineer jobs\n51,330 open jobs\nJunior Test Engineer jobs\n2,599 open jobs\nSoftware Automation Engineer jobs\n9,089 open jobs\nEngineering Officer jobs\n1,658 open jobs\nAutomation Test Analyst jobs\n975 open jobs\nLead Software Quality Assurance Engineer jobs\n618 open jobs\nSoftware Test Analyst jobs\n1,437 open jobs\nShow more\nShow less\nExplore top content on LinkedIn\nFind curated posts and insights for relevant topics all in one place.\nView top content\nMore searches\nMore searches\nAssociate Quality Assurance Engineer jobs\nSoftware Quality Assurance Engineer jobs\nSenior Quality Assurance Engineer jobs\nQuality Assurance Automation Engineer jobs\nQuality Assurance Test Engineer jobs\nSoftware Test Engineer jobs\nBusiness Test Analyst jobs\nSoftware Tester jobs\nSoftware Quality Assurance Intern jobs\nSoftware Quality Assurance Tester jobs\nPlaywright jobs\nSenior Software Test Engineer jobs\nTest Automation Specialist jobs\nAssociate Software Quality Assurance Engineer jobs\nSenior Software Quality Assurance Engineer jobs\nSoftware Quality Assurance Analyst jobs\nContract Test Engineer jobs\nSoftware Quality Engineer jobs\nTest Engineer jobs\nJunior Test Engineer jobs\nSoftware Automation Engineer jobs\nEngineering Officer jobs\nAutomation Test Analyst jobs\nLead Software Quality Assurance Engineer jobs\nSoftware Test Analyst jobs\nSoftware Quality Analyst jobs\nSenior Test Engineer jobs\nColdfusion Developer jobs\nFinxera jobs\nPrincipal Quality Assurance Engineer jobs\nStaff Quality Assurance Engineer jobs\nSoftware Quality Assurance Manager jobs\nBusiness Analyst Quality Assurance jobs\nQuality Test Engineer jobs\nSoftware Engineer in Test jobs\nQuality Engineer jobs\nTest Developer jobs\nLead Software Test Engineer jobs\nAutomation Developer jobs\nTest Associate jobs\nQuality Assurance Quality Control Engineer jobs\nSenior Software Quality Engineer jobs\nLead Test Engineer jobs\nPerformance Test Engineer jobs\nSoftware Verification Engineer jobs\nCitrix Engineer jobs\nPrincipal Test Engineer jobs\nDriveU jobs\nStaff Test Engineer jobs\nSenior Software Tester jobs\nNetwork Test Engineer jobs\nSoftware Testing Specialist jobs\nAssociate Test Engineer jobs\nAutomation Engineer jobs\nLead Quality Engineer jobs\nQuality Assurance Manager jobs\nOnline Marketing Executive jobs\nSoftware Quality Assurance Lead jobs\nAssociate Quality Engineer jobs\nAutomation Test Lead jobs\nLinkedIn\n© 2026\nAbout\nAccessibility\nUser Agreement\nPrivacy Policy\nYour California Privacy Choices\nCookie Policy\nCopyright Policy\nBrand Policy\nGuest Controls\nCommunity Guidelines\nالعربية (Arabic)\nবাংলা (Bangla)\nČeština (Czech)\nDansk (Danish)\nDeutsch (German)\nΕλληνικά (Greek)\nEnglish (English)\nEspañol (Spanish)\nفارسی (Persian)\nSuomi (Finnish)\nFrançais (French)\nहिंदी (Hindi)\nMagyar (Hungarian)\nBahasa Indonesia (Indonesian)\nItaliano (Italian)\nעברית (Hebrew)\n日本語 (Japanese)\n한국어 (Korean)\nमराठी (Marathi)\nBahasa Malaysia (Malay)\nNederlands (Dutch)\nNorsk (Norwegian)\nਪੰਜਾਬੀ (Punjabi)\nPolski (Polish)\nPortuguês (Portuguese)\nRomână (Romanian)\nРусский (Russian)\nSvenska (Swedish)\nతెలుగు (Telugu)\nภาษาไทย (Thai)\nTagalog (Tagalog)\nTürkçe (Turkish)\nУкраїнська (Ukrainian)\nTiếng Việt (Vietnamese)\n简体中文 (Chinese (Simplified))\n正體中文 (Chinese (Traditional))\nLanguage\nLinkedIn\nKnow when new jobs open up\nNever miss a job alert with the new LinkedIn app for Windows.\nGet the app\nAgree & Join LinkedIn\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nSign in to see who you already know at GeneralMind\nEmail or phone\nPassword\nShow\nForgot password?\nSign in\nSign in with Email\nor\nNew to LinkedIn? Join now\nBy clicking Continue to join or sign in, you agree to LinkedIn’s User Agreement , Privacy Policy , and Cookie Policy .\nLinkedIn\nLinkedIn is better on the app\nDon’t have the app? Get it in the Microsoft Store.\nOpen the app",
+      "verification_status": "VERIFIED",
+      "match_score": 76,
+      "qualification": "qualified",
+      "job_family": "qa_testing",
+      "career_priority": 2,
+      "priority_tier": "P2",
+      "priority_label": "QA",
+      "priority_boost": 8,
+      "rank_score": 84,
+      "match_category": "Good match",
+      "match_details": {
+        "matched_roles": [
+          "Quality Assurance Engineer",
+          "quality assurance"
+        ],
+        "matched_skills": [
+          "Software Testing",
+          "Quality Assurance",
+          "Regression Testing",
+          "Jira"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: Quality Assurance Engineer, quality assurance",
+          "Skills matched: 4",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 16,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 76
+        },
+        "semantic_score": 1.0,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 8.0,
+          "role_phrases": 5
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4467733274",
+      "title": "Production support Engineer - PostgreSQL & Oracle",
+      "company": "Worldline",
+      "location": "Chennai, Tamil Nadu, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4467733274",
+      "job_url": "https://www.linkedin.com/jobs/view/4467733274",
+      "apply_url": "https://www.linkedin.com/jobs/view/4467733274",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "",
+      "posted_at": "",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "Technical Support Engineer",
+      "search_location": "Chennai",
+      "discovered_at": "2026-09-16T08:04:44+00:00",
+      "content_hash": "4c939c049919fb85",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4467733274",
+      "raw_source_data": {
+        "id": "li-4467733274",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4467733274",
+        "job_url_direct": "",
+        "title": "Production support Engineer - PostgreSQL & Oracle",
+        "company": "Worldline",
+        "location": "Chennai, Tamil Nadu, India",
+        "date_posted": "",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://fr.linkedin.com/company/worldlineglobal",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [
+        "linkedin"
+      ],
+      "search_attribution": {
+        "query_family": "technical_support",
+        "priority": 1,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "UNVERIFIED",
+        "success": false,
+        "error": "HTTP 429",
+        "url": "https://www.linkedin.com/jobs/view/4467733274"
+      },
+      "verification_status": "UNVERIFIED",
+      "match_score": 64,
+      "qualification": "qualified",
+      "job_family": "production_support",
+      "career_priority": 1,
+      "priority_tier": "P1",
+      "priority_label": "Production Support",
+      "priority_boost": 12,
+      "rank_score": 76,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "Production Support Engineer",
+          "production support"
+        ],
+        "matched_skills": [
+          "Production Support"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: Production Support Engineer, production support",
+          "Skills matched: 1",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 4,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 64
+        },
+        "semantic_score": 0.292,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 5,
+          "role_phrases": 1
+        }
+      },
+      "rejection_stage": "qualified"
+    },
+    {
+      "source": "linkedin",
+      "source_job_id": "li-4464788505",
+      "title": "Quality Assurance Automation Engineer",
+      "company": "LOGZ",
+      "location": "Chennai, Tamil Nadu, India",
+      "remote": true,
+      "url": "https://www.linkedin.com/jobs/view/4464788505",
+      "job_url": "https://www.linkedin.com/jobs/view/4464788505",
+      "apply_url": "https://www.linkedin.com/jobs/view/4464788505",
+      "description": "",
+      "requirements": "",
+      "responsibilities": "",
+      "date_posted": "2026-09-14",
+      "posted_at": "2026-09-14",
+      "employment_type": "",
+      "experience": "",
+      "experience_min": "",
+      "experience_max": "",
+      "salary": "",
+      "skills": [],
+      "search_query": "QA Engineer",
+      "search_location": "Chennai",
+      "discovered_at": "2026-09-16T08:04:24+00:00",
+      "content_hash": "1854b79069ecb811",
+      "normalized_identity": "url:https://linkedin.com/jobs/view/4464788505",
+      "raw_source_data": {
+        "id": "li-4464788505",
+        "site": "linkedin",
+        "job_url": "https://www.linkedin.com/jobs/view/4464788505",
+        "job_url_direct": "",
+        "title": "Quality Assurance Automation Engineer",
+        "company": "LOGZ",
+        "location": "Chennai, Tamil Nadu, India",
+        "date_posted": "2026-09-14",
+        "job_type": "",
+        "salary_source": "",
+        "interval": "",
+        "min_amount": "",
+        "max_amount": "",
+        "currency": "",
+        "is_remote": "False",
+        "job_level": "",
+        "job_function": "",
+        "listing_type": "",
+        "emails": "",
+        "description": "",
+        "company_industry": "",
+        "company_url": "https://ae.linkedin.com/company/logzee",
+        "company_logo": "",
+        "company_url_direct": "",
+        "company_addresses": "",
+        "company_num_employees": "",
+        "company_revenue": "",
+        "company_description": "",
+        "skills": "",
+        "experience_range": "",
+        "company_rating": "",
+        "company_reviews_count": "",
+        "vacancy_count": "",
+        "work_from_home_type": ""
+      },
+      "duplicate_sources": [],
+      "search_attribution": {
+        "query_family": "qa_testing",
+        "priority": 2,
+        "discovery_round": 1
+      },
+      "detail_verification": {
+        "status": "UNVERIFIED",
+        "success": false,
+        "error": "HTTP 429",
+        "url": "https://www.linkedin.com/jobs/view/4464788505"
+      },
+      "verification_status": "UNVERIFIED",
+      "match_score": 64,
+      "qualification": "qualified",
+      "job_family": "qa_testing",
+      "career_priority": 2,
+      "priority_tier": "P2",
+      "priority_label": "QA",
+      "priority_boost": 8,
+      "rank_score": 72,
+      "match_category": "Possible match",
+      "match_details": {
+        "matched_roles": [
+          "quality assurance"
+        ],
+        "matched_skills": [
+          "Quality Assurance"
+        ],
+        "experience_analysis": {
+          "found": false,
+          "valid": true,
+          "hard_rejection": false,
+          "maximum_required": null,
+          "mandatory_requirements": [],
+          "preferred_requirements": [],
+          "all_requirements": []
+        },
+        "graduate_analysis": {
+          "restricted": false,
+          "requirements": []
+        },
+        "seniority_analysis": [],
+        "seniority_penalty": 0,
+        "filter_reasons": [],
+        "reasons": [
+          "Role matches: quality assurance",
+          "Skills matched: 1",
+          "Location within profile"
+        ],
+        "score_breakdown": {
+          "role_score": 35,
+          "skill_score": 4,
+          "location_score": 15,
+          "experience_score": 10,
+          "seniority_penalty": 0,
+          "semantic_bonus": 0,
+          "total": 64
+        },
+        "semantic_score": 0.292,
+        "semantic_notes": {
+          "backend": "lexical",
+          "tokens_measured": 4,
+          "role_phrases": 1
+        }
+      },
+      "rejection_stage": "qualified"
+    }
   ]
 }
