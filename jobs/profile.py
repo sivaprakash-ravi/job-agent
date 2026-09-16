@@ -601,6 +601,123 @@ JOB_FAMILY_QUERY_TERMS = {
     ],
 }
 
+# ============================================================
+# ROUND 2 EXPANSION VOCABULARY (adaptive multi-source discovery)
+# ============================================================
+#
+# Round 1 runs the family-balanced ``JOB_FAMILY_QUERY_TERMS`` above.
+# If a priority tier ends the round underrepresented (its share of
+# discovered unique jobs is below the configurable threshold), the
+# orchestrator expands that tier deterministically from this profile
+# vocabulary - never from an LLM - and runs one extra round of the
+# qualified providers only.
+#
+# Roles are deliberately more granular than round 1. Skill pairs are
+# curated role+skill combos (NOT every role x every skill) so the pipe
+# never emits low-signal Boolean monsters.
+
+ROUND2_P1_ROLES = [
+    "Application Support Engineer",
+    "Application Support Analyst",
+    "Technical Support Engineer",
+    "Technical Support Analyst",
+    "Production Support Engineer",
+    "Production Support Analyst",
+    "Application Operations Engineer",
+    "Technical Operations Engineer",
+    "Software Support Engineer",
+    "Cloud Support Engineer",
+    "L2 Support Engineer",
+    "Systems Support Engineer",
+    "Platform Support Engineer",
+]
+
+ROUND2_P1_SKILL_PAIRS = [
+    ("Application Support", "Java"),
+    ("Application Support", "SQL"),
+    ("Application Support", "Linux"),
+    ("Technical Support", "Linux"),
+    ("Technical Support", "API"),
+    ("Production Support", "SQL"),
+    ("Production Support", "Linux"),
+    ("Cloud Support", "AWS"),
+    ("Cloud Support", "GCP"),
+    ("Cloud Support", "Azure"),
+    ("Support Engineer", "SQL"),
+    ("Support Engineer", "Linux"),
+    ("Support Engineer", "Java"),
+]
+
+ROUND2_P2_ROLES = [
+    "QA Engineer",
+    "Software QA Engineer",
+    "Software Test Engineer",
+    "Test Engineer",
+    "QA Analyst",
+    "Test Analyst",
+    "QA Automation Engineer",
+    "Automation Test Engineer",
+    "Software Testing Engineer",
+    "Quality Engineer",
+    "SDET",
+]
+
+# Every expansion role maps back to a career family so round-2 queries
+# carry correct priority + family attribution end to end.
+ROUND2_ROLE_FAMILIES = {
+    "Application Support Engineer": "application_support",
+    "Application Support Analyst": "application_support",
+    "Technical Support Engineer": "technical_support",
+    "Technical Support Analyst": "technical_support",
+    "Production Support Engineer": "production_support",
+    "Production Support Analyst": "production_support",
+    "Application Operations Engineer": "operations_support",
+    "Technical Operations Engineer": "operations_support",
+    "Software Support Engineer": "technical_support",
+    "Cloud Support Engineer": "cloud_support",
+    "L2 Support Engineer": "technical_support",
+    "Systems Support Engineer": "technical_support",
+    "Platform Support Engineer": "technical_support",
+    "QA Engineer": "qa_testing",
+    "Software QA Engineer": "qa_testing",
+    "Software Test Engineer": "qa_testing",
+    "Test Engineer": "qa_testing",
+    "QA Analyst": "qa_testing",
+    "Test Analyst": "qa_testing",
+    "QA Automation Engineer": "qa_testing",
+    "Automation Test Engineer": "qa_testing",
+    "Software Testing Engineer": "qa_testing",
+    "Quality Engineer": "qa_testing",
+    "SDET": "qa_testing",
+}
+
+ROUND2_SKILL_PAIR_FAMILIES = {
+    ("Application Support", "Java"): "application_support",
+    ("Application Support", "SQL"): "application_support",
+    ("Application Support", "Linux"): "application_support",
+    ("Technical Support", "Linux"): "technical_support",
+    ("Technical Support", "API"): "technical_support",
+    ("Production Support", "SQL"): "production_support",
+    ("Production Support", "Linux"): "production_support",
+    ("Cloud Support", "AWS"): "cloud_support",
+    ("Cloud Support", "GCP"): "cloud_support",
+    ("Cloud Support", "Azure"): "cloud_support",
+    ("Support Engineer", "SQL"): "technical_support",
+    ("Support Engineer", "Linux"): "technical_support",
+    ("Support Engineer", "Java"): "technical_support",
+}
+
+# Priority tier (1/2/3) that owns each round-2 family, aligned with
+# JOB_FAMILY_PRIORITY above.
+ROUND2_FAMILY_PRIORITY = {
+    "technical_support": 1,
+    "application_support": 1,
+    "production_support": 1,
+    "operations_support": 1,
+    "cloud_support": 1,
+    "qa_testing": 2,
+}
+
 LOCATIONS = [
     "Chennai",
     "Bangalore",

@@ -19,8 +19,16 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+import adaptive_query
+import source_discovery
 import source_runner
-from canonical import job_identity
+from ai_config import (
+    MAX_SEARCH_ROUNDS,
+    MAX_SOURCE_LOOKUPS,
+    SOURCE_DISCOVERY_ENABLED,
+    adaptive_discovery_enabled,
+)
+from canonical import deduplicate_jobs, job_identity
 from job_enricher import enrich_jobs
 from job_matcher import (
     QUALIFIED,
@@ -262,12 +270,12 @@ def main():
     )
 
     # --------------------------------------------------------
-    # 2. DISCOVERY
+    # 2. DISCOVERY (adaptive multi-round)
     # --------------------------------------------------------
 
     print()
     print(
-        "[1/7] Running all source providers..."
+        "[1/7] Running round 1 source providers..."
     )
 
     (
@@ -284,6 +292,19 @@ def main():
         for result in provider_results
     )
 
+    discovery_rounds = [
+        {
+            "round": 1,
+            "queries": len(search_queries),
+            "discovered": total_discovered,
+            "unique": len(unique_jobs),
+            "new_unique": len(unique_jobs),
+            "by_priority": adaptive_query.analyze_round(
+                unique_jobs
+            )["by_priority"],
+        }
+    ]
+
     source_runner.print_source_breakdown(
         provider_results,
         unique_jobs,
@@ -293,8 +314,168 @@ def main():
         ],
     )
 
+    # Adaptive extra rounds: deterministic profile vocabulary (never an
+    # LLM) that targets only tiers underrepresented after the previous
+    # round. Rounds are merged with the global dedupe so a job found in
+    # two rounds collapses into one with round-1 attribution.
+    round_slots = [
+        adaptive_query.attribution_slots(
+            search_queries,
+            1,
+        )
+    ]
+    assigned_queries = list(search_queries)
+
+    if (
+        adaptive_discovery_enabled()
+        and MAX_SEARCH_ROUNDS > 1
+    ):
+        current_round = 1
+        pool_before = len(unique_jobs)
+
+        while current_round < MAX_SEARCH_ROUNDS:
+            analysis = adaptive_query.analyze_round(
+                unique_jobs
+            )
+
+            underrepresented = (
+                adaptive_query.underrepresented_tiers(
+                    Counter(
+                        analysis["by_priority"]
+                    ),
+                    analysis["total"],
+                )
+            )
+
+            if not underrepresented:
+                break
+
+            next_queries = adaptive_query.round2_queries(
+                assigned_queries,
+                underrepresented,
+            )
+
+            if not next_queries:
+                break
+
+            next_query_text = [
+                query
+                for query, family in next_queries
+            ]
+
+            current_round += 1
+
+            print()
+            print(
+                f"[1/7] Adaptive round {current_round} - "
+                f"underrepresented tier(s): "
+                f"{', '.join(f'P{t}' for t in underrepresented)}"
+            )
+            print(
+                f"      Additional queries  : "
+                f"{len(next_query_text)}"
+            )
+
+            before_ids = {
+                job_identity(job)
+                for job in unique_jobs
+            }
+
+            (
+                round_provider_results,
+                round_unique_jobs,
+                _round_stats,
+            ) = source_runner.run_sources(
+                search_queries=next_query_text,
+                locations=locations,
+            )
+
+            round_discovered = sum(
+                result.get("count", 0)
+                for result in round_provider_results
+            )
+
+            round_slots.append(
+                adaptive_query.build_round2_slots(
+                    next_queries,
+                    current_round,
+                )
+            )
+            assigned_queries.extend(
+                next_query_text
+            )
+
+            merged_unique = deduplicate_jobs(
+                list(unique_jobs)
+                + run_all_jobs(
+                    round_provider_results
+                )
+            )
+
+            new_uniques = (
+                len(merged_unique)
+                - len(unique_jobs)
+            )
+
+            unique_jobs = merged_unique
+
+            discovery_rounds.append(
+                {
+                    "round": current_round,
+                    "queries": len(
+                        next_query_text
+                    ),
+                    "discovered": (
+                        round_discovered
+                    ),
+                    "unique": len(
+                        round_unique_jobs
+                    ),
+                    "new_unique": new_uniques,
+                    "by_priority": (
+                        adaptive_query.analyze_round(
+                            round_unique_jobs
+                        )[
+                            "by_priority"
+                        ]
+                    ),
+                }
+            )
+
+            print(
+                f"      Round discovered   : "
+                f"{round_discovered}"
+            )
+            print(
+                f"      Round unique       : "
+                f"{len(round_unique_jobs)}"
+            )
+            print(
+                f"      New unique added   : "
+                f"{new_uniques}"
+            )
+
+            if new_uniques == 0:
+                break
+
+        print()
+        print(
+            f"[1/7] Discovery finished after "
+            f"{current_round} round(s); "
+            f"total unique {len(unique_jobs)} "
+            f"(adaptive added "
+            f"{len(unique_jobs) - pool_before})."
+        )
+
+    # Attribution: every discovered job keeps (query, query_family,
+    # priority, provider, discovery_round) for the reports.
+    attribution_by_query = adaptive_query.stamp_attribution(
+        unique_jobs,
+        *round_slots,
+    )
+
     # --------------------------------------------------------
-    # 3. GLOBAL DEDUPE
+    # 3. GLOBAL DEDUPE (final summary across rounds)
     # --------------------------------------------------------
 
     print()
@@ -311,6 +492,97 @@ def main():
         f"       Total unique     : "
         f"{len(unique_jobs)}"
     )
+
+    # --------------------------------------------------------
+    # 3b. SOURCE DISCOVERY (optional, additive metadata only)
+    # --------------------------------------------------------
+
+    source_discovery_report = {
+        "status": "disabled",
+        "reason": (
+            "JOB_AGENT_SOURCE_DISCOVERY not enabled"
+        ),
+        "lookups": 0,
+        "successful": 0,
+        "new_candidates": 0,
+        "ats_detected": {},
+        "approved": [],
+        "rejected": [],
+        "pending_review": [],
+    }
+
+    if SOURCE_DISCOVERY_ENABLED:
+        final_analysis = adaptive_query.analyze_round(
+            unique_jobs
+        )
+
+        underrepresented = (
+            adaptive_query.underrepresented_tiers(
+                Counter(
+                    final_analysis["by_priority"]
+                ),
+                final_analysis["total"],
+            )
+        )
+
+        if not underrepresented:
+            source_discovery_report["reason"] = (
+                "no underrepresented tier "
+                "after adaptive rounds"
+            )
+        else:
+            print()
+            print(
+                "[2/7] Probing public career/ATS "
+                f"sources ({len(assigned_queries)} "
+                f"queries, budget "
+                f"{MAX_SOURCE_LOOKUPS})..."
+            )
+
+            status, candidates, error = (
+                source_discovery.discover_sources(
+                    assigned_queries,
+                )
+            )
+
+            classification = (
+                source_discovery.classify_candidates(
+                    candidates
+                )
+            )
+
+            source_discovery_report.update(
+                {
+                    "status": status,
+                    "reason": error,
+                    "lookups": len(candidates),
+                    "successful": len(candidates),
+                    "new_candidates": len(candidates),
+                    "ats_detected": classification[
+                        "ats_detected"
+                    ],
+                    "approved": classification[
+                        "approved"
+                    ],
+                    "rejected": classification[
+                        "rejected"
+                    ],
+                    "pending_review": (
+                        classification[
+                            "pending_review"
+                        ][:10]
+                    ),
+                }
+            )
+
+            print(
+                f"      Source discovery  : "
+                f"{status}"
+            )
+            print(
+                f"      Candidates        : "
+                f"{len(candidates)}"
+            )
 
     # --------------------------------------------------------
     # 4. ENRICH
@@ -750,6 +1022,28 @@ def main():
             skipped,
         )
 
+    query_quality_rows = query_quality(
+        ranked_jobs
+    )
+
+    for row in query_quality_rows:
+        slot = attribution_by_query.get(
+            str(
+                row.get("search_query") or ""
+            ).strip().lower()
+        )
+
+        if slot is None:
+            continue
+
+        row["query_family"] = slot.get(
+            "query_family"
+        )
+        row["priority"] = slot.get("priority")
+        row["discovery_round"] = slot.get(
+            "discovery_round"
+        )
+
     run_summary = {
         "run_at_utc": stats["summary"].get("run_at_utc"),
         "totals": dict(stats["summary"]),
@@ -819,9 +1113,9 @@ def main():
             provider_results,
             ranked_jobs,
         ),
-        "query_quality": query_quality(
-            ranked_jobs
-        ),
+        "query_quality": query_quality_rows,
+        "discovery_rounds": discovery_rounds,
+        "source_discovery": source_discovery_report,
         "source_overlap": funnel_report[
             "source_overlap"
         ],
@@ -864,6 +1158,40 @@ def main():
 
     for label, value in totals:
         print(f"{label:18} : {value}")
+
+    print()
+    print("DISCOVERY ROUNDS")
+
+    for entry in discovery_rounds:
+        by_priority = entry.get("by_priority") or {}
+        tiers = (
+            f"P1={by_priority.get('P1', 0)} "
+            f"P2={by_priority.get('P2', 0)} "
+            f"P3={by_priority.get('P3', 0)}"
+        )
+        print(
+            f"Round {entry.get('round')}: "
+            f"{entry.get('queries')} queries / "
+            f"{entry.get('discovered')} discovered / "
+            f"{entry.get('unique')} unique "
+            f"(+{entry.get('new_unique')} new) "
+            f"| {tiers}"
+        )
+
+    if SOURCE_DISCOVERY_ENABLED:
+        print()
+        print(
+            f"SOURCE DISCOVERY    : "
+            f"{source_discovery_report.get('status')}"
+        )
+        print(
+            f"  candidates        : "
+            f"{source_discovery_report.get('new_candidates')}"
+        )
+        print(
+            f"  ats detected      : "
+            f"{source_discovery_report.get('ats_detected') or {}}"
+        )
 
     stages = funnel_report["stages"]
 
